@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Драконья математика</title>
+<style>
+:root{
+  --bg:#f2f6f1; --card:#ffffff; --ink:#253041; --muted:#6b7686; --line:#dfe6ea;
+  --pri:#3aa66b; --pri-d:#2b8754; --acc:#ff8a3d; --acc-d:#e06d22;
+  --ok:#2fae63; --okbg:#e3f7ea; --bad:#e2604f; --badbg:#fde9e6; --warn:#f2a93b; --warnbg:#fff4e0;
+  --fire:#fff0e5; --forest:#e8f5e4; --ice:#e6f1fb; --boss:#f0e8fa;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Trebuchet MS","Segoe UI",Verdana,sans-serif;background:var(--bg);color:var(--ink);font-size:20px;min-height:100vh}
+button{font:inherit;cursor:pointer;border:none;border-radius:14px;color:inherit}
+svg{max-width:100%;height:auto}
+.hidden{display:none!important}
+
+/* ---------- шапка ---------- */
+header{display:flex;align-items:center;gap:16px;padding:10px 20px;background:#fff;border-bottom:2px solid var(--line);position:sticky;top:0;z-index:20}
+.logo{font-weight:bold;font-size:22px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.hdr-dragon{display:flex;align-items:center;gap:10px;margin-left:12px}
+.hdr-dragon .xpbar{width:150px;height:12px;background:#e8edf0;border-radius:8px;overflow:hidden}
+.hdr-dragon .xpbar i{display:block;height:100%;background:linear-gradient(90deg,#7bd88f,#3aa66b);border-radius:8px;transition:width .5s}
+.hdr-dragon .st{font-size:15px;color:var(--muted)}
+.spacer{flex:1}
+.crystals{font-weight:bold;font-size:22px;background:#eef4ff;padding:6px 14px;border-radius:20px}
+.crystals.bump{animation:bump .5s}
+.hbtn{background:#f1f4f6;padding:8px 14px;font-size:17px}
+.hbtn:hover{background:#e4e9ee}
+
+/* ---------- общие ---------- */
+main{max-width:1280px;margin:0 auto;padding:20px}
+.btn{padding:12px 22px;font-size:20px;font-weight:bold;transition:transform .08s,background .15s}
+.btn:active{transform:scale(.97)}
+.btn.pri{background:var(--pri);color:#fff;box-shadow:0 4px 0 var(--pri-d)}
+.btn.pri:hover{background:#43b876}
+.btn.acc{background:var(--acc);color:#fff;box-shadow:0 4px 0 var(--acc-d)}
+.btn.ghost{background:#eef1f4}
+.btn.ghost:hover{background:#e2e7ec}
+.btn.big{font-size:26px;padding:16px 34px}
+.btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.card{background:var(--card);border-radius:24px;box-shadow:0 4px 18px rgba(30,50,70,.08);padding:26px}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .12em;line-height:1.05;font-weight:bold}
+.frac>span:first-child{border-bottom:.12em solid currentColor;padding:0 .18em .04em}
+.frac>span:last-child{padding:.04em .18em 0}
+.svt{font-size:20px;font-weight:bold;fill:#253041;font-family:inherit}
+.svt.sm{font-size:16px}
+
+/* ---------- карта ---------- */
+.hero{display:flex;align-items:center;gap:26px;margin-bottom:22px}
+.hero .bubble{position:relative;max-width:620px}
+.block{border-radius:26px;padding:18px 22px 22px;margin-bottom:20px}
+.block h2{margin:0 0 14px;font-size:24px}
+.block-A{background:var(--fire)} .block-B{background:var(--forest)} .block-C{background:var(--ice)} .block-D{background:var(--boss)}
+.isl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.isl{background:#fff;border-radius:20px;padding:14px;text-align:center;position:relative;border:3px solid transparent;transition:transform .12s,box-shadow .12s;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.isl:not(.locked):hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.1)}
+.isl .em{font-size:40px;line-height:1.2}
+.isl .num{position:absolute;top:8px;left:12px;font-size:14px;color:var(--muted);font-weight:bold}
+.isl .tt{font-size:17px;font-weight:bold;min-height:44px;display:flex;align-items:center;justify-content:center}
+.isl .stars{font-size:22px;letter-spacing:2px;color:#d6dbe0}
+.isl .stars b{color:#ffbf1f;font-weight:normal}
+.isl .lv{font-size:13px;color:var(--muted)}
+.isl.locked{opacity:.5;cursor:not-allowed;filter:grayscale(.8)}
+.isl.locked::after{content:"🔒";position:absolute;top:8px;right:10px;font-size:20px}
+.isl.rec{border-color:var(--acc);animation:glow 1.6s infinite}
+.isl.rec::before{content:"Сюда!";position:absolute;top:-12px;right:12px;background:var(--acc);color:#fff;font-size:13px;font-weight:bold;padding:2px 10px;border-radius:10px}
+
+/* ---------- облачко ---------- */
+.bubble{background:#fff;border:3px solid #cfe3d6;border-radius:22px;padding:14px 18px;font-size:21px;line-height:1.35;box-shadow:0 3px 10px rgba(0,0,0,.05)}
+.bubble.pop{animation:pop .35s}
+.bubble.good{border-color:#9ddcb5;background:var(--okbg)}
+.bubble.oops{border-color:#f5c98b;background:var(--warnbg)}
+
+/* ---------- игровой экран ---------- */
+.play-top{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.prog{display:flex;gap:8px;flex:1;justify-content:center;flex-wrap:wrap}
+.prog i{width:26px;height:26px;border-radius:50%;background:#e2e8ec;display:inline-block;border:3px solid #fff;box-shadow:0 0 0 2px #e2e8ec}
+.prog i.cur{background:#fff;box-shadow:0 0 0 3px var(--acc)}
+.prog i.ok{background:var(--ok);box-shadow:0 0 0 2px var(--ok)}
+.prog i.meh{background:var(--warn);box-shadow:0 0 0 2px var(--warn)}
+.prog i.bad{background:#f3a79c;box-shadow:0 0 0 2px #f3a79c}
+.lvtag{font-size:15px;background:#fff;padding:6px 12px;border-radius:12px;color:var(--muted)}
+.play-main{display:grid;grid-template-columns:240px 1fr 230px;gap:20px;align-items:start}
+.buddy{display:flex;flex-direction:column;align-items:center;gap:10px;position:sticky;top:90px}
+.buddy .bubble{width:100%;font-size:19px}
+.boss-box{text-align:center;width:100%}
+.boss-box .troll{font-size:72px;line-height:1}
+.boss-box.hit .troll{animation:shake .5s}
+.hp{height:16px;background:#eee;border-radius:10px;overflow:hidden;margin-top:6px}
+.hp i{display:block;height:100%;background:linear-gradient(90deg,#e2604f,#ff9a5a);transition:width .4s}
+.task{min-height:420px}
+.task .q{font-size:34px;font-weight:bold;line-height:1.35;margin-bottom:14px}
+.task .q.long{font-size:25px;font-weight:normal}
+.visual{margin:10px 0 16px;display:flex;justify-content:center;flex-wrap:wrap;gap:16px}
+.visual:empty{display:none}
+.hintbox{background:#fffbea;border:2px dashed #f2cf6b;border-radius:16px;padding:14px;margin:10px 0;font-size:19px}
+.hintbox .visual{margin:10px 0 0}
+.steps{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
+.steps:empty{display:none}
+.step{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:24px;padding:10px 14px;border-radius:14px;background:#f5f8fa;border:2px solid transparent}
+.step.active{border-color:#8ec9ff;background:#eef7ff}
+.step.ok{background:var(--okbg)}
+.step.given{background:var(--warnbg)}
+.step.note{font-size:19px;background:#fffbea}
+.step .mark{font-size:22px}
+.answer{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:30px;margin-top:6px}
+.answer .alabel{font-weight:bold}
+.inp{width:120px;font-size:32px;font-weight:bold;text-align:center;padding:8px 6px;border:3px solid #c8d3dc;border-radius:14px;outline:none;font-family:inherit;color:var(--ink);background:#fff}
+.inp.sm{width:100px;font-size:26px;padding:6px}
+.inp.xs{width:76px}
+.inp:focus{border-color:#4aa3f0;box-shadow:0 0 0 4px #d6ebfd}
+.inp.right{border-color:var(--ok);background:var(--okbg)}
+.inp.wrong{border-color:var(--bad);background:var(--badbg)}
+.inp:disabled{background:#f4f6f8}
+.fin{display:inline-flex;flex-direction:column;align-items:center;gap:6px}
+.fin .fl{width:100%;height:4px;background:var(--ink);border-radius:2px}
+.shake{animation:shake .45s}
+.choices{display:flex;gap:14px;flex-wrap:wrap}
+.choice{background:#fff;border:3px solid #c8d3dc;padding:14px 26px;font-size:28px;font-weight:bold;min-width:90px;border-radius:16px}
+.choice.txt{font-size:21px;font-weight:normal;max-width:360px;text-align:left}
+.choice:hover{border-color:#4aa3f0;background:#f2f9ff}
+.choice.right{border-color:var(--ok);background:var(--okbg)}
+.choice.wrong{border-color:var(--bad);background:var(--badbg)}
+.step .choice{font-size:24px;padding:8px 20px;min-width:64px}
+.tools{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.tools button{background:#f1f4f6;padding:10px 16px;font-size:18px}
+.tools button:hover{background:#e4e9ee}
+.explain{margin-top:18px;background:#f4f8ff;border:2px solid #bfdcf7;border-radius:18px;padding:16px 18px;font-size:22px}
+.explain .right{font-size:26px;font-weight:bold;color:var(--pri-d);margin-bottom:8px}
+.ex div{margin:4px 0}
+.next-row{margin-top:18px;display:flex;gap:12px;align-items:center}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#fff;padding:14px;border-radius:22px;box-shadow:0 4px 18px rgba(30,50,70,.08);position:sticky;top:90px}
+.keypad button{font-size:30px;font-weight:bold;padding:14px 0;background:#f1f5f8;border-radius:14px;box-shadow:0 3px 0 #d5dde3}
+.keypad button:hover{background:#e5edf3}
+.keypad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d5dde3}
+.keypad .kok{background:var(--pri);color:#fff;box-shadow:0 3px 0 var(--pri-d)}
+.keypad .kok:hover{background:#43b876}
+.keypad .hint{grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center}
+.pie.clickable .sector,.bar.clickable .sector{cursor:pointer;transition:fill .15s}
+.pie.clickable .sector:hover,.bar.clickable .sector:hover{opacity:.85}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bars>div{display:flex;align-items:center;gap:12px}
+.bars .bl{min-width:60px;font-size:24px;text-align:right}
+
+/* ---------- вступление / итоги / перерыв ---------- */
+.center-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+.intro{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start;max-width:1000px;margin:0 auto}
+.intro .card{font-size:23px;line-height:1.5}
+.intro h1{margin:0 0 10px;font-size:32px}
+.intro .example{margin:16px 0;padding:16px;background:#f7faf8;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.end-stars{font-size:70px;letter-spacing:8px}
+.end-stars span{display:inline-block;color:#dde2e6}
+.end-stars span.on{color:#ffbf1f;animation:starIn .5s both}
+.end-stars span.on:nth-child(2){animation-delay:.25s}
+.end-stars span.on:nth-child(3){animation-delay:.5s}
+.break-ex{font-size:30px;font-weight:bold;max-width:700px}
+.ring{font-size:60px;font-weight:bold;color:var(--pri-d)}
+
+/* ---------- магазин ---------- */
+.shop{display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start}
+.shop .preview{text-align:center;position:sticky;top:90px}
+.shop h3{margin:18px 0 10px}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.item{background:#fff;border-radius:18px;padding:14px;text-align:center;border:3px solid transparent;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.item .ic{font-size:40px}
+.item .nm{font-size:16px;font-weight:bold;min-height:40px}
+.item.on{border-color:var(--pri)}
+.item button{margin-top:8px;padding:8px 12px;font-size:16px;width:100%}
+
+/* ---------- родитель ---------- */
+.parent h2{margin:26px 0 12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.kpi{background:#fff;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.05)}
+.kpi b{display:block;font-size:30px}
+.kpi span{color:var(--muted);font-size:16px}
+.chart{display:flex;align-items:flex-end;gap:6px;height:160px;background:#fff;border-radius:18px;padding:16px 16px 34px;position:relative}
+.chart .col{flex:1;background:#8fd1a6;border-radius:6px 6px 0 0;position:relative;min-height:2px}
+.chart .col span{position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);white-space:nowrap}
+.chart .col em{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:12px;font-style:normal}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:18px;overflow:hidden;font-size:17px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:#f4f7f9;font-size:15px;color:var(--muted)}
+.acc-good{color:var(--ok);font-weight:bold}.acc-mid{color:#c98a12;font-weight:bold}.acc-bad{color:var(--bad);font-weight:bold}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:#fff;border:2px solid #f3c2ba;border-radius:14px;padding:6px 12px;font-size:17px}
+.settings{background:#fff;border-radius:18px;padding:18px;display:grid;gap:14px;font-size:18px}
+.settings label{display:flex;align-items:center;gap:10px}
+.settings input[type=text],.settings select{font:inherit;padding:6px 10px;border:2px solid #c8d3dc;border-radius:10px}
+.settings input[type=checkbox]{width:22px;height:22px}
+.row-btns{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ---------- модалка ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(30,40,55,.45);display:flex;align-items:center;justify-content:center;z-index:50}
+.modal{background:#fff;border-radius:26px;padding:28px 34px;max-width:560px;width:92%;text-align:center;font-size:22px;animation:pop .3s}
+.modal h2{margin-top:0}
+.modal .row-btns{justify-content:center;margin-top:18px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+
+/* ---------- анимации ---------- */
+@keyframes pop{0%{transform:scale(.85);opacity:.3}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes bump{50%{transform:scale(1.2)}}
+@keyframes glow{50%{box-shadow:0 0 0 6px rgba(255,138,61,.25)}}
+@keyframes starIn{0%{transform:scale(0) rotate(-90deg)}80%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}75%{transform:rotate(4deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes flick{0%,100%{opacity:1;transform:scaleX(1)}50%{opacity:.8;transform:scaleX(1.08)}}
+@keyframes jump{0%,100%{transform:translateY(0)}40%{transform:translateY(-22px)}}
+.dragon{overflow:visible}
+.dragon.egg{animation:wobble 2.2s ease-in-out infinite;transform-origin:50% 90%}
+.dragon.idle{animation:bob 3s ease-in-out infinite}
+.dragon.happy-jump{animation:jump .6s}
+.flame{animation:flick .5s infinite;transform-origin:80px 104px}
+
+@media (max-width:1100px){
+  .play-main{grid-template-columns:1fr}
+  .buddy{position:static;flex-direction:row}
+  .buddy .bubble{flex:1}
+  .keypad{position:static;max-width:420px;margin:0 auto}
+  .intro,.shop{grid-template-columns:1fr}
+  .hdr-dragon .xpbar{width:90px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo" id="logo">🐉 Драконья математика</div>
+  <div class="hdr-dragon" id="hdrDragon"></div>
+  <div class="spacer"></div>
+  <div class="crystals" id="crystals">💎 0</div>
+  <button class="hbtn" id="navMap">🗺️ Карта</button>
+  <button class="hbtn" id="navShop">🐲 Мой дракон</button>
+  <button class="hbtn" id="navSound" title="Звук">🔊</button>
+  <button class="hbtn" id="navParent">👨‍👩‍👦 Родителям</button>
+</header>
+<main id="app"></main>
+<canvas id="confetti"></canvas>
+
+<!-- ================= ЯДРО: задачи, картинки, проверка (без DOM) ================= -->
+<script id="core">
+'use strict';
+// ---------- утилиты ----------
+const R = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const range = n => [...Array(n).keys()];
+function plur(n, f1, f2, f5) { n = Math.abs(n) % 100; if (n > 10 && n < 20) return f5; n %= 10; if (n === 1) return f1; if (n >= 2 && n <= 4) return f2; return f5; }
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const fr = (n, d) => `<span class="frac"><span>${n}</span><span>${d}</span></span>`;
+// текст с дробями вида 3/4 -> HTML
+const rq = s => esc(s).replace(/(\d+)\/(\d+)/g, (m, n, d) => fr(n, d));
+
+// ---------- речь ----------
+const ORD1 = {2:'вторая',3:'третья',4:'четвёртая',5:'пятая',6:'шестая',7:'седьмая',8:'восьмая',9:'девятая',10:'десятая',11:'одиннадцатая',12:'двенадцатая'};
+const ORDA = {2:'вторую',3:'третью',4:'четвёртую',5:'пятую',6:'шестую',7:'седьмую',8:'восьмую',9:'девятую',10:'десятую',11:'одиннадцатую',12:'двенадцатую'};
+const ORDP = {2:'вторых',3:'третьих',4:'четвёртых',5:'пятых',6:'шестых',7:'седьмых',8:'восьмых',9:'девятых',10:'десятых',11:'одиннадцатых',12:'двенадцатых'};
+function fracWords(n, d, cas) {
+  n = +n; d = +d;
+  if (!ORD1[d]) return `${n} из ${d}`;
+  if (n === 1) return cas === 'acc' ? 'одну ' + ORDA[d] : 'одна ' + ORD1[d];
+  if (n === 2) return 'две ' + ORDP[d];
+  return n + ' ' + ORDP[d];
+}
+const wholeWords = w => (+w === 1 ? 'одна целая' : +w === 2 ? 'две целых' : w + ' целых');
+function speakify(s) {
+  return String(s).replace(/<[^>]+>/g, ' ')
+    .replace(/(\d+) (\d+)\/(\d+)/g, (m, w, n, d) => wholeWords(w) + ' ' + fracWords(n, d))
+    .replace(/(\d+)\/(\d+)/g, (m, n, d) => fracWords(n, d))
+    .replace(/☐/g, ' и ').replace(/ × /g, ' умножить на ').replace(/ : /g, ' разделить на ')
+    .replace(/−/g, ' минус ').replace(/ \+ /g, ' плюс ').replace(/= \?/g, 'равно сколько?')
+    .replace(/=/g, ' равно ').replace(/≈/g, ' примерно ').replace(/ост\./g, 'остаток')
+    .replace(/дес\./g, 'десятков').replace(/сот\./g, 'сотен').replace(/км\/ч/g, 'километров в час')
+    .replace(/\s+/g, ' ').trim();
+}
+
+// ---------- картинки (SVG-строки) ----------
+const SH = '#ff9f43', SH2 = '#5aa9e6', EMPTY = '#ffffff', STROKE = '#3d4a5c';
+function toSet(x) { if (x == null) return new Set(); if (typeof x === 'number') return new Set(range(x)); return new Set(x); }
+function fillOf(i, sh, o) { if (o.fills && o.fills[i]) return o.fills[i]; return sh.has(i) ? SH : EMPTY; }
+
+function pie(n, shaded, o = {}) {
+  const r = o.r || 64, c = r + 4, S = 2 * r + 8, sh = toSet(shaded), sz = o.size || S;
+  let s = `<svg class="pie${o.click ? ' clickable' : ''}" viewBox="0 0 ${S} ${S}" width="${sz}" height="${sz}">`;
+  if (n === 1) s += `<circle class="sector" data-i="0" cx="${c}" cy="${c}" r="${r}" fill="${fillOf(0, sh, o)}" stroke="${STROKE}" stroke-width="2.5"/>`;
+  else for (let i = 0; i < n; i++) {
+    const a0 = -Math.PI / 2 + i * 2 * Math.PI / n, a1 = a0 + 2 * Math.PI / n;
+    const x0 = c + r * Math.cos(a0), y0 = c + r * Math.sin(a0), x1 = c + r * Math.cos(a1), y1 = c + r * Math.sin(a1);
+    s += `<path class="sector" data-i="${i}" d="M${c} ${c} L${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z" fill="${fillOf(i, sh, o)}" stroke="${STROKE}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  }
+  return s + '</svg>';
+}
+
+// полоска из n частей. o.inside — подписи в частях, o.total — подпись под фигурной скобкой, o.span — {from,to,text} скобка сверху
+function bar(n, shaded, o = {}) {
+  const W = o.W || 440, h = o.h || 52, top = o.span ? 40 : 0, bot = o.total != null ? 46 : 0, x0 = 6;
+  const H = top + h + bot + 8, w = (W - 12) / n, sh = toSet(shaded), y0 = top + 4;
+  let s = `<svg class="bar${o.click ? ' clickable' : ''}" viewBox="0 0 ${W} ${H}" width="${o.width || W}">`;
+  for (let i = 0; i < n; i++) {
+    const x = x0 + i * w;
+    s += `<rect class="sector" data-i="${i}" x="${x.toFixed(1)}" y="${y0}" width="${w.toFixed(1)}" height="${h}" fill="${fillOf(i, sh, o)}" stroke="${STROKE}" stroke-width="2.5"/>`;
+    if (o.inside && o.inside[i] != null && o.inside[i] !== '') s += `<text x="${(x + w / 2).toFixed(1)}" y="${y0 + h / 2 + 7}" text-anchor="middle" class="svt${w < 40 ? ' sm' : ''}">${esc(o.inside[i])}</text>`;
+  }
+  if (o.span) {
+    const xa = x0 + o.span.from * w + 2, xb = x0 + (o.span.to + 1) * w - 2, yy = top - 2;
+    s += `<path d="M${xa} ${yy} v-8 H${xb} v8" fill="none" stroke="${STROKE}" stroke-width="2.5"/>`;
+    s += `<text x="${(xa + xb) / 2}" y="${yy - 14}" text-anchor="middle" class="svt">${esc(o.span.text)}</text>`;
+  }
+  if (o.total != null) {
+    const y = y0 + h + 6, m = W / 2;
+    s += `<path d="M${x0} ${y} q0 10 10 10 H${m - 10} q10 0 10 10 q0 -10 10 -10 H${W - x0 - 10} q10 0 10 -10" fill="none" stroke="${STROKE}" stroke-width="2.5"/>`;
+    s += `<text x="${m}" y="${y + 40}" text-anchor="middle" class="svt">${esc(o.total)}</text>`;
+  }
+  return s + '</svg>';
+}
+
+// модель площади: left × (части)
+function area(left, parts, o = {}) {
+  const W = 470, H = 140, lx = 56, ty = 36, h = 90, tot = parts.reduce((a, b) => a + b, 0);
+  const ws = parts.map(p => Math.max(p / tot, 0.34)), sw = ws.reduce((a, b) => a + b, 0), avail = W - lx - 8;
+  const cols = ['#ffe1c7', '#d6ecff', '#e2f5d9'];
+  let x = lx, s = `<svg class="area" viewBox="0 0 ${W} ${H}" width="${W}">`;
+  s += `<text x="${lx - 10}" y="${ty + h / 2 + 7}" text-anchor="end" class="svt">${left}</text>`;
+  parts.forEach((p, i) => {
+    const w = ws[i] / sw * avail;
+    s += `<rect x="${x.toFixed(1)}" y="${ty}" width="${w.toFixed(1)}" height="${h}" fill="${cols[i % 3]}" stroke="${STROKE}" stroke-width="2.5"/>`;
+    s += `<text x="${(x + w / 2).toFixed(1)}" y="${ty - 10}" text-anchor="middle" class="svt">${p}</text>`;
+    s += `<text x="${(x + w / 2).toFixed(1)}" y="${ty + h / 2 + 6}" text-anchor="middle" class="svt sm">${left} × ${p}${o.reveal ? ' = ' + left * p : ''}</text>`;
+    x += w;
+  });
+  return s + '</svg>';
+}
+
+// точки, разложенные по группам (деление с остатком)
+function dotsGroups(total, g) {
+  const q = Math.floor(total / g), r = total % g, cols = Math.ceil(g / 2), bw = cols * 18 + 10, bh = 46, gap = 10;
+  const n = q + (r ? 1 : 0), W = n * (bw + gap) + 10, H = bh + 34;
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${Math.min(W, 520)}">`;
+  for (let k = 0; k < n; k++) {
+    const x = 10 + k * (bw + gap), isR = k === q, cnt = isR ? r : g;
+    s += `<rect x="${x}" y="4" width="${bw}" height="${bh}" rx="10" fill="${isR ? '#fff4e0' : '#eef6ff'}" stroke="${isR ? '#f2a93b' : '#5aa9e6'}" stroke-width="2" ${isR ? 'stroke-dasharray="5 4"' : ''}/>`;
+    for (let j = 0; j < cnt; j++) s += `<circle cx="${x + 14 + (j % cols) * 18}" cy="${18 + Math.floor(j / cols) * 18}" r="6.5" fill="${isR ? '#f2a93b' : '#3d7cc9'}"/>`;
+  }
+  s += `<text x="10" y="${H - 6}" class="svt sm">${q} ${plur(q, 'группа', 'группы', 'групп')} по ${g}${r ? ', остаток ' + r : ''}</text>`;
+  return s + '</svg>';
+}
+
+// прямоугольник из точек a рядов × b
+function dotArray(a, b) {
+  const W = b * 22 + 12, H = a * 22 + 12;
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}">`;
+  for (let i = 0; i < a; i++) for (let j = 0; j < b; j++) s += `<circle cx="${17 + j * 22}" cy="${17 + i * 22}" r="7.5" fill="${j < 5 ? '#3d7cc9' : '#ff9f43'}"/>`;
+  return s + '</svg>';
+}
+
+function pies(w, r, n) { let s = ''; for (let i = 0; i < w; i++) s += pie(n, n, { size: 96 }); if (r) s += pie(n, r, { size: 96 }); return s; }
+function twoBars(l1, n1, s1, l2, n2, s2) {
+  return `<div class="bars"><div><span class="bl">${rq(l1)}</span>${bar(n1, s1, { W: 380, h: 40 })}</div><div><span class="bl">${rq(l2)}</span>${bar(n2, s2, { W: 380, h: 40 })}</div></div>`;
+}
+const ex = lines => `<div class="ex">${lines.map(l => `<div>${rq(l)}</div>`).join('')}</div>`;
+const T = o => Object.assign({ type: 'number', steps: null, hint: null, visual: '', hintVisual: '', explain: '' }, o);
+const SIGNS = ['<', '=', '>'];
+const cmp = (a, b) => (a < b ? '<' : a > b ? '>' : '=');
+
+// ================= ГЕНЕРАТОРЫ ЗАДАЧ =================
+// d: 0 — лёгкий, 1 — средний, 2 — сложный
+
+function genTable(d, ctx = {}) {
+  const errs = Object.entries(ctx.factErrors || {}).filter(e => e[1] > 0).map(e => e[0]);
+  let a, b;
+  if (errs.length && Math.random() < 0.35) { [a, b] = pick(errs).split('x').map(Number); if (Math.random() < .5) [a, b] = [b, a]; }
+  else if (d === 0) { a = R(2, 5); b = R(2, 9); }
+  else if (d === 1) { a = R(2, 9); b = R(2, 9); }
+  else { a = R(6, 9); b = R(4, 9); }
+  const key = Math.min(a, b) + 'x' + Math.max(a, b), p = a * b;
+  if (Math.random() < [0.2, 0.35, 0.5][d]) {
+    return T({ q: `${p} : ${a} = ?`, ans: b, key,
+      hint: `Деление — это умножение наоборот. Вспомни: ${a} × ? = ${p}`,
+      hintVisual: a <= 6 ? dotArray(a, b) : '',
+      explain: ex([`${a} × ${b} = ${p}`, `значит ${p} : ${a} = ${b}`]) });
+  }
+  const big = Math.max(a, b), sm = Math.min(a, b);
+  let steps = null, fin = null;
+  if (big > 5) { steps = [{ label: `${sm} × 5 =`, ans: sm * 5 }, { label: `${sm} × ${big - 5} =`, ans: sm * (big - 5) }]; fin = `${sm * 5} + ${sm * (big - 5)} =`; }
+  return T({ q: `${a} × ${b} = ?`, ans: p, key, steps, finalLabel: fin,
+    hint: big > 5 ? `Разбей: ${sm} × ${big} = ${sm} × 5 + ${sm} × ${big - 5}` : `Это ${a} раз по ${b}. Можно сложить: ${Array(a).fill(b).join(' + ')}`,
+    hintVisual: a <= 6 ? dotArray(a, b) : '',
+    explain: ex(big > 5 ? [`${sm} × ${big} = ${sm} × 5 + ${sm} × ${big - 5}`, `= ${sm * 5} + ${sm * (big - 5)} = ${p}`] : [`${a} × ${b} = ${p}`]) });
+}
+
+function genRound(d) {
+  const k = R(0, 3), a = R(2, 9), b = R(2, 9);
+  if (d === 0) {
+    if (k === 0) { const x = R(2, 60); return T({ q: `${x} × 10 = ?`, ans: x * 10, hint: 'При умножении на 10 к числу приписываем справа один ноль.', explain: ex([`${x} × 10 = ${x * 10}`, 'приписали один ноль']) }); }
+    if (k === 1) { const x = R(2, 40); return T({ q: `${x} × 100 = ?`, ans: x * 100, hint: 'При умножении на 100 приписываем справа два нуля.', explain: ex([`${x} × 100 = ${x * 100}`, 'приписали два нуля']) }); }
+    if (k === 2) { const x = R(2, 60); return T({ q: `${x * 10} : 10 = ?`, ans: x, hint: 'При делении на 10 убираем один ноль в конце.', explain: ex([`${x * 10} : 10 = ${x}`, 'убрали один ноль']) }); }
+  }
+  if (d <= 1 && k !== 2) {
+    return T({ q: `${a * 10} × ${b} = ?`, ans: a * b * 10, steps: [{ label: `${a} × ${b} =`, ans: a * b }], finalLabel: `${a * b} дес. =`,
+      hint: `${a * 10} — это ${a} десятков. Сначала посчитай ${a} × ${b}, потом припиши ноль.`,
+      explain: ex([`${a * 10} × ${b} = ${a} дес. × ${b} = ${a * b} дес. = ${a * b * 10}`]) });
+  }
+  if (d <= 1) {
+    return T({ q: `${a * b * 10} : ${b} = ?`, ans: a * 10, steps: [{ label: `${a * b} : ${b} =`, ans: a }], finalLabel: `${a} дес. =`,
+      hint: `${a * b * 10} — это ${a * b} десятков. Раздели ${a * b} на ${b} и припиши ноль.`,
+      explain: ex([`${a * b * 10} : ${b} = ${a * b} дес. : ${b} = ${a} дес. = ${a * 10}`]) });
+  }
+  if (k === 0) return T({ q: `${a * 10} × ${b * 10} = ?`, ans: a * b * 100, steps: [{ label: `${a} × ${b} =`, ans: a * b }], finalLabel: `${a * b} сот. =`,
+    hint: `Перемножь ${a} × ${b} и припиши два нуля.`, explain: ex([`${a * 10} × ${b * 10} = ${a} × ${b} × 100 = ${a * b * 100}`]) });
+  if (k === 1) return T({ q: `${a * b * 100} : ${b * 10} = ?`, ans: a * 10, steps: [{ label: `${a * b} : ${b} =`, ans: a }], finalLabel: `${a} дес. =`,
+    hint: `Убери по одному нулю у обоих чисел: ${a * b * 10} : ${b}.`, explain: ex([`${a * b * 100} : ${b * 10} = ${a * b * 10} : ${b} = ${a * 10}`]) });
+  if (k === 2) return T({ q: `${a * 100} × ${b} = ?`, ans: a * b * 100, steps: [{ label: `${a} × ${b} =`, ans: a * b }], finalLabel: `${a * b} сот. =`,
+    hint: `${a * 100} — это ${a} сотен. Посчитай ${a} × ${b} и припиши два нуля.`, explain: ex([`${a * 100} × ${b} = ${a * b} сот. = ${a * b * 100}`]) });
+  return T({ q: `${a * b * 100} : ${b} = ?`, ans: a * 100, steps: [{ label: `${a * b} : ${b} =`, ans: a }], finalLabel: `${a} сот. =`,
+    hint: `${a * b * 100} — это ${a * b} сотен. Раздели на ${b}.`, explain: ex([`${a * b * 100} : ${b} = ${a * b} сот. : ${b} = ${a} сот. = ${a * 100}`]) });
+}
+
+function genMul21(d) {
+  let a, b;
+  if (d === 0) { let t, o; do { t = R(1, 4); o = R(1, 4); b = R(2, 3); } while (t * b > 9 || o * b > 9); a = t * 10 + o; }
+  else if (d === 1) { a = R(12, 49); b = R(2, 6); }
+  else { a = R(23, 99); b = R(3, 9); }
+  if (a % 10 === 0) a += R(1, 9);
+  const t = Math.floor(a / 10) * 10, o = a % 10;
+  return T({ q: `${a} × ${b} = ?`, ans: a * b,
+    steps: [{ label: `${t} × ${b} =`, ans: t * b }, { label: `${o} × ${b} =`, ans: o * b }], finalLabel: `${t * b} + ${o * b} =`,
+    hint: `Разбей ${a} на ${t} и ${o}. Умножь каждое на ${b} и сложи.`, hintVisual: area(b, [t, o]),
+    explain: ex([`${a} × ${b} = ${t} × ${b} + ${o} × ${b}`, `= ${t * b} + ${o * b} = ${a * b}`]) + area(b, [t, o], { reveal: true }) });
+}
+
+function genDiv21(d) {
+  let a, b;
+  if (d === 0) {
+    b = R(2, 4);
+    const ts = range(10).filter(x => x >= b && x % b === 0), os = range(10).filter(x => x % b === 0);
+    a = pick(ts) * 10 + pick(os);
+  } else { b = d === 1 ? R(2, 5) : R(3, 9); a = b * R(11, Math.floor(99 / b)); }
+  const q = a / b, A = Math.floor(a / (10 * b)) * 10 * b, B = a - A;
+  if (B === 0) return T({ q: `${a} : ${b} = ?`, ans: q, steps: [{ label: `${a / 10} : ${b} =`, ans: a / 10 / b }], finalLabel: `${a / 10 / b} дес. =`,
+    hint: `${a} — это ${a / 10} десятков. Раздели ${a / 10} на ${b}.`, explain: ex([`${a} : ${b} = ${a / 10} дес. : ${b} = ${a / 10 / b} дес. = ${q}`]) });
+  return T({ q: `${a} : ${b} = ?`, ans: q,
+    steps: [{ note: `Разобьём ${a} на удобные слагаемые: ${A} + ${B}` }, { label: `${A} : ${b} =`, ans: A / b }, { label: `${B} : ${b} =`, ans: B / b }],
+    finalLabel: `${A / b} + ${B / b} =`,
+    hint: `Разбей ${a} на удобные слагаемые: ${A} + ${B}. Каждое раздели на ${b} и сложи.`,
+    explain: ex([`${a} : ${b} = (${A} + ${B}) : ${b}`, `= ${A} : ${b} + ${B} : ${b} = ${A / b} + ${B / b} = ${q}`]) });
+}
+
+function genRem(d) {
+  let b, q;
+  if (d === 0) { b = R(2, 5); q = R(2, 6); }
+  else if (d === 1) { b = R(3, 9); q = R(2, 9); }
+  else if (Math.random() < .5) { b = R(2, 5); q = R(11, Math.floor((100 - b) / b)); }
+  else { b = R(6, 9); q = R(3, 9); }
+  const r = R(1, b - 1), a = b * q + r;
+  return T({ q: `${a} : ${b} = ?`, type: 'remainder', ans: { q, r },
+    steps: [{ label: `Самое большое число до ${a}, которое делится на ${b}:`, ans: b * q }, { label: `${b * q} : ${b} =`, ans: q }, { label: `Остаток: ${a} − ${b * q} =`, ans: r }],
+    finalLabel: `${a} : ${b} =`,
+    hint: `Найди самое большое число до ${a}, которое делится на ${b}. Остаток всегда меньше ${b}!`,
+    hintVisual: a <= 45 ? dotsGroups(a, b) : '',
+    diag: g => (+g.r >= b ? `Остаток (${g.r}) должен быть меньше делителя ${b}! Значит, в частном можно взять больше.` : null),
+    explain: ex([`${b} × ${q} = ${b * q}`, `${a} − ${b * q} = ${r}`, `${a} : ${b} = ${q} (ост. ${r})`]) + (a <= 45 ? dotsGroups(a, b) : '') });
+}
+
+function genMul22(d) {
+  let a, b;
+  if (d === 0) { a = R(11, 25); b = R(11, 12); }
+  else if (d === 1) { a = R(12, 39); b = R(11, 19); }
+  else { a = R(13, 79); b = R(21, 49); }
+  if (b % 10 === 0) b += 1;
+  const t = Math.floor(b / 10), o = b % 10;
+  const steps = t === 1
+    ? [{ label: `${a} × 10 =`, ans: a * 10 }, { label: `${a} × ${o} =`, ans: a * o }]
+    : [{ label: `${a} × ${t} =`, ans: a * t }, { label: `${a} × ${t * 10} =`, ans: a * t * 10 }, { label: `${a} × ${o} =`, ans: a * o }];
+  return T({ q: `${a} × ${b} = ?`, ans: a * b, steps, finalLabel: `${a * t * 10} + ${a * o} =`,
+    hint: `Разбей ${b} на ${t * 10} и ${o}. Умножь ${a} на каждую часть и сложи.`, hintVisual: area(a, [t * 10, o]),
+    explain: ex([`${a} × ${b} = ${a} × ${t * 10} + ${a} × ${o}`, `= ${a * t * 10} + ${a * o} = ${a * b}`]) + area(a, [t * 10, o], { reveal: true }) });
+}
+
+function genDiv22(d) {
+  let b, q;
+  if (d === 0) { b = R(11, 24); q = R(2, Math.min(4, Math.floor(99 / b))); }
+  else if (d === 1) { b = R(11, 49); q = R(2, Math.floor(99 / b)); }
+  else { b = R(12, 99); q = R(2, 9); }
+  const a = b * q, r10 = Math.max(10, Math.round(b / 10) * 10);
+  let est = Math.min(9, Math.max(1, Math.round(a / r10)));
+  if (Math.abs(est - q) > 2) est = est > q ? q + 1 : Math.max(1, q - 1);
+  const ks = [];
+  if (est >= q) for (let k = est; k >= q; k--) ks.push(k); else for (let k = est; k <= q; k++) ks.push(k);
+  const steps = [{ note: `Прикинем: ${b} ≈ ${r10}. Сколько раз ${r10} поместится в ${a}? Примерно ${est}. Проверяем:` }]
+    .concat(ks.map(k => ({ label: `${b} × ${k} =`, ans: b * k })));
+  return T({ q: `${a} : ${b} = ?`, ans: q, steps, finalLabel: `${a} : ${b} =`,
+    hint: `На какое число надо умножить ${b}, чтобы получилось ${a}? Прикинь: ${b} ≈ ${r10}.`,
+    explain: ex([`Подбираем: ${b} × ${q} = ${a}`, `значит ${a} : ${b} = ${q}`]) });
+}
+
+function genWord(d) {
+  const ACT = ['+', '−', '×', ':'];
+  const one = (q, op, expr, ans) => T({ q, ans, steps: [{ label: 'Какое действие нужно сделать?', choices: ACT, ans: op }], finalLabel: `${expr} =`,
+    hint: 'Всё вместе из одинаковых частей — умножаем. Делим поровну или «по сколько» — делим. «В … раз больше» — умножаем, «в … раз меньше» — делим.',
+    explain: ex([`${expr} = ${ans}`]) });
+  const T1 = () => { const n = R(3, 6), k = d === 0 ? R(11, 19) : R(12, 35); return one(`У дракона ${n} ${plur(n, 'пещера', 'пещеры', 'пещер')}. В каждой пещере лежит ${k} ${plur(k, 'кристалл', 'кристалла', 'кристаллов')}. Сколько всего кристаллов?`, '×', `${k} × ${n}`, k * n); };
+  const T2 = () => { const n = R(2, d === 0 ? 4 : 6), k = R(11, Math.floor(99 / n)), a = n * k; return one(`${a} ${plur(a, 'яйцо', 'яйца', 'яиц')} разложили поровну в ${n} ${plur(n, 'гнездо', 'гнезда', 'гнёзд')}. Сколько яиц в каждом гнезде?`, ':', `${a} : ${n}`, k); };
+  const T3 = () => { const k = R(12, 32), n = R(2, Math.floor(99 / k)), a = k * n; return one(`Дракон раздал друзьям ${a} ${plur(a, 'монету', 'монеты', 'монет')}, каждому — ${k} ${plur(k, 'монету', 'монеты', 'монет')}. Сколько друзей получили монеты?`, ':', `${a} : ${k}`, n); };
+  const T4 = () => { const v = R(12, 45), t = d === 2 ? R(11, 15) : R(2, 6); return one(`Дракон пролетает ${v} км за час. Сколько километров он пролетит за ${t} ${plur(t, 'час', 'часа', 'часов')}?`, '×', `${v} × ${t}`, v * t); };
+  const T5 = () => { const a = R(11, 24), k = R(2, 4); return one(`Дракончик съел ${a} ${plur(a, 'рыбку', 'рыбки', 'рыбок')}, а его мама — в ${k} ${plur(k, 'раз', 'раза', 'раз')} больше. Сколько рыбок съела мама?`, '×', `${a} × ${k}`, a * k); };
+  const T6 = () => { const k = R(2, 4), m = R(11, Math.floor(99 / k)), a = k * m; return one(`У мамы-драконицы ${a} ${plur(a, 'золотая чешуйка', 'золотые чешуйки', 'золотых чешуек')}, а у малыша — в ${k} ${plur(k, 'раз', 'раза', 'раз')} меньше. Сколько золотых чешуек у малыша?`, ':', `${a} : ${k}`, m); };
+  const T7 = () => {
+    let n, k, m; do { n = R(2, 6); k = R(12, 30); m = R(2, 6); } while ((n * k) % m || n === m);
+    const tot = n * k;
+    return T({ q: `Дракон собрал ${n} ${plur(n, 'корзину', 'корзины', 'корзин')} яблок, в каждой — ${k} ${plur(k, 'яблоко', 'яблока', 'яблок')}. Все яблоки он поровну разделил между ${m} друзьями. Сколько яблок получил каждый друг?`,
+      ans: tot / m, steps: [{ label: 'Сначала узнаем, сколько всего яблок. Какое действие?', choices: ACT, ans: '×' }, { label: `${k} × ${n} =`, ans: tot }, { label: 'Теперь делим между друзьями. Какое действие?', choices: ACT, ans: ':' }],
+      finalLabel: `${tot} : ${m} =`, hint: 'Задача в два действия: сначала узнай, сколько всего яблок, потом раздели.',
+      explain: ex([`1) ${k} × ${n} = ${tot} (яблок всего)`, `2) ${tot} : ${m} = ${tot / m} (яблок у каждого)`]) });
+  };
+  const T8 = () => {
+    const t = R(2, 5), v = R(12, 40), x = R(5, 30), s = t * v;
+    return T({ q: `Дракон летел ${t} ${plur(t, 'час', 'часа', 'часов')} со скоростью ${v} км/ч, а потом прошёл пешком ещё ${x} км. Какой путь он преодолел?`,
+      ans: s + x, steps: [{ label: 'Сколько он пролетел? Какое действие?', choices: ACT, ans: '×' }, { label: `${v} × ${t} =`, ans: s }, { label: 'Как найти весь путь? Какое действие?', choices: ACT, ans: '+' }],
+      finalLabel: `${s} + ${x} =`, hint: 'Сначала узнай, сколько километров он пролетел, а потом прибавь путь пешком.',
+      explain: ex([`1) ${v} × ${t} = ${s} (км пролетел)`, `2) ${s} + ${x} = ${s + x} (км всего)`]) });
+  };
+  const list = d === 0 ? [T1, T2, T4, T5] : d === 1 ? [T1, T2, T3, T4, T5, T6] : [T1, T2, T3, T4, T5, T6, T7, T8, T7, T8];
+  return Object.assign(pick(list)(), { long: true });
+}
+
+// ---------- ДОЛИ ----------
+function genShareWhat(d) {
+  const n = R(2, [4, 8, 12][d]), kind = pick(['id', 'id', 'shade', 'name']);
+  const useBar = n > 8 || (d === 2 && Math.random() < .5);
+  if (kind === 'id') {
+    const i = R(0, n - 1);
+    return T({ q: 'Какая доля фигуры закрашена?', type: 'fraction', ans: { n: 1, d: n }, visual: useBar ? bar(n, [i]) : pie(n, [i], { size: 170 }),
+      hint: 'Посчитай, на сколько равных частей разделили фигуру. Закрашена одна часть.',
+      explain: ex([`Фигуру разделили на ${n} равных частей, закрашена одна.`, `Это 1/${n}`]) });
+  }
+  if (kind === 'shade') {
+    const what = useBar ? 'полоски' : 'круга';
+    return T({ q: `Закрась 1/${n} ${what}`, say: `Закрась ${fracWords(1, n, 'acc')} ${what}`, type: 'shade', ans: 1, shade: { n, kind: useBar ? 'bar' : 'pie' },
+      hint: `Фигура разделена на ${n} равных частей. 1/${n} — это одна такая часть.`,
+      explain: ex([`1/${n} — это одна часть из ${n}`]) + (useBar ? bar(n, [0]) : pie(n, [0])) });
+  }
+  const opts = shuffle([...new Set([n, n + 1, n > 2 ? n - 1 : n + 2])]).map(k => fracWords(1, k));
+  return T({ q: `Как называется одна из ${n} равных частей?`, type: 'choice', choices: opts, ans: fracWords(1, n), visual: pie(n, [0], { size: 150 }),
+    hint: `Целое разделили на ${n} частей — значит, одна часть называется «одна …» и число ${n} в порядке: 2 — вторая, 3 — третья, 4 — четвёртая…`,
+    explain: ex([`Одна из ${n} частей — это 1/${n} (${fracWords(1, n)})`]) });
+}
+
+function genShareCompare(d) {
+  let n1 = R(2, 10), n2; do { n2 = R(2, 10); } while (n2 === n1);
+  const vis = twoBars(`1/${n1}`, n1, [0], `1/${n2}`, n2, [0]);
+  const base = { hint: 'Чем на большее число частей делим целое, тем меньше каждая часть!', hintVisual: d === 0 ? '' : vis, visual: d === 0 ? vis : '' };
+  const exl = [`1/${n1} — одна из ${n1} частей, 1/${n2} — одна из ${n2} частей.`, `Делим на меньшее число частей — каждая часть больше.`];
+  if (d === 2 && Math.random() < .5) {
+    if (Math.random() < .15) n2 = n1;
+    const ans = cmp(n2, n1);
+    return T(Object.assign(base, { q: `Сравни: 1/${n1} ☐ 1/${n2}`, type: 'choice', choices: SIGNS, ans, explain: ex(exl.concat([`1/${n1} ${ans} 1/${n2}`])) + twoBars(`1/${n1}`, n1, [0], `1/${n2}`, n2, [0]) }));
+  }
+  const ans = n1 < n2 ? `1/${n1}` : `1/${n2}`;
+  return T(Object.assign(base, { q: `Что больше: 1/${n1} или 1/${n2}?`, type: 'choice', choices: [`1/${n1}`, `1/${n2}`], ans, explain: ex(exl.concat([`Больше ${ans}`])) + twoBars(`1/${n1}`, n1, [0], `1/${n2}`, n2, [0]) }));
+}
+
+function genShareOfNum(d) {
+  const n = d === 0 ? R(2, 5) : d === 1 ? R(2, 9) : R(3, 10), k = d === 0 ? R(2, 5) : d === 1 ? R(2, 9) : R(4, 12), N = n * k;
+  const word = d >= 1 && Math.random() < .4;
+  const q = word ? `В пещере ${N} ${plur(N, 'кристалл', 'кристалла', 'кристаллов')}. 1/${n} всех кристаллов — синие. Сколько синих кристаллов?` : `Сколько составляет 1/${n} от ${N}?`;
+  const v = bar(n, [0], { inside: ['?'], total: N });
+  return T({ q, long: word, ans: k, visual: d === 0 ? v : '', hintVisual: d === 0 ? '' : v,
+    hint: `Чтобы найти 1/${n} числа, раздели это число на ${n}.`,
+    diag: g => (+g.v === N * n ? 'Ой, ты умножил. Чтобы найти долю, нужно делить!' : null),
+    explain: ex([`1/${n} от ${N} = ${N} : ${n} = ${k}`]) + bar(n, [0], { inside: Array(n).fill(k), total: N }) });
+}
+
+function genNumByShare(d) {
+  const n = d === 0 ? R(2, 5) : d === 1 ? R(2, 9) : R(3, 10), p = d === 0 ? R(2, 6) : R(3, 12), X = n * p;
+  const word = d >= 1 && Math.random() < .4;
+  const q = word ? `Дракончик съел ${p} ${plur(p, 'ягоду', 'ягоды', 'ягод')} — это 1/${n} всех ягод в корзине. Сколько ягод было в корзине?` : `1/${n} числа равна ${p}. Чему равно всё число?`;
+  const v = bar(n, [0], { inside: [String(p)], total: '?' });
+  return T({ q, long: word, ans: X, visual: d === 0 ? v : '', hintVisual: d === 0 ? '' : v,
+    hint: `Целое — это ${n} таких частей по ${p}. Значит, нужно умножить.`,
+    diag: g => (p % n === 0 && +g.v === p / n ? 'Здесь известна часть, а найти нужно целое — значит, умножаем!' : null),
+    explain: ex([`Всё число = ${p} × ${n} = ${X}`]) + bar(n, [0], { inside: Array(n).fill(p), total: X }) });
+}
+
+// ---------- ДРОБИ ----------
+function genFracWhat(d) {
+  const n = R(3, [6, 8, 12][d]), k = R(2, n - 1), useBar = n > 8, kind = pick(['id', 'id', 'shade', 'term']);
+  if (kind === 'id') {
+    const idx = d === 0 ? range(k) : shuffle(range(n)).slice(0, k);
+    return T({ q: 'Какая часть фигуры закрашена? Запиши дробью.', type: 'fraction', ans: { n: k, d: n }, visual: useBar ? bar(n, idx) : pie(n, idx, { size: 170 }),
+      hint: 'Знаменатель (внизу) — на сколько частей разделили. Числитель (вверху) — сколько закрасили.',
+      diag: g => (+g.n === n && +g.d === k ? 'Числитель и знаменатель перепутались местами! Внизу — сколько всего частей.' : null),
+      explain: ex([`Всего частей ${n} — это знаменатель.`, `Закрашено ${k} — это числитель.`, `Получается ${k}/${n}`]) });
+  }
+  if (kind === 'shade') {
+    return T({ q: `Закрась ${k}/${n} фигуры`, say: `Закрась ${fracWords(k, n, 'acc')} фигуры`, type: 'shade', ans: k, shade: { n, kind: useBar ? 'bar' : 'pie' },
+      hint: `Фигура разделена на ${n} частей. Закрась ${k} из них.`,
+      explain: ex([`${k}/${n} — это ${k} части из ${n}`]) + (useBar ? bar(n, k) : pie(n, k)) });
+  }
+  const v = R(0, 2);
+  if (v === 0) return T({ q: `Что показывает знаменатель дроби ${k}/${n}?`, type: 'choice', choices: ['на сколько равных частей разделили целое', 'сколько таких частей взяли'], ans: 'на сколько равных частей разделили целое', choiceText: true,
+    hint: 'Знаменатель пишут внизу.', explain: ex([`Знаменатель ${n} — на сколько частей разделили целое.`, `Числитель ${k} — сколько частей взяли.`]) });
+  if (v === 1) return T({ q: `Что показывает числитель дроби ${k}/${n}?`, type: 'choice', choices: ['на сколько равных частей разделили целое', 'сколько таких частей взяли'], ans: 'сколько таких частей взяли', choiceText: true,
+    hint: 'Числитель пишут вверху.', explain: ex([`Числитель ${k} — сколько частей взяли.`, `Знаменатель ${n} — на сколько частей разделили целое.`]) });
+  return T({ q: `Какое число — знаменатель в дроби ${k}/${n}?`, type: 'choice', choices: shuffle([String(k), String(n)]), ans: String(n),
+    hint: 'Знаменатель пишут внизу, под чертой.', explain: ex([`В дроби ${k}/${n} знаменатель — ${n}, числитель — ${k}.`]) });
+}
+
+function genFracOfNum(d) {
+  const n = d === 0 ? R(3, 5) : d === 1 ? R(3, 8) : R(3, 10), k = R(2, n - 1), m = d === 0 ? R(2, 5) : d === 1 ? R(2, 9) : R(3, 12), N = n * m;
+  const word = d >= 1 && Math.random() < .4;
+  const q = word ? `В стае ${N} ${plur(N, 'дракон', 'дракона', 'драконов')}. ${k}/${n} из них — зелёные. Сколько зелёных драконов?` : `Сколько составляет ${k}/${n} от ${N}?`;
+  const v = bar(n, k, { total: N, span: { from: 0, to: k - 1, text: '?' } });
+  return T({ q, long: word, ans: k * m, visual: d === 0 ? v : '', hintVisual: d === 0 ? '' : v,
+    steps: [{ label: `Сначала одна доля, 1/${n}: ${N} : ${n} =`, ans: m }], finalLabel: `Теперь ${k} таких доли: ${m} × ${k} =`,
+    hint: `Сначала найди одну долю: ${N} : ${n}. Потом умножь на ${k}.`,
+    diag: g => (+g.v === m ? `Это только одна доля. А нужно ${k} таких долей!` : null),
+    explain: ex([`${N} : ${n} = ${m} — это 1/${n}`, `${m} × ${k} = ${k * m} — это ${k}/${n}`]) + bar(n, k, { inside: Array(n).fill(m), total: N }) });
+}
+
+function genNumByFrac(d) {
+  const n = d === 0 ? R(3, 5) : d === 1 ? R(3, 8) : R(3, 10), k = R(2, n - 1), m = d === 0 ? R(2, 5) : d === 1 ? R(2, 9) : R(3, 12), p = k * m, X = n * m;
+  const word = d >= 1 && Math.random() < .4;
+  const q = word ? `Дракон прочитал ${p} ${plur(p, 'страницу', 'страницы', 'страниц')} — это ${k}/${n} всей книги. Сколько страниц в книге?` : `${k}/${n} числа равны ${p}. Чему равно всё число?`;
+  const v = bar(n, k, { total: '?', span: { from: 0, to: k - 1, text: String(p) } });
+  return T({ q, long: word, ans: X, visual: d === 0 ? v : '', hintVisual: d === 0 ? '' : v,
+    steps: [{ label: `Одна доля: ${p} : ${k} =`, ans: m }], finalLabel: `Всё число — ${n} долей: ${m} × ${n} =`,
+    hint: `${k} доли — это ${p}. Найди одну долю (${p} : ${k}), а потом умножь на ${n}.`,
+    diag: g => (+g.v === m ? `Это одна доля. А целое — это ${n} долей!` : null),
+    explain: ex([`${p} : ${k} = ${m} — одна доля`, `${m} × ${n} = ${X} — всё число`]) + bar(n, k, { inside: Array(n).fill(m), total: X }) });
+}
+
+function genFracCompare(d) {
+  const mode = d === 0 ? 'den' : pick(d === 1 ? ['den', 'num'] : ['den', 'num', 'one']);
+  let q, ans, vis, hint, exl;
+  if (mode === 'den') {
+    const n = R(4, 12); let a = R(1, n - 1), b; do { b = R(1, n - 1); } while (b === a);
+    ans = cmp(a, b); q = `Сравни: ${a}/${n} ☐ ${b}/${n}`; vis = twoBars(`${a}/${n}`, n, a, `${b}/${n}`, n, b);
+    hint = 'Знаменатели одинаковые — части одинаковые. Больше та дробь, где частей взяли больше (числитель больше).';
+    exl = [`Части одинаковые (по 1/${n}), сравниваем числители: ${a} ${ans} ${b}`, `${a}/${n} ${ans} ${b}/${n}`];
+  } else if (mode === 'num') {
+    const k = R(1, 5); let n1 = R(k + 1, 12), n2; do { n2 = R(k + 1, 12); } while (n2 === n1);
+    ans = cmp(n2, n1); q = `Сравни: ${k}/${n1} ☐ ${k}/${n2}`; vis = twoBars(`${k}/${n1}`, n1, k, `${k}/${n2}`, n2, k);
+    hint = 'Числители одинаковые — взяли одинаковое число частей. Чем больше знаменатель, тем мельче части.';
+    exl = [`Взяли по ${k} части, но 1/${Math.min(n1, n2)} больше, чем 1/${Math.max(n1, n2)}`, `${k}/${n1} ${ans} ${k}/${n2}`];
+  } else {
+    const n = R(3, 9), a = Math.random() < .2 ? n : R(1, 2 * n - 1);
+    ans = cmp(a, n); q = `Сравни: ${a}/${n} ☐ 1`;
+    vis = twoBars(`${a}/${n}`, n, Math.min(a, n), '1', n, n) + (a > n ? `<div class="ex">${rq(`и ещё ${a - n}/${n}`)}</div>` : '');
+    hint = `Одно целое — это ${n}/${n}. Сравни ${a} и ${n}.`;
+    exl = [`1 = ${n}/${n}`, `${a}/${n} ${ans} ${n}/${n}, значит ${a}/${n} ${ans} 1`];
+  }
+  return T({ q, type: 'choice', choices: SIGNS, ans, visual: d === 0 ? vis : '', hintVisual: d === 0 ? '' : vis, hint, explain: ex(exl) + vis });
+}
+
+function genFracAdd(d) {
+  const n = d === 0 ? R(3, 8) : R(4, 12), op = d === 0 ? '+' : d === 1 ? pick(['+', '−']) : pick(['+', '−', '1−', '3']);
+  const hint = 'Знаменатель не меняется! Складываем или вычитаем только числители.';
+  const dg = g => (+g.d === 2 * n ? `Знаменатели не складывают! Знаменатель остаётся ${n}.` : (+g.d === 0 ? 'Знаменатель не может быть равен нулю. Он остаётся прежним.' : null));
+  if (op === '+') {
+    const a = R(1, n - 2), b = R(1, n - 1 - a), fills = range(n).map(i => (i < a ? SH : i < a + b ? SH2 : EMPTY)), v = bar(n, null, { fills });
+    return T({ q: `${a}/${n} + ${b}/${n} = ?`, type: 'fraction', ans: { n: a + b, d: n }, visual: v, steps: [{ label: `Числитель: ${a} + ${b} =`, ans: a + b }], finalLabel: `${a}/${n} + ${b}/${n} =`,
+      hint, diag: dg, explain: ex([`${a}/${n} + ${b}/${n} = ${a + b}/${n}`, 'Знаменатель тот же, числители сложили.']) + v });
+  }
+  if (op === '−') {
+    const a = R(2, n - 1), b = R(1, a - 1), fills = range(n).map(i => (i < a - b ? SH : i < a ? '#ffd0c8' : EMPTY)), v = bar(n, null, { fills });
+    return T({ q: `${a}/${n} − ${b}/${n} = ?`, type: 'fraction', ans: { n: a - b, d: n }, visual: v, steps: [{ label: `Числитель: ${a} − ${b} =`, ans: a - b }], finalLabel: `${a}/${n} − ${b}/${n} =`,
+      hint, diag: g => (+g.d === 0 ? 'Знаменатель не вычитают! Он остаётся ' + n + '.' : null), explain: ex([`${a}/${n} − ${b}/${n} = ${a - b}/${n}`, 'Знаменатель тот же, из числителя вычли.']) + v });
+  }
+  if (op === '1−') {
+    const a = R(1, n - 1);
+    return T({ q: `1 − ${a}/${n} = ?`, type: 'fraction', ans: { n: n - a, d: n }, hintVisual: bar(n, n),
+      steps: [{ label: `Целое в долях: 1 = ?/${n}. Числитель:`, ans: n }, { label: `${n} − ${a} =`, ans: n - a }], finalLabel: `1 − ${a}/${n} =`,
+      hint: `Представь 1 как ${n}/${n}.`, explain: ex([`1 = ${n}/${n}`, `${n}/${n} − ${a}/${n} = ${n - a}/${n}`]) });
+  }
+  const a = R(1, n - 2), b = R(1, n - 1 - a), c = R(1, a + b - 1);
+  return T({ q: `${a}/${n} + ${b}/${n} − ${c}/${n} = ?`, type: 'fraction', ans: { n: a + b - c, d: n },
+    steps: [{ label: `${a} + ${b} =`, ans: a + b }, { label: `${a + b} − ${c} =`, ans: a + b - c }], finalLabel: `${a + b}/${n} − ${c}/${n} =`,
+    hint, diag: dg, explain: ex([`${a}/${n} + ${b}/${n} = ${a + b}/${n}`, `${a + b}/${n} − ${c}/${n} = ${a + b - c}/${n}`]) });
+}
+
+function genMixed(d) {
+  const kind = d === 0 ? pick(['type', 'type', 'toMixed']) : d === 1 ? pick(['type', 'toMixed', 'toImp']) : pick(['toMixed', 'toImp']);
+  if (kind === 'type') {
+    const n = R(2, 9), a = Math.random() < .15 ? n : R(1, 2 * n), ok = a < n;
+    return T({ q: `Дробь ${a}/${n} — правильная или неправильная?`, type: 'choice', choices: ['правильная', 'неправильная'], ans: ok ? 'правильная' : 'неправильная', choiceText: true,
+      hint: 'Правильная: числитель меньше знаменателя. Неправильная: числитель больше знаменателя или равен ему.',
+      visual: n <= 8 ? pies(Math.floor(a / n), a % n, n) : '',
+      explain: ex([ok ? `${a} < ${n}: числитель меньше знаменателя — дробь правильная (меньше 1).` : `${a} ≥ ${n}: числитель не меньше знаменателя — дробь неправильная (1 или больше).`]) });
+  }
+  if (kind === 'toMixed') {
+    const n = R(2, d === 0 ? 5 : 8), w = R(1, d === 2 ? 4 : 3), r = R(1, n - 1), a = w * n + r;
+    return T({ q: `Выдели целую часть: ${a}/${n} = ?`, type: 'mixed', ans: { w, n: r, d: n }, hintVisual: pies(w, r, n),
+      steps: [{ label: `Сколько раз ${n} помещается в ${a}? Целых:`, ans: w }, { label: `Осталось долей: ${a} − ${w * n} =`, ans: r }], finalLabel: `${a}/${n} =`,
+      hint: `Одно целое — это ${n}/${n}. Сколько целых помещается в ${a}/${n}?`,
+      explain: ex([`${a} : ${n} = ${w} (ост. ${r})`, `${a}/${n} = ${w} ${r}/${n}`]) + `<div class="visual">${pies(w, r, n)}</div>` });
+  }
+  const n = R(2, 9), w = R(1, 4), r = R(1, n - 1);
+  return T({ q: `Запиши в виде неправильной дроби: ${w} ${r}/${n}`, type: 'fraction', ans: { n: w * n + r, d: n }, long: true, hintVisual: n <= 8 ? pies(w, r, n) : '',
+    steps: [{ label: `Сколько долей в ${w} целых: ${w} × ${n} =`, ans: w * n }, { label: `${w * n} + ${r} =`, ans: w * n + r }], finalLabel: `${w} ${r}/${n} =`,
+    hint: `В одном целом ${n}/${n}. Посчитай, сколько долей в ${w} целых, и прибавь ${r}.`,
+    explain: ex([`${w} × ${n} + ${r} = ${w * n + r}`, `${w} ${r}/${n} = ${w * n + r}/${n}`]) });
+}
+
+// ================= ОСТРОВА =================
+const BLOCKS = [
+  { id: 'A', title: '🌋 Огненные острова — умножение и деление' },
+  { id: 'B', title: '🌳 Лесные острова — доли' },
+  { id: 'C', title: '❄️ Ледяные острова — дроби' },
+  { id: 'D', title: '👹 Логово тролля' },
+];
+const ISL = [
+  { id: 'table', block: 'A', em: '🔥', title: 'Разминка: таблица умножения', gen: genTable,
+    intro: ['Таблица умножения — суперсила дракона!', 'Если пример трудный, разбей его: 7 × 8 = 7 × 5 + 7 × 3 = 35 + 21 = 56.'], ex: () => dotArray(3, 4) + `<div>${rq('3 × 4 = 12 — три ряда по 4')}</div>` },
+  { id: 'round', block: 'A', em: '🔟', title: 'Круглые числа', gen: genRound,
+    intro: ['Умножить на 10 — значит приписать ноль: 7 × 10 = 70.', '30 × 4 — это 3 десятка × 4 = 12 десятков = 120.'], ex: () => `<div style="font-size:30px">${rq('30 × 4 = 3 дес. × 4 = 12 дес. = 120')}</div>` },
+  { id: 'mul21', block: 'A', em: '✖️', title: 'Двузначное × однозначное', gen: genMul21,
+    intro: ['Большое число разбиваем на десятки и единицы и умножаем по частям.', '23 × 4 = 20 × 4 + 3 × 4 = 80 + 12 = 92.'], ex: () => area(4, [20, 3], { reveal: true }) },
+  { id: 'div21', block: 'A', em: '➗', title: 'Двузначное : однозначное', gen: genDiv21,
+    intro: ['Делимое разбиваем на удобные слагаемые — такие, которые легко делятся.', '72 : 3 = (60 + 12) : 3 = 20 + 4 = 24.'], ex: () => `<div style="font-size:30px">${rq('72 = 60 + 12')}</div><div style="font-size:26px">${rq('60 : 3 = 20,   12 : 3 = 4')}</div>` },
+  { id: 'rem', block: 'A', em: '🧩', title: 'Деление с остатком', gen: genRem,
+    intro: ['Не всё делится нацело. 17 : 5 = 3 (ост. 2) — три группы по 5 и ещё 2 лишних.', 'Главное правило: остаток всегда меньше делителя!'], ex: () => dotsGroups(17, 5) },
+  { id: 'mul22', block: 'A', em: '🏔️', title: 'Двузначное × двузначное', gen: genMul22,
+    intro: ['Второе число разбиваем на десятки и единицы.', '34 × 12 = 34 × 10 + 34 × 2 = 340 + 68 = 408.'], ex: () => area(34, [10, 2], { reveal: true }) },
+  { id: 'div22', block: 'A', em: '🔍', title: 'Деление подбором', gen: genDiv22,
+    intro: ['Делим на двузначное число подбором.', '96 : 32 = ? Прикинем: 32 ≈ 30, а 30 помещается в 96 примерно 3 раза. Проверяем: 32 × 3 = 96. Ответ 3!'], ex: () => `<div style="font-size:28px">${rq('32 × 3 = 96 ✓')}</div>` },
+  { id: 'word', block: 'A', em: '📜', title: 'Задачи', gen: genWord,
+    intro: ['Читай задачу внимательно — или нажми 🔊, и я прочитаю.', 'Всё вместе из одинаковых частей — умножаем. Делим поровну — делим.', '«В 3 раза больше» — умножаем, «в 3 раза меньше» — делим.'], ex: () => '' },
+  { id: 'shareWhat', block: 'B', em: '🍕', title: 'Что такое доля', gen: genShareWhat,
+    intro: ['Если целое разделить на равные части, каждая часть называется долей.', 'Одна из 4 равных частей — это 1/4 (одна четвёртая).'], ex: () => pie(4, [0], { size: 150 }) },
+  { id: 'shareCmp', block: 'B', em: '⚖️', title: 'Сравнение долей', gen: genShareCompare,
+    intro: ['Чем на большее число частей делим, тем меньше каждая доля.', 'Поэтому 1/8 меньше, чем 1/3!'], ex: () => twoBars('1/3', 3, [0], '1/8', 8, [0]) },
+  { id: 'shareOf', block: 'B', em: '🍎', title: 'Доля числа', gen: genShareOfNum,
+    intro: ['Чтобы найти 1/4 от 20, делим 20 на 4.', '20 : 4 = 5. Значит, 1/4 от 20 — это 5.'], ex: () => bar(4, [0], { inside: ['5', '5', '5', '5'], total: 20 }) },
+  { id: 'numByShare', block: 'B', em: '🧺', title: 'Число по доле', gen: genNumByShare,
+    intro: ['Если 1/3 числа равна 6, то всё число — это 3 таких части.', '6 × 3 = 18.'], ex: () => bar(3, [0], { inside: ['6', '6', '6'], total: 18 }) },
+  { id: 'fracWhat', block: 'C', em: '🧊', title: 'Что такое дробь', gen: genFracWhat,
+    intro: ['В дроби 3/5 два числа.', 'Знаменатель (внизу) — на сколько частей разделили целое. Числитель (вверху) — сколько частей взяли.'], ex: () => pie(5, 3, { size: 150 }) },
+  { id: 'fracOf', block: 'C', em: '💎', title: 'Дробь от числа', gen: genFracOfNum,
+    intro: ['Найдём 3/4 от 20.', 'Сначала одна доля: 20 : 4 = 5. Потом три доли: 5 × 3 = 15.'], ex: () => bar(4, 3, { inside: ['5', '5', '5', '5'], total: 20, span: { from: 0, to: 2, text: '15' } }) },
+  { id: 'numByFrac', block: 'C', em: '🗝️', title: 'Число по дроби', gen: genNumByFrac,
+    intro: ['2/5 числа равны 10. Найдём всё число.', 'Одна доля: 10 : 2 = 5. Всё число — 5 долей: 5 × 5 = 25.'], ex: () => bar(5, 2, { inside: ['5', '5', '5', '5', '5'], total: 25, span: { from: 0, to: 1, text: '10' } }) },
+  { id: 'fracCmp', block: 'C', em: '🆚', title: 'Сравнение дробей', gen: genFracCompare,
+    intro: ['Знаменатели одинаковые — больше та дробь, у которой больше числитель: 5/8 > 3/8.', 'Числители одинаковые — больше та, у которой меньше знаменатель: 2/5 > 2/7.'], ex: () => twoBars('5/8', 8, 5, '3/8', 8, 3) },
+  { id: 'fracAdd', block: 'C', em: '➕', title: 'Сложение и вычитание дробей', gen: genFracAdd,
+    intro: ['Если знаменатели одинаковые, знаменатель не меняется.', 'Складываем или вычитаем только числители: 2/7 + 3/7 = 5/7.'], ex: () => bar(7, null, { fills: [SH, SH, SH2, SH2, SH2] }) },
+  { id: 'mixed', block: 'C', em: '🎁', title: 'Смешанные числа', gen: genMixed,
+    intro: ['Если числитель меньше знаменателя, дробь правильная: 3/4.', 'Если больше или равен ему — неправильная: 7/4.', 'Из неправильной дроби можно выделить целую часть: 7/4 = 1 3/4.'], ex: () => `<div class="visual">${pies(1, 3, 4)}</div>` },
+  { id: 'boss', block: 'D', em: '👹', title: 'Финальная битва', boss: true,
+    intro: ['Тролль-Путаница украл драконьи сокровища!', 'Победи его задачами со всех островов. Каждый верный ответ — удар огнём! 🔥'], ex: () => '<div style="font-size:90px">👹</div>' },
+];
+
+// ================= ПРОВЕРКА ОТВЕТА =================
+function checkAns(t, g) {
+  switch (t.type) {
+    case 'number': return +g.v === t.ans;
+    case 'remainder': return +g.q === t.ans.q && +g.r === t.ans.r;
+    case 'fraction': return +g.d > 0 && +g.n * t.ans.d === t.ans.n * +g.d;
+    case 'mixed': return +g.w === t.ans.w && +g.d > 0 && +g.n < +g.d && +g.n * t.ans.d === t.ans.n * +g.d;
+    case 'choice': return g.v === t.ans;
+    case 'shade': return g.count === t.ans;
+  }
+  return false;
+}
+function fmtAns(t) {
+  const a = t.ans;
+  switch (t.type) {
+    case 'remainder': return `${a.q} (ост. ${a.r})`;
+    case 'fraction': return `${a.n}/${a.d}`;
+    case 'mixed': return `${a.w} ${a.n}/${a.d}`;
+    case 'shade': return `закрасить ${a} из ${t.shade.n}`;
+    default: return String(a);
+  }
+}
+function fmtGiven(t, g) {
+  switch (t.type) {
+    case 'remainder': return `${g.q} (ост. ${g.r})`;
+    case 'fraction': return `${g.n}/${g.d}`;
+    case 'mixed': return `${g.w} ${g.n}/${g.d}`;
+    case 'shade': return `закрасил ${g.count}`;
+    default: return String(g.v);
+  }
+}
+</script>
+
+<!-- ================= ИНТЕРФЕЙС ================= -->
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const app = $('#app');
+
+// ---------- состояние ----------
+const KEY = 'dragonMath_v1';
+const DEF_SETTINGS = { sessionMin: 10, breakSec: 60, sound: true, confetti: true, tts: true, autoSpeak: false, unlockAll: false };
+function defState() {
+  return { name: 'Тихон', xp: 0, crystals: 0, stage: 0, islands: {}, stats: {}, mistakes: [], factErrors: {}, days: {},
+    owned: ['c_green'], equipped: { color: 'c_green' }, introSeen: {}, settings: Object.assign({}, DEF_SETTINGS) };
+}
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if (s && typeof s === 'object') { const d = defState(); Object.assign(d, s); d.settings = Object.assign({}, DEF_SETTINGS, s.settings || {}); return d; }
+  } catch (e) { /* пусто */ }
+  return defState();
+}
+let S = load();
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* хранилище недоступно */ } }
+const today = () => new Date().toLocaleDateString('sv');
+function day() { const k = today(); return S.days[k] || (S.days[k] = { sec: 0, tasks: 0, ok: 0 }); }
+function stat(id) { return S.stats[id] || (S.stats[id] = { ok: 0, meh: 0, bad: 0 }); }
+const islState = id => S.islands[id] || { stars: 0, lvl: 0, rounds: 0 };
+const LV = ['лёгкий', 'средний', 'сложный'];
+
+// ---------- дракон ----------
+const STAGES = [{ xp: 0, name: 'Яйцо' }, { xp: 15, name: 'Малыш' }, { xp: 80, name: 'Дракончик' }, { xp: 200, name: 'Дракон' }, { xp: 400, name: 'Легендарный дракон' }];
+const stageOf = xp => { let s = 0; STAGES.forEach((st, i) => { if (xp >= st.xp) s = i; }); return s; };
+const COLORS = {
+  c_green: { main: '#5cc27a', belly: '#d9f5c9', dark: '#3a8f55' },
+  c_blue: { main: '#5aa9e6', belly: '#d8ecfb', dark: '#2f6fae' },
+  c_purple: { main: '#a77be0', belly: '#eadcfb', dark: '#6f48a8' },
+  c_red: { main: '#f0745e', belly: '#ffe0d6', dark: '#b84a39' },
+  c_gold: { main: '#f5c242', belly: '#fff3c4', dark: '#c48f12' },
+};
+const SHOP = [
+  { id: 'c_green', slot: 'color', name: 'Зелёный', price: 0, ic: '🟢' },
+  { id: 'c_blue', slot: 'color', name: 'Синий', price: 30, ic: '🔵' },
+  { id: 'c_purple', slot: 'color', name: 'Фиолетовый', price: 40, ic: '🟣' },
+  { id: 'c_red', slot: 'color', name: 'Огненный', price: 40, ic: '🔴' },
+  { id: 'c_gold', slot: 'color', name: 'Золотой', price: 120, ic: '🟡' },
+  { id: 'h_party', slot: 'hat', name: 'Праздничный колпак', price: 25, ic: '🥳' },
+  { id: 'h_cap', slot: 'hat', name: 'Кепка', price: 35, ic: '🧢' },
+  { id: 'h_wizard', slot: 'hat', name: 'Шляпа волшебника', price: 60, ic: '🧙' },
+  { id: 'h_crown', slot: 'hat', name: 'Корона', price: 100, ic: '👑' },
+  { id: 'e_glasses', slot: 'eyes', name: 'Очки умника', price: 30, ic: '👓' },
+  { id: 'e_sun', slot: 'eyes', name: 'Тёмные очки', price: 45, ic: '🕶️' },
+  { id: 'n_bow', slot: 'neck', name: 'Бабочка', price: 25, ic: '🎀' },
+  { id: 'n_scarf', slot: 'neck', name: 'Шарф', price: 30, ic: '🧣' },
+  { id: 'w_rainbow', slot: 'wings', name: 'Радужные крылья', price: 80, ic: '🌈' },
+  { id: 'x_fire', slot: 'extra', name: 'Огненное дыхание', price: 150, ic: '🔥' },
+];
+const SLOTS = { color: 'Цвет', hat: 'На голову', eyes: 'Очки', neck: 'На шею', wings: 'Крылья', extra: 'Суперсила' };
+
+function dragonSVG(stage, eq, mood, o = {}) {
+  eq = eq || {}; const c = COLORS[eq.color] || COLORS.c_green, sz = o.size || 200, cls = o.cls || '';
+  if (stage === 0) {
+    return `<svg class="dragon egg ${cls}" viewBox="0 0 200 200" width="${sz}" height="${sz}">
+      <ellipse cx="100" cy="186" rx="46" ry="8" fill="rgba(0,0,0,.12)"/>
+      <ellipse cx="100" cy="112" rx="56" ry="72" fill="${c.belly}" stroke="${c.dark}" stroke-width="4"/>
+      <ellipse cx="78" cy="92" rx="12" ry="9" fill="${c.main}"/><ellipse cx="124" cy="128" rx="14" ry="10" fill="${c.main}"/>
+      <ellipse cx="94" cy="152" rx="9" ry="7" fill="${c.main}"/><ellipse cx="124" cy="78" rx="7" ry="6" fill="${c.main}"/>
+      ${o.crack ? `<path d="M58 108 L72 98 L82 112 L94 100 L104 114 L116 102 L128 112" fill="none" stroke="${c.dark}" stroke-width="3.5" stroke-linejoin="round"/>` : ''}
+      <ellipse cx="80" cy="66" rx="9" ry="16" fill="#fff" opacity=".55" transform="rotate(-20 80 66)"/></svg>`;
+  }
+  const s = [0, .74, .85, .94, 1][stage];
+  const mouth = mood === 'think' ? `<path d="M93 106 Q100 103 107 106" stroke="${c.dark}" stroke-width="3" fill="none" stroke-linecap="round"/>`
+    : mood === 'wow' ? `<ellipse cx="100" cy="106" rx="5" ry="6" fill="${c.dark}"/>`
+    : `<path d="M90 103 Q100 114 110 103" stroke="${c.dark}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  const wingFill = eq.wings === 'w_rainbow' ? 'url(#rbw)' : c.dark;
+  const wing = `<path d="M64 128 Q22 112 16 66 Q40 82 50 76 Q52 96 72 104 Z" fill="${wingFill}" opacity=".95"/>`;
+  const hats = {
+    h_party: `<path d="M100 6 L82 52 L118 52 Z" fill="#ff6fae"/><circle cx="100" cy="6" r="6" fill="#ffd23f"/><circle cx="94" cy="38" r="3" fill="#fff"/><circle cx="104" cy="26" r="3" fill="#fff"/><circle cx="108" cy="44" r="3" fill="#fff"/>`,
+    h_cap: `<path d="M68 56 Q70 22 102 22 Q132 26 132 56 Z" fill="#e63946"/><path d="M126 52 Q150 46 160 58 Q140 62 124 58 Z" fill="#b5212e"/><circle cx="101" cy="23" r="4" fill="#b5212e"/>`,
+    h_wizard: `<path d="M106 0 Q96 20 78 50 L122 50 Z" fill="#4b3fb5"/><ellipse cx="100" cy="51" rx="32" ry="6" fill="#3a2f99"/><text x="92" y="42" font-size="14" fill="#ffd23f">★</text><text x="104" y="28" font-size="10" fill="#ffd23f">★</text>`,
+    h_crown: `<path d="M76 54 L78 30 L89 44 L100 24 L111 44 L122 30 L124 54 Z" fill="#ffd23f" stroke="#d4a017" stroke-width="2"/><circle cx="100" cy="44" r="4" fill="#e63946"/><circle cx="86" cy="48" r="3" fill="#3aa0ff"/><circle cx="114" cy="48" r="3" fill="#3aa0ff"/>`,
+  };
+  const eyes = {
+    e_glasses: `<circle cx="84" cy="76" r="13" fill="rgba(255,255,255,.15)" stroke="#333" stroke-width="3"/><circle cx="116" cy="76" r="13" fill="rgba(255,255,255,.15)" stroke="#333" stroke-width="3"/><path d="M97 75 Q100 71 103 75" stroke="#333" stroke-width="3" fill="none"/>`,
+    e_sun: `<rect x="70" y="66" width="28" height="20" rx="8" fill="#1d2433"/><rect x="102" y="66" width="28" height="20" rx="8" fill="#1d2433"/><path d="M97 72 L103 72" stroke="#1d2433" stroke-width="3"/><path d="M76 70 L84 70" stroke="#fff" stroke-width="2" opacity=".6"/>`,
+  };
+  const neck = {
+    n_scarf: `<path d="M66 112 Q100 128 134 112 L136 124 Q100 140 64 124 Z" fill="#e63946"/><path d="M114 126 L124 158 L112 160 L104 130 Z" fill="#c92a3a"/>`,
+    n_bow: `<path d="M100 121 L83 111 L83 131 Z M100 121 L117 111 L117 131 Z" fill="#7b5cff"/><circle cx="100" cy="121" r="5" fill="#5a3fe0"/>`,
+  };
+  return `<svg class="dragon ${cls}" viewBox="0 0 200 200" width="${sz}" height="${sz}">
+    <defs><linearGradient id="rbw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5e5e"/><stop offset=".35" stop-color="#ffd23f"/><stop offset=".65" stop-color="#4fd18b"/><stop offset="1" stop-color="#5a8dff"/></linearGradient>
+    <radialGradient id="aura"><stop offset=".55" stop-color="#fff3b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff3b0" stop-opacity="0"/></radialGradient></defs>
+    ${stage === 4 ? '<circle cx="100" cy="110" r="96" fill="url(#aura)"/>' : ''}
+    <ellipse cx="100" cy="191" rx="${50 * s}" ry="7" fill="rgba(0,0,0,.12)"/>
+    <g transform="translate(100 190) scale(${s}) translate(-100 -190)">
+      <path d="M132 160 Q178 172 176 128 Q175 112 186 104" stroke="${c.main}" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <path d="M180 100 L198 90 L194 114 Z" fill="${c.dark}"/>
+      ${stage >= 2 ? wing + `<g transform="translate(200 0) scale(-1 1)">${wing}</g>` : ''}
+      <ellipse cx="78" cy="182" rx="15" ry="9" fill="${c.dark}"/><ellipse cx="122" cy="182" rx="15" ry="9" fill="${c.dark}"/>
+      <ellipse cx="100" cy="142" rx="44" ry="40" fill="${c.main}"/>
+      <ellipse cx="100" cy="150" rx="27" ry="28" fill="${c.belly}"/>
+      <path d="M80 138 Q100 144 120 138 M77 152 Q100 158 123 152 M80 166 Q100 171 120 166" stroke="${c.main}" opacity=".5" stroke-width="2.5" fill="none"/>
+      <ellipse cx="64" cy="146" rx="9" ry="14" fill="${c.main}" transform="rotate(25 64 146)"/><ellipse cx="136" cy="146" rx="9" ry="14" fill="${c.main}" transform="rotate(-25 136 146)"/>
+      ${stage >= 2 ? `<path d="M76 58 Q62 40 64 24 Q78 40 88 52 Z" fill="#f6e7b8" stroke="#d9c48a" stroke-width="2"/><path d="M124 58 Q138 40 136 24 Q122 40 112 52 Z" fill="#f6e7b8" stroke="#d9c48a" stroke-width="2"/>` : ''}
+      ${stage >= 3 ? `<polygon points="86,54 93,34 100,52 107,34 114,54" fill="${c.dark}"/>` : ''}
+      <ellipse cx="100" cy="82" rx="40" ry="35" fill="${c.main}"/>
+      <ellipse cx="100" cy="99" rx="21" ry="13" fill="${c.belly}"/>
+      <ellipse cx="93" cy="96" rx="2.5" ry="2" fill="${c.dark}"/><ellipse cx="107" cy="96" rx="2.5" ry="2" fill="${c.dark}"/>
+      <ellipse cx="84" cy="76" rx="10" ry="11" fill="#fff"/><ellipse cx="116" cy="76" rx="10" ry="11" fill="#fff"/>
+      <circle cx="86" cy="78" r="6" fill="#1d2433"/><circle cx="118" cy="78" r="6" fill="#1d2433"/>
+      <circle cx="88" cy="75" r="2" fill="#fff"/><circle cx="120" cy="75" r="2" fill="#fff"/>
+      <ellipse cx="70" cy="94" rx="6" ry="4" fill="#ff9aa2" opacity=".6"/><ellipse cx="130" cy="94" rx="6" ry="4" fill="#ff9aa2" opacity=".6"/>
+      ${mouth}
+      ${neck[eq.neck] || ''}${eyes[eq.eyes] || ''}${hats[eq.hat] || ''}
+      ${eq.extra === 'x_fire' ? `<g class="flame"><path d="M80 102 Q56 92 40 104 Q52 106 44 116 Q60 110 64 118 Q70 108 80 106 Z" fill="#ff9f1c"/><path d="M76 103 Q62 99 54 106 Q64 108 60 113 Q70 108 76 105Z" fill="#ffd23f"/></g>` : ''}
+    </g>
+    ${stage === 4 ? '<text x="20" y="40" font-size="20">✨</text><text x="160" y="60" font-size="16">✨</text>' : ''}</svg>`;
+}
+function myDragon(mood, size, cls) {
+  const st = stageOf(S.xp), next = STAGES[st + 1];
+  return dragonSVG(st, S.equipped, mood || 'happy', { size, cls: cls || 'idle', crack: st === 0 && next && S.xp >= next.xp / 2 });
+}
+
+// ---------- звук ----------
+let AC = null;
+function tone(f, t0, dur, type = 'sine', vol = .14) {
+  if (!S.settings.sound) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime + t0;
+    o.type = type; o.frequency.value = f; g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + dur + .02);
+  } catch (e) { /* без звука */ }
+}
+const SFX = {
+  ok() { tone(660, 0, .14); tone(880, .1, .22); },
+  step() { tone(740, 0, .1, 'sine', .08); },
+  bad() { tone(260, 0, .2, 'triangle', .09); },
+  win() { [523, 659, 784, 1046].forEach((f, i) => tone(f, i * .12, .25)); },
+  buy() { tone(880, 0, .08); tone(1175, .07, .15); },
+};
+
+// ---------- озвучка ----------
+let ruVoice = null;
+function pickVoice() { if (!window.speechSynthesis) return; const v = speechSynthesis.getVoices(); ruVoice = v.find(x => /^ru/i.test(x.lang)) || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text) {
+  if (!S.settings.tts || !window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(speakify(text));
+  u.lang = 'ru-RU'; if (ruVoice) u.voice = ruVoice; u.rate = .92;
+  speechSynthesis.speak(u);
+}
+function stopSpeak() { if (window.speechSynthesis) speechSynthesis.cancel(); }
+
+// ---------- конфетти ----------
+const cv = $('#confetti'), cx = cv.getContext('2d');
+let parts = [], confRAF = null;
+function confetti(n = 120) {
+  if (!S.settings.confetti) return;
+  cv.width = innerWidth; cv.height = innerHeight;
+  const cols = ['#ff6fae', '#ffd23f', '#5cc27a', '#5aa9e6', '#ff9f43', '#a77be0'];
+  for (let i = 0; i < n; i++) parts.push({ x: innerWidth / 2 + (Math.random() - .5) * 300, y: innerHeight / 3, vx: (Math.random() - .5) * 14, vy: -Math.random() * 14 - 4, s: 6 + Math.random() * 6, c: pick(cols), r: Math.random() * 6, life: 110 + Math.random() * 40 });
+  if (!confRAF) confRAF = requestAnimationFrame(confStep);
+}
+function confStep() {
+  cx.clearRect(0, 0, cv.width, cv.height);
+  parts.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += .35; p.vx *= .99; p.r += .1; p.life--; cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r); cx.fillStyle = p.c; cx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); cx.restore(); });
+  parts = parts.filter(p => p.life > 0 && p.y < cv.height + 20);
+  confRAF = parts.length ? requestAnimationFrame(confStep) : (cx.clearRect(0, 0, cv.width, cv.height), null);
+}
+
+// ---------- модалка ----------
+function modal(html, btns) {
+  const bg = document.createElement('div'); bg.className = 'modal-bg';
+  bg.innerHTML = `<div class="modal">${html}<div class="row-btns">${btns.map((b, i) => `<button class="btn ${b.cls || 'pri'}" data-i="${i}">${b.text}</button>`).join('')}</div></div>`;
+  document.body.appendChild(bg);
+  const close = () => { bg.remove(); document.removeEventListener('keydown', onKey, true); };
+  const onKey = e => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); const b = btns[btns.length - 1]; close(); b.fn && b.fn(); } };
+  document.addEventListener('keydown', onKey, true);
+  bg.querySelectorAll('button[data-i]').forEach(el => el.onclick = () => { const b = btns[+el.dataset.i]; if (b.keep) { b.fn && b.fn(bg, close); return; } close(); b.fn && b.fn(); });
+  const inp = bg.querySelector('input'); if (inp) setTimeout(() => inp.focus(), 50);
+  return { bg, close };
+}
+
+// ---------- шапка ----------
+function renderHeader() {
+  const st = stageOf(S.xp), next = STAGES[st + 1];
+  const pct = next ? Math.round((S.xp - STAGES[st].xp) / (next.xp - STAGES[st].xp) * 100) : 100;
+  $('#hdrDragon').innerHTML = `${dragonSVG(st, S.equipped, 'happy', { size: 46 })}<div><div class="st">${STAGES[st].name}${next ? ` → ${STAGES[st + 1].name}` : ' ✨'}</div><div class="xpbar"><i style="width:${pct}%"></i></div></div>`;
+  $('#crystals').textContent = '💎 ' + S.crystals;
+  $('#navSound').textContent = S.settings.sound ? '🔊' : '🔇';
+}
+function bumpCrystals() { const el = $('#crystals'); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+
+// ---------- навигация ----------
+let screen = 'map';
+function setScreen(name, html) { screen = name; stopSpeak(); clearTimeout(G && G.adv); app.innerHTML = html; window.scrollTo(0, 0); }
+function leaveGuard(fn) {
+  if (screen === 'play' && G && G.n > 0) modal('<h2>Выйти из раунда?</h2><p>Звёзды за этот раунд не сохранятся.</p>', [{ text: 'Остаться', cls: 'ghost' }, { text: 'Выйти', cls: 'acc', fn }]);
+  else fn();
+}
+$('#logo').onclick = $('#navMap').onclick = () => leaveGuard(showMap);
+$('#navShop').onclick = () => leaveGuard(showShop);
+$('#navParent').onclick = () => leaveGuard(askParent);
+$('#navSound').onclick = () => { S.settings.sound = !S.settings.sound; save(); renderHeader(); };
+
+const unlocked = i => S.settings.unlockAll || i === 0 || islState(ISL[i - 1].id).stars >= 2;
+function recommended() {
+  let i = ISL.findIndex((x, k) => unlocked(k) && islState(x.id).stars < 2);
+  if (i < 0) i = ISL.findIndex((x, k) => unlocked(k) && islState(x.id).stars < 3);
+  return i < 0 ? ISL.length - 1 : i;
+}
+
+// ================= КАРТА =================
+function showMap() {
+  G = null;
+  const rec = recommended(), name = S.name || 'друг';
+  const hello = S.xp === 0 ? `Привет, ${name}! Я — твой дракон, пока ещё в яйце. Решай задачи — и я вылуплюсь! Начнём с первого острова.`
+    : pick([`Привет, ${name}! Куда полетим сегодня?`, `С возвращением, ${name}! Я соскучился 🐉`, `${name}, готов к приключениям?`]);
+  const card = (isl, i) => {
+    const st = islState(isl.id), lock = !unlocked(i);
+    return `<button class="isl ${lock ? 'locked' : ''} ${i === rec && !lock ? 'rec' : ''}" data-i="${i}">
+      <span class="num">${i + 1}</span><div class="em">${isl.em}</div><div class="tt">${isl.title}</div>
+      <div class="stars">${[0, 1, 2].map(k => (k < st.stars ? '<b>★</b>' : '★')).join('')}</div>
+      <div class="lv">${st.rounds ? 'уровень: ' + LV[st.lvl] : '&nbsp;'}</div></button>`;
+  };
+  setScreen('map', `
+    <div class="hero">${myDragon('happy', 170)}
+      <div><div class="bubble pop">${esc(hello)}</div>
+      <div style="margin-top:14px"><button class="btn acc big" id="goRec">▶ ${ISL[rec].em} ${ISL[rec].title}</button></div></div></div>
+    ${BLOCKS.map(b => `<section class="block block-${b.id}"><h2>${b.title}</h2><div class="isl-grid">${ISL.map((x, i) => (x.block === b.id ? card(x, i) : '')).join('')}</div></section>`).join('')}`);
+  $('#goRec').onclick = () => openIsland(rec);
+  $$('.isl').forEach(el => el.onclick = () => {
+    const i = +el.dataset.i;
+    if (!unlocked(i)) { modal(`<h2>🔒 Пока закрыто</h2><p>Получи 2 звезды на острове «${ISL[i - 1].title}», и этот остров откроется!</p>`, [{ text: 'Понятно' }]); return; }
+    openIsland(i);
+  });
+  renderHeader();
+}
+function openIsland(i) { const isl = ISL[i]; if (!S.introSeen[isl.id]) showIntro(isl); else startRound(isl); }
+
+// ================= ВСТУПЛЕНИЕ =================
+function showIntro(isl, back) {
+  setScreen('intro', `<div class="intro"><div class="center-wrap">${myDragon('happy', 210)}</div>
+    <div class="card"><h1>${isl.em} ${isl.title}</h1>${isl.intro.map(t => `<p>${rq(t)}</p>`).join('')}
+    ${isl.ex() ? `<div class="example">${isl.ex()}</div>` : ''}
+    <div class="row-btns" style="margin-top:18px"><button class="btn ghost" id="introSay">🔊 Послушать</button><button class="btn pri big" id="introGo">${back ? 'Понятно, продолжим ▶' : 'Поехали! ▶'}</button></div></div></div>`);
+  const text = isl.intro.join(' ');
+  $('#introSay').onclick = () => speak(text);
+  $('#introGo').onclick = () => { S.introSeen[isl.id] = true; save(); back ? back() : startRound(isl); };
+  if (S.settings.autoSpeak) speak(text);
+}
+
+// ================= РАУНД =================
+let G = null, sinceBreak = 0;
+function startRound(isl) {
+  const st = islState(isl.id);
+  G = { isl, d: isl.boss ? 1 : st.lvl, total: isl.boss ? 10 : 8, n: 0, results: [], okRun: 0, badRun: 0, extras: 0, seen: new Set(), hp: 10, streak: 0 };
+  nextTask();
+}
+function makeTask() {
+  let t, src = G.isl, d = G.d;
+  for (let tries = 0; tries < 12; tries++) {
+    if (G.isl.boss) { src = pick(ISL.filter(x => !x.boss)); d = Math.random() < .3 ? 2 : 1; }
+    t = src.gen(d, { factErrors: S.factErrors });
+    if (!G.seen.has(t.q)) break;
+  }
+  G.seen.add(t.q); t.src = src.id;
+  return t;
+}
+function nextTask() {
+  clearTimeout(G.adv);
+  if (G.n >= G.total) return endRound();
+  if (S.settings.sessionMin > 0 && sinceBreak >= S.settings.sessionMin * 60) return showBreak(() => { sinceBreak = 0; nextTask(); });
+  const task = makeTask();
+  G.cur = { task, attempts: 0, stepMode: G.d === 0 && !!task.steps, stepIdx: 0, stepTries: 0, hintUsed: false, done: false, shaded: new Set() };
+  renderTask();
+  if (S.settings.autoSpeak) speak(task.say || task.q);
+}
+
+function answerHTML(t) {
+  const btn = '<button class="btn pri" id="checkBtn">Проверить ✓</button>';
+  const lbl = `<span class="alabel" id="alabel">${G.cur.stepMode && t.finalLabel ? rq(t.finalLabel) : 'Ответ:'}</span>`;
+  const fin = (a, b) => `<span class="fin"><input class="inp xs" data-f="${a}" autocomplete="off"><span class="fl"></span><input class="inp xs" data-f="${b}" autocomplete="off"></span>`;
+  switch (t.type) {
+    case 'number': return `${lbl}<input class="inp" data-f="v" autocomplete="off">${btn}`;
+    case 'remainder': return `${lbl}<input class="inp" data-f="q" autocomplete="off"><span>ост.</span><input class="inp sm" data-f="r" autocomplete="off">${btn}`;
+    case 'fraction': return `${lbl}${fin('n', 'd')}${btn}`;
+    case 'mixed': return `${lbl}<input class="inp sm" data-f="w" autocomplete="off">${fin('n', 'd')}${btn}`;
+    case 'choice': return `<div class="choices">${t.choices.map(c => `<button class="choice ${t.choiceText ? 'txt' : ''}" data-v="${esc(c)}">${rq(c)}</button>`).join('')}</div>`;
+    case 'shade': return `<span>Закрашено частей: <b id="shCount">0</b></span>${btn}`;
+  }
+}
+const usesKeypad = t => !['choice', 'shade'].includes(t.type);
+
+function renderTask() {
+  const t = G.cur.task, boss = G.isl.boss;
+  const dots = range(G.total).map(i => `<i class="${G.results[i] || (i === G.n ? 'cur' : '')}"></i>`).join('');
+  let vis = t.visual || '';
+  if (t.type === 'shade') vis = t.shade.kind === 'pie' ? pie(t.shade.n, [], { click: true, size: 240 }) : bar(t.shade.n, [], { click: true, W: 520, h: 70 });
+  setScreen('play', `
+    <div class="play-top"><button class="btn ghost" id="toMap">⟵ Карта</button><div class="prog">${dots}</div>
+      <div class="lvtag">${G.isl.em} ${boss ? 'Битва' : 'уровень: ' + LV[G.d]}</div></div>
+    <div class="play-main">
+      <div class="buddy">
+        ${boss ? `<div class="boss-box" id="bossBox"><div class="troll">👹</div><div class="hp"><i id="hpBar" style="width:${G.hp * 10}%"></i></div></div>` : ''}
+        <div class="bubble" id="bubble"></div><div id="buddy">${myDragon('happy', 190)}</div></div>
+      <div class="card task">
+        <div class="q ${t.long ? 'long' : ''}">${rq(t.q)}</div>
+        <div class="visual" id="visual">${vis}</div>
+        <div class="hintbox hidden" id="hintbox"></div>
+        <div class="steps" id="steps"></div>
+        <div class="answer" id="answer">${answerHTML(t)}</div>
+        <div class="explain hidden" id="explain"></div>
+        <div class="tools"><button id="sayBtn">🔊 Прочитать</button><button id="hintBtn">💡 Подсказка</button>${G.isl.boss ? '' : '<button id="howBtn">📖 Как решать</button>'}</div>
+      </div>
+      <div class="keypad ${usesKeypad(t) ? '' : 'hidden'}" id="keypad">
+        ${[7, 8, 9, 4, 5, 6, 1, 2, 3].map(n => `<button data-k="${n}">${n}</button>`).join('')}
+        <button data-k="del">⌫</button><button data-k="0">0</button><button data-k="ok" class="kok">✓</button>
+        <div class="hint">можно печатать на клавиатуре,<br>Enter — проверить</div></div>
+    </div>`);
+  bubble(G.n === 0 ? pick(['Поехали! Первая задача 👇', 'Начинаем! Ты справишься 💪']) : pick(['Следующая!', 'А теперь эта 👇', 'Дальше!', 'Вперёд!']));
+  $('#toMap').onclick = () => leaveGuard(showMap);
+  $('#sayBtn').onclick = () => speak((t.say || t.q) + (t.type === 'choice' && !t.choices.includes('<') ? '. Варианты: ' + t.choices.join(', ') : ''));
+  $('#hintBtn').onclick = useHint;
+  if ($('#howBtn')) $('#howBtn').onclick = () => modal(`<h2>${G.isl.em} ${G.isl.title}</h2>${G.isl.intro.map(x => `<p>${rq(x)}</p>`).join('')}<div class="visual">${G.isl.ex()}</div>`, [{ text: '🔊', cls: 'ghost', keep: true, fn: () => speak(G.isl.intro.join(' ')) }, { text: 'Понятно ✓' }]);
+  if ($('#checkBtn')) $('#checkBtn').onclick = checkAnswer;
+  $$('#answer .choice').forEach(b => b.onclick = () => { if (!G.cur.done) checkAnswer(b.dataset.v, b); });
+  $$('#keypad button').forEach(b => { b.onmousedown = e => e.preventDefault(); b.onclick = () => keypad(b.dataset.k); });
+  bindInputs($('#answer'));
+  if (t.type === 'shade') {
+    $$('#visual .sector').forEach(el => el.onclick = () => {
+      if (G.cur.done) return;
+      const i = +el.dataset.i, sh = G.cur.shaded;
+      sh.has(i) ? sh.delete(i) : sh.add(i);
+      el.setAttribute('fill', sh.has(i) ? SH : EMPTY);
+      $('#shCount').textContent = sh.size; SFX.step();
+    });
+  }
+  if (G.cur.stepMode) renderSteps();
+  focusNext();
+}
+
+function bubble(text, mood, kind) {
+  const b = $('#bubble'); if (!b) return;
+  b.className = 'bubble pop ' + (kind || ''); b.innerHTML = rq(text);
+  void b.offsetWidth;
+  if (mood) $('#buddy').innerHTML = myDragon(mood, 190, mood === 'happy' ? 'happy-jump' : 'idle');
+}
+
+function bindInputs(root) {
+  root.querySelectorAll('.inp').forEach(el => {
+    el.addEventListener('input', () => { el.value = el.value.replace(/\D/g, '').slice(0, 5); el.classList.remove('wrong'); });
+    el.addEventListener('focus', () => { lastInput = el; });
+  });
+}
+let lastInput = null;
+function activeInputs() {
+  const st = $('#steps .step.active .inp');
+  if (st) return [st];
+  return $$('#answer .inp').filter(x => !x.disabled);
+}
+function focusNext() {
+  const list = activeInputs(); if (!list.length) return;
+  const el = list.find(x => !x.value) || list[0];
+  el.focus(); lastInput = el;
+}
+function keypad(k) {
+  if (!G || !G.cur || G.cur.done) { if (k === 'ok' && G && G.cur && G.cur.done) goNext(); return; }
+  let el = lastInput && document.body.contains(lastInput) && !lastInput.disabled ? lastInput : null;
+  if (!el) { focusNext(); el = lastInput; }
+  if (!el) return;
+  if (k === 'ok') return submitFrom(el);
+  if (k === 'del') el.value = el.value.slice(0, -1);
+  else if (el.value.length < 5) el.value += k;
+  el.classList.remove('wrong'); el.focus();
+}
+function submitFrom(el) {
+  if (el.dataset.step != null) return checkStep(+el.dataset.step, el.value);
+  const empty = $$('#answer .inp').find(x => !x.value);
+  if (empty && empty !== el && el.value) { empty.focus(); return; }
+  checkAnswer();
+}
+
+// ---------- шаги ----------
+function renderSteps() {
+  const t = G.cur.task, box = $('#steps');
+  while (t.steps[G.cur.stepIdx] && t.steps[G.cur.stepIdx].note) G.cur.stepIdx++;
+  let h = '';
+  t.steps.forEach((s, i) => {
+    if (i > G.cur.stepIdx) return;
+    if (s.note) { h += `<div class="step note">💡 ${rq(s.note)}</div>`; return; }
+    const st = i < G.cur.stepIdx ? (s.given ? 'given' : 'ok') : 'active';
+    if (s.choices) {
+      h += `<div class="step ${st}"><span>${rq(s.label)}</span>${st === 'active' ? s.choices.map(c => `<button class="choice" data-sv="${esc(c)}">${esc(c)}</button>`).join('') : `<b>${esc(s.ans)}</b><span class="mark">${st === 'ok' ? '✅' : '👉'}</span>`}</div>`;
+    } else {
+      h += `<div class="step ${st}"><span>${rq(s.label)}</span>${st === 'active' ? `<input class="inp sm" data-step="${i}" autocomplete="off">` : `<b>${s.ans}</b><span class="mark">${st === 'ok' ? '✅' : '👉'}</span>`}</div>`;
+    }
+  });
+  box.innerHTML = h;
+  bindInputs(box);
+  box.querySelectorAll('[data-sv]').forEach(b => b.onclick = () => checkStep(G.cur.stepIdx, b.dataset.sv, b));
+  const lab = $('#alabel');
+  if (lab) lab.innerHTML = G.cur.stepIdx >= t.steps.length && t.finalLabel ? rq(t.finalLabel) : (G.cur.stepIdx >= t.steps.length ? 'Ответ:' : '<span style="opacity:.45">Ответ:</span>');
+}
+function checkStep(i, val, btn) {
+  const t = G.cur.task, s = t.steps[i];
+  if (G.cur.done || i !== G.cur.stepIdx) return;
+  if (val === '' || val == null) return;
+  const ok = s.choices ? val === s.ans : +val === s.ans;
+  if (ok) {
+    SFX.step(); G.cur.stepIdx++; G.cur.stepTries = 0;
+    bubble(pick(['Верно! Дальше 👇', 'Да! Следующий шаг', 'Отлично!', 'Точно!']), 'happy');
+  } else {
+    G.cur.stepTries++; SFX.bad();
+    const el = btn || $(`#steps [data-step="${i}"]`);
+    if (el) { el.classList.add('wrong', 'shake'); setTimeout(() => el.classList.remove('shake'), 500); }
+    if (G.cur.stepTries < 2) { bubble('Не совсем. Попробуй ещё раз 🙂', 'think', 'oops'); return; }
+    s.given = true; G.cur.stepIdx++; G.cur.stepTries = 0;
+    bubble(`Смотри: ${s.label} ${s.ans}. Идём дальше!`, 'think', 'oops');
+  }
+  renderSteps();
+  focusNext();
+}
+
+// ---------- подсказка ----------
+function useHint() {
+  const t = G.cur.task; if (G.cur.done) return;
+  G.cur.hintUsed = true;
+  if (t.steps && !G.cur.stepMode) {
+    G.cur.stepMode = true; renderSteps(); focusNext();
+    bubble('Давай решим по шагам 👇', 'think');
+    return;
+  }
+  showHintBox();
+}
+function showHintBox() {
+  const t = G.cur.task, hb = $('#hintbox');
+  hb.innerHTML = `💡 ${rq(t.hint || 'Подумай ещё немного!')}${t.hintVisual ? `<div class="visual">${t.hintVisual}</div>` : ''}`;
+  hb.classList.remove('hidden');
+  bubble(pick(['Смотри подсказку 👇', 'Вот подсказка 👇 У тебя получится!']), 'think');
+}
+
+// ---------- проверка ----------
+function readGiven(t) {
+  if (t.type === 'shade') return { count: G.cur.shaded.size };
+  const g = {};
+  $$('#answer .inp').forEach(el => { g[el.dataset.f] = el.value; });
+  return g;
+}
+function checkAnswer(choiceVal, choiceBtn) {
+  const t = G.cur.task, c = G.cur;
+  if (c.done) return;
+  let g;
+  if (t.type === 'choice') { if (typeof choiceVal !== 'string') return; g = { v: choiceVal }; }
+  else {
+    g = readGiven(t);
+    if (t.type === 'shade' && g.count === 0) { bubble('Нажимай на части фигуры, чтобы закрасить их 🖌️', 'think'); return; }
+    const empty = $$('#answer .inp').find(x => !x.value);
+    if (empty) { empty.focus(); bubble('Заполни все окошки 🙂', 'think'); return; }
+  }
+  if (checkAns(t, g)) onCorrect(choiceBtn); else onWrong(g, choiceBtn);
+}
+
+function onCorrect(btn) {
+  const c = G.cur, t = c.task;
+  c.done = true;
+  const first = c.attempts === 0 && !c.hintUsed;
+  const res = first ? 'ok' : 'meh';
+  G.results[G.n] = res; G.n++;
+  $$('#answer .inp').forEach(el => { el.classList.add('right'); el.disabled = true; });
+  if (btn) btn.classList.add('right');
+  if (t.type === 'shade') $$('#visual .sector').forEach(el => el.style.cursor = 'default');
+  const gain = first ? 2 : 1;
+  S.crystals += gain; S.xp += 1; stat(t.src)[res]++; const dd = day(); dd.tasks++; if (first) dd.ok++;
+  if (t.key && S.factErrors[t.key] && first) S.factErrors[t.key]--;
+  G.streak = first ? G.streak + 1 : 0;
+  SFX.ok(); bumpCrystals();
+  if (G.streak > 0 && G.streak % 3 === 0) confetti(70);
+  let msg = pick(['Отлично!', 'Супер!', 'Верно! 🔥', `Так держать, ${S.name}!`, 'Ты молодец!', 'Великолепно!', 'Дракон гордится тобой!', 'В точку!', 'Правильно! 💎']);
+  if (!first) msg = pick(['Получилось! 👍', 'Вот это да — разобрался!', 'Верно! Ты не сдался 💪']);
+  msg += ` +${gain} 💎`;
+  if (G.isl.boss) { G.hp = Math.max(0, G.hp - 1); $('#hpBar').style.width = G.hp * 10 + '%'; const bb = $('#bossBox'); bb.classList.remove('hit'); void bb.offsetWidth; bb.classList.add('hit'); msg = '🔥 Удар по троллю! ' + msg; }
+  adapt(res);
+  if (G.adaptMsg) { msg += ' ' + G.adaptMsg; G.adaptMsg = null; }
+  bubble(msg, 'happy', 'good');
+  const grown = checkStage();
+  save(); renderHeader();
+  updateProg();
+  if (grown) return;
+  showNextRow(false);
+  G.adv = setTimeout(goNext, 1400);
+}
+function onWrong(g, btn) {
+  const c = G.cur, t = c.task;
+  c.attempts++; SFX.bad();
+  const els = btn ? [btn] : (t.type === 'shade' ? [$('#visual svg')] : $$('#answer .inp'));
+  els.forEach(el => { if (!el) return; el.classList.add('wrong', 'shake'); setTimeout(() => el.classList.remove('shake'), 500); });
+  const dmsg = t.diag ? t.diag(g) : null;
+  if (c.attempts === 1) {
+    if (btn) btn.disabled = true;
+    if (t.steps && !c.stepMode) { c.stepMode = true; renderSteps(); focusNext(); bubble((dmsg ? dmsg + ' ' : 'Почти! ') + 'Давай решим по шагам 👇', 'think', 'oops'); }
+    else { showHintBox(); bubble((dmsg || 'Почти! Посмотри подсказку и попробуй ещё раз 🙂'), 'think', 'oops'); }
+    const first = $$('#answer .inp')[0]; if (first && !c.stepMode) { first.select(); }
+    return;
+  }
+  // вторая ошибка — показываем решение
+  c.done = true;
+  G.results[G.n] = 'bad'; G.n++;
+  stat(t.src).bad++; day().tasks++;
+  if (t.key) S.factErrors[t.key] = (S.factErrors[t.key] || 0) + 1;
+  S.mistakes.unshift({ t: Date.now(), isl: t.src, q: t.q, given: fmtGiven(t, g), right: fmtAns(t) });
+  S.mistakes = S.mistakes.slice(0, 60);
+  if (G.extras < 2) { G.total++; G.extras++; }
+  adapt('bad');
+  $$('#answer .inp').forEach(el => el.disabled = true);
+  $$('#answer .choice').forEach(el => { el.disabled = true; if (el.dataset.v === t.ans) el.classList.add('right'); });
+  if (t.type === 'shade') {
+    const set = new Set(range(t.ans));
+    $$('#visual .sector').forEach(el => el.setAttribute('fill', set.has(+el.dataset.i) ? SH : EMPTY));
+  }
+  const ex = $('#explain');
+  ex.innerHTML = `<div class="right">Правильный ответ: ${rq(fmtAns(t))}</div>${t.explain || ''}`;
+  ex.classList.remove('hidden');
+  $('#hintbox').classList.add('hidden');
+  bubble(`Ничего страшного! Посмотри, как это решается. Похожую задачу мы ещё повторим.${G.adaptMsg ? ' ' + G.adaptMsg : ''}`, 'think', 'oops');
+  G.adaptMsg = null;
+  save(); updateProg();
+  showNextRow(true);
+}
+function showNextRow(explain) {
+  const ex = $('#explain');
+  const row = document.createElement('div'); row.className = 'next-row';
+  row.innerHTML = `<button class="btn pri big" id="nextBtn">${explain ? 'Понятно, дальше ▶' : 'Дальше ▶'}</button>`;
+  (explain ? ex : $('#answer')).after(row);
+  $('#nextBtn').onclick = goNext;
+  $('#nextBtn').focus();
+}
+function goNext() { if (!G) return; clearTimeout(G.adv); if (screen === 'play') nextTask(); }
+function updateProg() { const p = $('.prog'); if (p) p.innerHTML = range(G.total).map(i => `<i class="${G.results[i] || (i === G.n ? 'cur' : '')}"></i>`).join(''); }
+
+function adapt(res) {
+  if (G.isl.boss) return;
+  if (res === 'ok') { G.okRun++; G.badRun = 0; }
+  else if (res === 'bad') { G.badRun++; G.okRun = 0; }
+  else { G.okRun = 0; }
+  if (G.okRun >= 3 && G.d < 2) { G.d++; G.okRun = 0; G.adaptMsg = 'Ты так хорошо решаешь, что задачи станут чуть сложнее! 💪'; }
+  if (G.badRun >= 2 && G.d > 0) { G.d--; G.badRun = 0; G.adaptMsg = 'Сделаем задачи немного проще.'; }
+}
+function checkStage() {
+  const st = stageOf(S.xp);
+  if (st <= S.stage) return false;
+  S.stage = st; save();
+  setTimeout(() => {
+    SFX.win(); confetti(180);
+    modal(`<h2>${st === 1 ? 'Яйцо треснуло… Дракон вылупился!' : 'Твой дракон вырос!'}</h2>${myDragon('wow', 220, 'happy-jump')}<p>Теперь он — <b>${STAGES[st].name}</b>!</p>`, [{ text: 'Ура! Дальше ▶', fn: goNext }]);
+  }, 600);
+  return true;
+}
+
+// ================= КОНЕЦ РАУНДА =================
+function endRound() {
+  const isl = G.isl, okc = G.results.filter(r => r === 'ok').length, all = G.results.length;
+  const ratio = okc / all, stars = ratio >= .85 ? 3 : ratio >= .6 ? 2 : 1;
+  const idx = ISL.indexOf(isl), wasUnlocked = idx + 1 < ISL.length && unlocked(idx + 1);
+  const st = Object.assign(islState(isl.id)); st.stars = Math.max(st.stars, stars); st.lvl = G.d; st.rounds++;
+  S.islands[isl.id] = st;
+  const bonus = stars * 3; S.crystals += bonus;
+  save(); renderHeader();
+  const newUnlock = idx + 1 < ISL.length && !wasUnlocked && unlocked(idx + 1);
+  SFX.win(); if (stars >= 2) confetti(200);
+  const title = isl.boss ? (stars >= 2 ? '👹 Тролль побеждён! Сокровища спасены!' : 'Тролль убежал… но мы его догоним!') : stars === 3 ? 'Блестяще!' : stars === 2 ? 'Отличный раунд!' : 'Раунд пройден!';
+  const tip = stars === 1 ? 'Чтобы открыть следующий остров, нужно 2 звезды. Сыграй ещё раз — ты уже знаешь, как решать!' : '';
+  setScreen('end', `<div class="center-wrap card">
+    <h1 style="margin:0">${title}</h1>${myDragon('happy', 200, 'happy-jump')}
+    <div class="end-stars">${[0, 1, 2].map(k => `<span class="${k < stars ? 'on' : ''}">★</span>`).join('')}</div>
+    <div style="font-size:24px">С первой попытки: <b>${okc} из ${all}</b> &nbsp;·&nbsp; Бонус: <b>+${bonus} 💎</b></div>
+    ${newUnlock ? `<div class="bubble good">🎉 Открыт новый остров: ${ISL[idx + 1].em} <b>${ISL[idx + 1].title}</b>!</div>` : ''}
+    ${tip ? `<div class="bubble">${tip}</div>` : ''}
+    <div class="row-btns">
+      <button class="btn ghost big" id="eMap">🗺️ Карта</button>
+      <button class="btn ${newUnlock ? 'ghost' : 'pri'} big" id="eAgain">🔁 Ещё раунд</button>
+      ${idx + 1 < ISL.length && unlocked(idx + 1) ? `<button class="btn ${newUnlock ? 'pri' : 'acc'} big" id="eNext">Дальше: ${ISL[idx + 1].em} ▶</button>` : ''}
+    </div></div>`);
+  $('#eMap').onclick = showMap;
+  $('#eAgain').onclick = () => startRound(isl);
+  if ($('#eNext')) $('#eNext').onclick = () => openIsland(idx + 1);
+  ($('#eNext') && newUnlock ? $('#eNext') : $('#eAgain')).focus();
+}
+
+// ================= ПЕРЕРЫВ =================
+const EXERCISES = [
+  '🐉 Помаши руками, как дракон крыльями, — 15 раз!', '🦘 Попрыгай на месте 10 раз!', '🙆 Потянись вверх, как дракон после сна, и досчитай до 10.',
+  '🏋️ Сделай 5 приседаний!', '🌬️ Подыши как дракон: вдох на 4 счёта, выдох на 4. Повтори 3 раза.', '🦖 Пройдись по комнате, как большой динозавр!',
+  '🔄 Покрути головой и плечами — по 5 раз в каждую сторону.', '🤸 Встань на одну ногу и посчитай до 10. Теперь на другую!', '🥤 Выпей воды — драконам тоже нужна вода!',
+];
+function showBreak(cb) {
+  const ex = pick(EXERCISES); let left = S.settings.breakSec;
+  setScreen('break', `<div class="center-wrap card">
+    <h1 style="margin:0">Перерыв! Драконы тоже отдыхают</h1>${myDragon('happy', 180)}
+    <div class="break-ex">${ex}</div><div class="ring" id="ring">${left}</div>
+    <button class="btn pri big" id="brGo" disabled>Я готов! ▶</button></div>`);
+  speak('Перерыв! ' + ex.replace(/[^\p{L}\p{N}\s,.!:—-]/gu, ''));
+  const timer = setInterval(() => {
+    if (screen !== 'break') return clearInterval(timer);
+    left--; $('#ring').textContent = Math.max(0, left);
+    if (left <= 0) { clearInterval(timer); $('#ring').textContent = '✓'; $('#brGo').disabled = false; $('#brGo').focus(); SFX.ok(); }
+  }, 1000);
+  $('#brGo').onclick = () => { clearInterval(timer); cb(); };
+}
+setInterval(() => {
+  if (screen === 'play' && !document.hidden) { sinceBreak++; day().sec++; if (day().sec % 15 === 0) save(); }
+}, 1000);
+
+// ================= ДРАКОН / МАГАЗИН =================
+function showShop() {
+  renderHeader();
+  const st = stageOf(S.xp), next = STAGES[st + 1];
+  const item = it => {
+    const own = S.owned.includes(it.id), on = S.equipped[it.slot] === it.id;
+    const btn = !own ? `<button class="btn ${S.crystals >= it.price ? 'acc' : 'ghost'}" data-buy="${it.id}" ${S.crystals >= it.price ? '' : 'disabled'}>💎 ${it.price}</button>`
+      : on ? (it.slot === 'color' ? '<button class="btn ghost" disabled>Надето</button>' : `<button class="btn ghost" data-off="${it.id}">Снять</button>`)
+      : `<button class="btn pri" data-on="${it.id}">Надеть</button>`;
+    return `<div class="item ${on ? 'on' : ''}"><div class="ic">${it.ic}</div><div class="nm">${it.name}</div>${btn}</div>`;
+  };
+  setScreen('shop', `<div class="shop">
+    <div class="preview card">${myDragon('happy', 260)}<h2 style="margin:8px 0">${STAGES[st].name}</h2>
+      <div style="color:var(--muted)">${next ? `До стадии «${next.name}»: ещё ${next.xp - S.xp} ${plur(next.xp - S.xp, 'верный ответ', 'верных ответа', 'верных ответов')}` : 'Максимальная стадия! ✨'}</div>
+      ${st === 0 ? '<p class="bubble">Шапки и очки появятся, когда дракон вылупится. А цвет видно уже на яйце!</p>' : ''}
+      ${st < 2 ? '<p style="font-size:16px;color:var(--muted)">Крылья вырастут на стадии «Дракончик».</p>' : ''}</div>
+    <div>${Object.keys(SLOTS).map(sl => `<h3>${SLOTS[sl]}</h3><div class="items">${SHOP.filter(x => x.slot === sl).map(item).join('')}</div>`).join('')}</div></div>`);
+  $$('[data-buy]').forEach(b => b.onclick = () => {
+    const it = SHOP.find(x => x.id === b.dataset.buy); if (S.crystals < it.price) return;
+    S.crystals -= it.price; S.owned.push(it.id); S.equipped[it.slot] = it.id; SFX.buy(); confetti(60); save(); renderHeader(); showShop();
+  });
+  $$('[data-on]').forEach(b => b.onclick = () => { const it = SHOP.find(x => x.id === b.dataset.on); S.equipped[it.slot] = it.id; save(); renderHeader(); showShop(); });
+  $$('[data-off]').forEach(b => b.onclick = () => { const it = SHOP.find(x => x.id === b.dataset.off); delete S.equipped[it.slot]; save(); renderHeader(); showShop(); });
+}
+
+// ================= РОДИТЕЛЯМ =================
+function askParent() {
+  const a = R(6, 9), b = R(6, 9), c = R(11, 39);
+  const m = modal(`<h2>Для взрослых</h2><p>Сколько будет ${a} × ${b} + ${c}?</p><input class="inp" id="pin" style="width:160px">`, [
+    { text: 'Отмена', cls: 'ghost' },
+    { text: 'Войти', keep: true, fn: (bg, close) => { if (+bg.querySelector('#pin').value === a * b + c) { close(); showParent(); } else bg.querySelector('#pin').classList.add('wrong', 'shake'); } },
+  ]);
+  m.bg.querySelector('#pin').addEventListener('keydown', e => { if (e.key === 'Enter') { e.stopPropagation(); m.bg.querySelector('button[data-i="1"]').click(); } });
+}
+function fmtMin(sec) { const m = Math.round(sec / 60); return m < 60 ? m + ' мин' : Math.floor(m / 60) + ' ч ' + (m % 60) + ' мин'; }
+function showParent() {
+  const tot = Object.values(S.stats).reduce((a, s) => ({ ok: a.ok + s.ok, meh: a.meh + s.meh, bad: a.bad + s.bad }), { ok: 0, meh: 0, bad: 0 });
+  const all = tot.ok + tot.meh + tot.bad;
+  const days = range(14).map(i => { const d = new Date(); d.setDate(d.getDate() - 13 + i); const k = d.toLocaleDateString('sv'); return { k, lbl: d.toLocaleDateString('ru', { day: 'numeric', month: 'short' }), ...(S.days[k] || { sec: 0, tasks: 0 }) }; });
+  const maxSec = Math.max(60, ...days.map(d => d.sec));
+  const week = days.slice(7).reduce((a, d) => a + d.sec, 0);
+  const accCls = p => (p >= 80 ? 'acc-good' : p >= 55 ? 'acc-mid' : 'acc-bad');
+  const rows = ISL.filter(x => !x.boss).map((x, i) => {
+    const s = S.stats[x.id] || { ok: 0, meh: 0, bad: 0 }, n = s.ok + s.meh + s.bad, st = islState(x.id);
+    const p = n ? Math.round(s.ok / n * 100) : null;
+    return `<tr><td>${i + 1}. ${x.em} ${x.title}</td><td>${'★'.repeat(st.stars)}${'☆'.repeat(3 - st.stars)}</td><td>${st.rounds ? LV[st.lvl] : '—'}</td><td>${n}</td>
+      <td class="${p == null ? '' : accCls(p)}">${p == null ? '—' : p + '%'}</td><td>${s.meh}</td><td>${s.bad}</td></tr>`;
+  }).join('');
+  const facts = Object.entries(S.factErrors).filter(e => e[1] > 0).sort((a, b) => b[1] - a[1]).slice(0, 16);
+  const islName = id => (ISL.find(x => x.id === id) || { title: id }).title;
+  const set = S.settings;
+  setScreen('parent', `<div class="parent">
+    <h1>👨‍👩‍👦 Панель родителя</h1>
+    <div class="kpis">
+      <div class="kpi"><b>${all}</b><span>задач решено всего</span></div>
+      <div class="kpi"><b class="${all ? accCls(Math.round(tot.ok / all * 100)) : ''}">${all ? Math.round(tot.ok / all * 100) + '%' : '—'}</b><span>с первой попытки</span></div>
+      <div class="kpi"><b>${fmtMin(day().sec)}</b><span>занимался сегодня</span></div>
+      <div class="kpi"><b>${fmtMin(week)}</b><span>за последние 7 дней</span></div>
+      <div class="kpi"><b>${STAGES[stageOf(S.xp)].name}</b><span>дракон · ${S.xp} верных ответов</span></div>
+    </div>
+    <h2>Время занятий (14 дней)</h2>
+    <div class="chart">${days.map(d => `<div class="col" style="height:${Math.round(d.sec / maxSec * 100)}%" title="${d.tasks} задач"><em>${d.sec >= 60 ? Math.round(d.sec / 60) : ''}</em><span>${d.lbl}</span></div>`).join('')}</div>
+    <h2>Темы</h2>
+    <table><tr><th>Остров</th><th>Звёзды</th><th>Уровень</th><th>Задач</th><th>С 1-й попытки</th><th>С подсказкой / 2-й попытки</th><th>Не решено</th></tr>${rows}</table>
+    <p style="font-size:16px;color:var(--muted)">Ниже 55% с первой попытки — тема требует внимания. Уровень меняется сам: после 3 верных ответов подряд задачи усложняются, после 2 ошибок подряд упрощаются.</p>
+    <h2>Трудные примеры таблицы умножения</h2>
+    ${facts.length ? `<div class="chips">${facts.map(([k, v]) => `<span class="chip">${k.replace('x', ' × ')} — ${v} ${plur(v, 'ошибка', 'ошибки', 'ошибок')}</span>`).join('')}</div><p style="font-size:16px;color:var(--muted)">Эти примеры чаще попадаются на острове «Разминка». После верного ответа с первой попытки счётчик уменьшается.</p>` : '<p>Пока нет 🎉</p>'}
+    <h2>Последние ошибки</h2>
+    ${S.mistakes.length ? `<table><tr><th>Когда</th><th>Тема</th><th>Задача</th><th>Ответ ребёнка</th><th>Верно</th></tr>${S.mistakes.slice(0, 25).map(m => `<tr><td>${new Date(m.t).toLocaleString('ru', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</td><td>${esc(islName(m.isl))}</td><td>${rq(m.q)}</td><td style="color:var(--bad)">${rq(m.given)}</td><td style="color:var(--ok)">${rq(m.right)}</td></tr>`).join('')}</table>` : '<p>Ошибок пока нет.</p>'}
+    <h2>Настройки</h2>
+    <div class="settings">
+      <label>Имя ребёнка: <input type="text" id="sName" value="${esc(S.name)}"></label>
+      <label>Обязательный перерыв каждые
+        <select id="sSess">${[[5, '5 минут'], [10, '10 минут'], [15, '15 минут'], [20, '20 минут'], [0, 'не нужен']].map(([v, l]) => `<option value="${v}" ${set.sessionMin === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+      <label>Длительность перерыва
+        <select id="sBreak">${[[30, '30 секунд'], [60, '1 минута'], [120, '2 минуты']].map(([v, l]) => `<option value="${v}" ${set.breakSec === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+      <label><input type="checkbox" id="sSound" ${set.sound ? 'checked' : ''}> Звуки</label>
+      <label><input type="checkbox" id="sConf" ${set.confetti ? 'checked' : ''}> Конфетти</label>
+      <label><input type="checkbox" id="sTts" ${set.tts ? 'checked' : ''}> Озвучка (кнопка 🔊)</label>
+      <label><input type="checkbox" id="sAuto" ${set.autoSpeak ? 'checked' : ''}> Читать каждое задание вслух автоматически</label>
+      <label><input type="checkbox" id="sUnlock" ${set.unlockAll ? 'checked' : ''}> Открыть все острова (например, чтобы сразу перейти к дробям)</label>
+      <div>Голос озвучки: <b>${ruVoice ? esc(ruVoice.name) : 'русский голос не найден в браузере — озвучка может не работать'}</b> <button class="btn ghost" id="sTest">Проверить голос</button></div>
+    </div>
+    <h2>Прогресс</h2>
+    <div class="row-btns"><button class="btn ghost" id="pExp">💾 Сохранить прогресс в файл</button><button class="btn ghost" id="pImp">📂 Загрузить из файла</button>
+      <button class="btn ghost" id="pReset" style="color:var(--bad)">Сбросить всё</button><input type="file" id="pFile" accept=".json" class="hidden"></div>
+    <p style="font-size:16px;color:var(--muted)">Прогресс хранится в этом браузере на этом компьютере. Чтобы перенести на другой компьютер, сохраните его в файл и загрузите там.</p>
+  </div>`);
+  const upd = fn => e => { fn(e.target); save(); renderHeader(); };
+  $('#sName').onchange = upd(el => { S.name = el.value.trim() || 'друг'; });
+  $('#sSess').onchange = upd(el => { set.sessionMin = +el.value; });
+  $('#sBreak').onchange = upd(el => { set.breakSec = +el.value; });
+  $('#sSound').onchange = upd(el => { set.sound = el.checked; });
+  $('#sConf').onchange = upd(el => { set.confetti = el.checked; });
+  $('#sTts').onchange = upd(el => { set.tts = el.checked; });
+  $('#sAuto').onchange = upd(el => { set.autoSpeak = el.checked; });
+  $('#sUnlock').onchange = upd(el => { set.unlockAll = el.checked; });
+  $('#sTest').onclick = () => speak(`Привет, ${S.name}! Сколько будет 3/4 от 20?`);
+  $('#pExp').onclick = () => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' }));
+    a.download = `drakon-matematika-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+  $('#pImp').onclick = () => $('#pFile').click();
+  $('#pFile').onchange = e => {
+    const f = e.target.files[0]; if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => {
+      try { const s = JSON.parse(rd.result); if (typeof s.xp !== 'number') throw 0; localStorage.setItem(KEY, JSON.stringify(s)); S = load(); renderHeader(); showParent(); modal('<h2>Готово</h2><p>Прогресс загружен.</p>', [{ text: 'OK' }]); }
+      catch (err) { modal('<h2>Не получилось</h2><p>Этот файл не похож на сохранение прогресса.</p>', [{ text: 'OK' }]); }
+    };
+    rd.readAsText(f);
+  };
+  $('#pReset').onclick = () => modal(`<h2>Сбросить весь прогресс?</h2><p>Звёзды, кристаллы, дракон и статистика будут удалены. Отменить это нельзя.</p>`, [
+    { text: 'Отмена', cls: 'ghost' },
+    { text: 'Да, сбросить', cls: 'acc', fn: () => { const name = S.name, settings = S.settings; S = defState(); S.name = name; S.settings = settings; save(); renderHeader(); showMap(); } },
+  ]);
+}
+
+// ================= КЛАВИАТУРА =================
+document.addEventListener('keydown', e => {
+  if (screen !== 'play' || !G || !G.cur || document.querySelector('.modal-bg')) return;
+  const c = G.cur, ae = document.activeElement;
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (c.done) return goNext();
+    if (ae && ae.classList.contains('inp')) return submitFrom(ae);
+    if (c.task.type === 'shade') return checkAnswer();
+    return;
+  }
+  if (c.done) return;
+  const isInp = ae && ae.classList.contains('inp');
+  if (/^\d$/.test(e.key) && !isInp && usesKeypad(c.task)) { e.preventDefault(); focusNext(); keypad(e.key); return; }
+  if (isInp && (e.key === '/' || e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+    const fin = ae.closest('.fin');
+    if (fin) { e.preventDefault(); const ins = fin.querySelectorAll('.inp'); (ae === ins[0] ? ins[1] : ins[0]).focus(); }
+  }
+});
+
+renderHeader();
+showMap();
+</script>
+</body>
+</html>
