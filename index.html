@@ -142,6 +142,35 @@ main{max-width:1280px;margin:0 auto;padding:20px}
 .keypad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d5dde3}
 .keypad .kok{background:var(--pri);color:#fff;box-shadow:0 3px 0 var(--pri-d)}
 .keypad .kok:hover{background:#43b876}
+/* ---------- задачи Анисии ---------- */
+.objs{font-size:52px;line-height:1.15;text-align:center}
+.objs.small{font-size:24px}
+.objs.mid{font-size:44px}
+.objs.row{white-space:nowrap;text-align:left}
+.objs .ob{display:inline-block;width:1.3em;text-align:center;position:relative;vertical-align:top}
+.objs .ob b{display:block;font-size:16px;line-height:1;color:var(--muted)}
+.ob.fresh::before{content:"";position:absolute;top:-2px;bottom:-2px;left:1px;right:1px;border:3px dashed #ffbf1f;border-radius:12px}
+.ob.gone{opacity:.4}
+.ob.gone::after{content:"";position:absolute;left:8%;right:8%;top:45%;height:5px;background:#e2604f;border-radius:3px;transform:rotate(-35deg)}
+.qbox{display:inline-block;width:1.1em;height:1.1em;border:3px dashed #ff8a3d;border-radius:12px;font-size:.8em;line-height:1.05em;color:#e06d22;font-weight:bold;text-align:center;background:#fff4e0}
+.cmp{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.track{display:flex;gap:6px}
+.track span{width:56px;height:56px;border:3px solid #c8d3dc;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:bold;background:#fff}
+.track span.q{border-color:#ff8a3d;border-style:dashed;color:#e06d22;background:#fff4e0}
+.plusn{font-size:52px;font-weight:bold;color:#e06d22;align-self:center}
+.bigdigit{font-size:110px;font-weight:bold;line-height:1;color:#e0609e}
+.dir{font-size:18px;color:var(--muted);width:100%;text-align:center}
+.svt.big{font-size:40px}
+.choice.pic{padding:8px 14px;min-width:110px;display:flex;align-items:center;justify-content:center}
+.choice.big{font-size:56px;min-width:110px;padding:6px 26px}
+.collect{display:flex;gap:30px;align-items:flex-end;justify-content:center;flex-wrap:wrap;width:100%}
+.tray{font-size:46px;max-width:340px;min-height:80px;padding:8px;border:3px dashed #c8d3dc;border-radius:18px;line-height:1.2;text-align:center}
+.tray .ob,.bk-in .ob{display:inline-block;cursor:grab;width:1.25em;text-align:center}
+.basket{position:relative;font-size:150px;line-height:1;text-align:center;border-radius:24px;padding:40px 10px 4px;min-width:200px}
+.basket.over,.tray.over{background:#fff4e0}
+.bk-in{position:absolute;left:8%;right:8%;bottom:58%;font-size:30px;line-height:1;display:flex;flex-wrap:wrap-reverse;justify-content:center}
+.block-G{background:#fdeef6} .block-H{background:#e6f4fb} .block-J{background:#f3edfd} .block-K{background:#eef0f3}
+
 /* ---------- выбор игрока и PIN ---------- */
 body.no-profile #hdrDragon,body.no-profile #crystals,body.no-profile #navMap,body.no-profile #navShop,body.no-profile #navSound,body.no-profile #navSwitch{display:none}
 .who{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:10px}
@@ -262,6 +291,21 @@ th{background:#f4f7f9;font-size:15px;color:var(--muted)}
 <symbol id="i-necklace" viewBox="0 0 24 24"><path d="M4 3.5q8 15 16 0" stroke="#d4a017" stroke-width="1.5" fill="none"/><path d="M12 22l-5-5a3.1 3.1 0 0 1 5-3.8 3.1 3.1 0 0 1 5 3.8z" fill="#e63946"/><path d="M9 16.2a1.3 1.3 0 0 1 1.3-1" stroke="#fff" stroke-width="1" fill="none" stroke-linecap="round"/></symbol>
 <symbol id="i-starwings" viewBox="0 0 24 24"><ellipse cx="7" cy="9.5" rx="5.5" ry="7.5" fill="#ece6ff" stroke="#b48ef0" stroke-width="1.2" transform="rotate(-25 7 9.5)"/><ellipse cx="17" cy="9.5" rx="5.5" ry="7.5" fill="#ece6ff" stroke="#b48ef0" stroke-width="1.2" transform="rotate(25 17 9.5)"/><ellipse cx="8" cy="18.5" rx="3.2" ry="4" fill="#ece6ff" stroke="#b48ef0" stroke-width="1.2" transform="rotate(30 8 18.5)"/><ellipse cx="16" cy="18.5" rx="3.2" ry="4" fill="#ece6ff" stroke="#b48ef0" stroke-width="1.2" transform="rotate(-30 16 18.5)"/><path d="M6.5 6.5l.6 1.3 1.4.2-1 1 .2 1.4-1.2-.7-1.2.7.2-1.4-1-1 1.4-.2zM17.5 6.5l.6 1.3 1.4.2-1 1 .2 1.4-1.2-.7-1.2.7.2-1.4-1-1 1.4-.2z" fill="#ffd23f"/></symbol>
 <symbol id="i-wand" viewBox="0 0 24 24"><path d="M3.5 20.5L13.5 10.5" stroke="#a0663a" stroke-width="2.6" stroke-linecap="round"/><path d="M16 2.5l1.6 3.4 3.7.5-2.7 2.6.7 3.7-3.3-1.8-3.3 1.8.7-3.7-2.7-2.6 3.7-.5z" fill="#ffd23f" stroke="#e6b422" stroke-width=".8" stroke-linejoin="round"/><circle cx="21" cy="14" r="1" fill="#ff8fc4"/><circle cx="9.5" cy="5" r="1" fill="#7cc0ef"/><circle cx="20" cy="18.5" r=".8" fill="#ffd23f"/></symbol>
+<symbol id="i-flower" viewBox="0 0 24 24"><path d="M12 13v9.5" stroke="#4fae6a" stroke-width="2" stroke-linecap="round"/><path d="M12 19q-4-.5-5.5-3.5 4 0 5.5 3.5z" fill="#6fd68a"/><g fill="#ff8fc4"><circle cx="12" cy="4.6" r="3.3"/><circle cx="16.8" cy="8.1" r="3.3"/><circle cx="15" cy="13.6" r="3.3"/><circle cx="9" cy="13.6" r="3.3"/><circle cx="7.2" cy="8.1" r="3.3"/></g><circle cx="12" cy="9.8" r="3" fill="#ffd23f"/></symbol>
+<symbol id="i-butterfly" viewBox="0 0 24 24"><path d="M12 7q-2.5-5-4-3.5M12 7q2.5-5 4-3.5" stroke="#5b3b6b" stroke-width="1.2" fill="none" stroke-linecap="round"/><ellipse cx="6.6" cy="9.5" rx="5.2" ry="4.6" fill="#b48ef0"/><ellipse cx="17.4" cy="9.5" rx="5.2" ry="4.6" fill="#b48ef0"/><ellipse cx="7.6" cy="16.6" rx="3.8" ry="3.4" fill="#ff8fc4"/><ellipse cx="16.4" cy="16.6" rx="3.8" ry="3.4" fill="#ff8fc4"/><circle cx="6.3" cy="9.3" r="1.6" fill="#fff" opacity=".7"/><circle cx="17.7" cy="9.3" r="1.6" fill="#fff" opacity=".7"/><rect x="10.9" y="6.5" width="2.2" height="13" rx="1.1" fill="#5b3b6b"/></symbol>
+<symbol id="i-mushroom" viewBox="0 0 24 24"><path d="M9 13h6l.8 7.5a1.5 1.5 0 0 1-1.5 1.5H9.7a1.5 1.5 0 0 1-1.5-1.5z" fill="#f6e7c8"/><path d="M2 13.5a10 9 0 0 1 20 0q0 1-1.5 1h-17Q2 14.5 2 13.5z" fill="#e2604f"/><circle cx="8" cy="9" r="1.6" fill="#fff"/><circle cx="14.5" cy="7" r="1.3" fill="#fff"/><circle cx="16.5" cy="11.3" r="1.5" fill="#fff"/><circle cx="10.5" cy="12.3" r="1" fill="#fff"/></symbol>
+<symbol id="i-berry" viewBox="0 0 24 24"><path d="M12 7c4-2 9 0 8 5.5C19 18 14 22 12 22s-7-4-8-9.5C3 7 8 5 12 7z" fill="#e63946"/><path d="M12 7.5L8.5 4.5l2 .3L12 2.5l1.5 2.3 2-.3z" fill="#3aa66b"/><g fill="#ffe08a"><circle cx="9" cy="11" r=".8"/><circle cx="13" cy="10.5" r=".8"/><circle cx="16.3" cy="12" r=".8"/><circle cx="7.6" cy="14.5" r=".8"/><circle cx="11.5" cy="14.5" r=".8"/><circle cx="15" cy="15.5" r=".8"/><circle cx="10" cy="18" r=".8"/><circle cx="13.5" cy="18.8" r=".8"/></g></symbol>
+<symbol id="i-ladybug" viewBox="0 0 24 24"><path d="M9.5 5.5q-1.5-3-3.5-3M14.5 5.5q1.5-3 3.5-3" stroke="#1d2433" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="12" cy="6.5" r="3.6" fill="#1d2433"/><ellipse cx="12" cy="14" rx="8.5" ry="8" fill="#e63946"/><path d="M12 6.5v15.5" stroke="#1d2433" stroke-width="1.4"/><g fill="#1d2433"><circle cx="8" cy="11.5" r="1.6"/><circle cx="16" cy="11.5" r="1.6"/><circle cx="7.6" cy="17" r="1.4"/><circle cx="16.4" cy="17" r="1.4"/></g><circle cx="10.6" cy="5.8" r=".7" fill="#fff"/><circle cx="13.4" cy="5.8" r=".7" fill="#fff"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 1.8l3 6.4 7 .9-5.1 4.8 1.3 7-6.2-3.5-6.2 3.5 1.3-7L2 9.1l7-.9z" fill="#ffd23f" stroke="#e6b422" stroke-width="1" stroke-linejoin="round"/><path d="M8.5 9.5l2-.3" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".8"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M6 19a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 17 8.5a4.5 4.5 0 0 1 1.5 10.5z" fill="#9aa6b5"/><path d="M8 11.5l2.2 1M16 11.5l-2.2 1" stroke="#3d4a5c" stroke-width="1.4" stroke-linecap="round"/><circle cx="9.5" cy="14" r="1" fill="#3d4a5c"/><circle cx="14.5" cy="14" r="1" fill="#3d4a5c"/><path d="M10 17.3q2-1.4 4 0" stroke="#3d4a5c" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M7 21l-.8 2M11 21l-.8 2M15 21l-.8 2" stroke="#7cc0ef" stroke-width="1.4" stroke-linecap="round"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2.5q7 8.5 7 12.5a7 7 0 0 1-14 0q0-4 7-12.5z" fill="#5aa9e6"/><path d="M8.5 15a3.5 3.5 0 0 0 2.5 3.4" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="i-digits" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#ff8fc4"/><text x="12" y="16" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff" font-family="Verdana,Arial,sans-serif">123</text></symbol>
+<symbol id="i-numline" viewBox="0 0 24 24"><rect x="1" y="7" width="7" height="10" rx="2" fill="#7cc0ef"/><rect x="8.5" y="7" width="7" height="10" rx="2" fill="#ffd23f"/><rect x="16" y="7" width="7" height="10" rx="2" fill="#7cc0ef"/><g font-size="7" font-weight="bold" text-anchor="middle" fill="#fff" font-family="Verdana,Arial,sans-serif"><text x="4.5" y="14.5">1</text><text x="12" y="14.5" fill="#8a5a00">?</text><text x="19.5" y="14.5">3</text></g></symbol>
+<symbol id="i-house" viewBox="0 0 24 24"><path d="M2 11L12 2.5 22 11z" fill="#ff8fc4"/><rect x="4" y="11" width="16" height="11" fill="#fff0d8" stroke="#d6a05a" stroke-width="1"/><path d="M12 11v11" stroke="#d6a05a" stroke-width="1"/><rect x="6" y="13.5" width="4" height="4" fill="#7cc0ef"/><rect x="14" y="13.5" width="4" height="4" fill="#7cc0ef"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#5aa9e6"/><path d="M6.5 12h11" stroke="#fff" stroke-width="3" stroke-linecap="round"/></symbol>
+<symbol id="i-shapes" viewBox="0 0 24 24"><circle cx="7" cy="7" r="5" fill="#ff8fc4"/><path d="M17 2.5l5 8.5H12z" fill="#7cc0ef"/><rect x="3" y="13.5" width="8" height="8" fill="#ffd23f"/><ellipse cx="17.5" cy="17.5" rx="5" ry="3.3" fill="#6fd6a8"/></symbol>
+<symbol id="i-pattern" viewBox="0 0 24 24"><circle cx="3.5" cy="12" r="3" fill="#ff8fc4"/><rect x="7.5" y="9" width="6" height="6" fill="#7cc0ef"/><circle cx="17.5" cy="12" r="3" fill="#ff8fc4"/><rect x="21" y="9" width="3" height="6" fill="#7cc0ef"/></symbol>
+<symbol id="i-leftright" viewBox="0 0 24 24"><path d="M1.5 12l6-5.5v3.5h9v-3.5l6 5.5-6 5.5v-3.5h-9v3.5z" fill="#b48ef0"/></symbol>
 <symbol id="i-crystal" viewBox="0 0 24 24"><path d="M7 4h10l4.5 5L12 21.5 2.5 9z" fill="#5aa9e6"/><path d="M7 4l2 5h6l2-5z" fill="#a8d8ff"/><path d="M9 9l3 12.5L15 9z" fill="#3d8fd6"/><path d="M2.5 9h19" stroke="#2f6fae" stroke-width=".8"/></symbol>
 <symbol id="i-map" viewBox="0 0 24 24"><path d="M2 5l7-2.5 6 2.5 7-2.5v16.5l-7 2.5-6-2.5-7 2.5z" fill="#f3e3b5"/><path d="M9 2.5v16.5M15 5v16.5" stroke="#d6c08a" stroke-width="1.2"/><path d="M3.5 8.5q2.5-2 4 0t-1.5 4z" fill="#8fd18f"/><path d="M5.5 17q4-7 7.5-3.5t5-6" stroke="#e2604f" stroke-width="1.6" fill="none" stroke-dasharray="2 1.6" stroke-linecap="round"/><path d="M17 5.5l2.5 2.5M19.5 5.5L17 8" stroke="#e2604f" stroke-width="1.6" stroke-linecap="round"/></symbol>
 <symbol id="i-sound" viewBox="0 0 24 24"><path d="M2.5 9h4l5.5-4.5v15L6.5 15h-4z" fill="#5b6b7f"/><path d="M15 9q2 3 0 6M18 6q4.5 6 0 12" stroke="#5aa9e6" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
@@ -351,7 +395,8 @@ const fr = (n, d) => `<span class="frac"><span>${n}</span><span>${d}</span></spa
 const ic = (n, color) => `<svg class="ico"${color ? ` style="color:${color}"` : ''} aria-hidden="true"><use href="#i-${n}"/></svg>`;
 // эмодзи в текстах (реплики, вступления, упражнения) -> иконки
 const EMO = { '🐉': 'dragon', '💎': 'crystal', '🔊': 'sound', '🔥': 'fire', '👇': 'down', '💪': 'muscle', '🙂': 'smile', '👍': 'thumb', '🖌': 'brush',
-  '👹': 'troll', '🌋': 'volcano', '🌳': 'tree', '❄': 'snow', '🦘': 'jump', '🙆': 'stretch', '🏋': 'squat', '🌬': 'wind', '🦖': 'dino', '🔄': 'refresh', '🤸': 'balance', '🥤': 'cup', '✨': 'sparkle' };
+  '👹': 'troll', '🌋': 'volcano', '🌳': 'tree', '❄': 'snow', '🦘': 'jump', '🙆': 'stretch', '🏋': 'squat', '🌬': 'wind', '🦖': 'dino', '🔄': 'refresh', '🤸': 'balance', '🥤': 'cup', '✨': 'sparkle',
+  '🌸': 'flower', '💧': 'drop', '🌈': 'rainbow', '☁': 'cloud' };
 const EMO_RE = new RegExp('(?:' + Object.keys(EMO).join('|') + ')\uFE0F?', 'gu');
 const emo = s => String(s).replace(EMO_RE, m => ic(EMO[m.replace('\uFE0F', '')]));
 // текст с дробями вида 3/4 -> HTML
@@ -855,6 +900,256 @@ const ISL = [
     intro: ['Тролль-Путаница украл драконьи сокровища!', 'Победи его задачами со всех островов. Каждый верный ответ — удар огнём! 🔥'], ex: () => `<div style="font-size:90px">${ic('troll')}</div>` },
 ];
 
+// ================= ДОШКОЛЬНАЯ МАТЕМАТИКА (Анисия, Петерсон «Игралочка») =================
+// d: 0 — числа до 5, 1 — до 7, 2 — до 10. Почти все ответы — выбор из картинок или чисел.
+const KMAX = [5, 7, 10], KMIN = [1, 3, 5];
+// предметы для счёта: формы слова (1, 2, 5), вин., род. и твор. падеж ед. числа, род, глаголы «добавили/убрали» (1 / много), где лежат
+const KID = {
+  apple: { f: ['яблоко', 'яблока', 'яблок'], a1: 'яблоко', g1: 'яблока', i1: 'яблоком', g: 'n', add: ['положили', 'положили'], sub: ['съели', 'съели'], where: 'В корзинке' },
+  flower: { f: ['цветок', 'цветка', 'цветков'], a1: 'цветок', g1: 'цветка', i1: 'цветком', g: 'm', add: ['вырос', 'выросли'], sub: ['сорвали', 'сорвали'], where: 'На полянке' },
+  butterfly: { f: ['бабочка', 'бабочки', 'бабочек'], a1: 'бабочку', g1: 'бабочки', i1: 'бабочкой', g: 'f', add: ['прилетела', 'прилетели'], sub: ['улетела', 'улетели'], where: 'На цветах' },
+  mushroom: { f: ['гриб', 'гриба', 'грибов'], a1: 'гриб', g1: 'гриба', i1: 'грибом', g: 'm', add: ['вырос', 'выросли'], sub: ['сорвали', 'сорвали'], where: 'На полянке' },
+  berry: { f: ['ягода', 'ягоды', 'ягод'], a1: 'ягоду', g1: 'ягоды', i1: 'ягодой', g: 'f', add: ['положили', 'положили'], sub: ['съели', 'съели'], where: 'На тарелке' },
+  ladybug: { f: ['божья коровка', 'божьи коровки', 'божьих коровок'], a1: 'божью коровку', g1: 'божьей коровки', i1: 'божьей коровкой', g: 'f', add: ['прилетела', 'прилетели'], sub: ['улетела', 'улетели'], where: 'На листике' },
+  star: { f: ['звёздочка', 'звёздочки', 'звёздочек'], a1: 'звёздочку', g1: 'звёздочки', i1: 'звёздочкой', g: 'f', add: ['зажглась', 'зажглись'], sub: ['погасла', 'погасли'], where: 'На небе' },
+};
+const KIDS = Object.keys(KID);
+const nw = (k, n) => `${n} ${plur(n, ...KID[k].f)}`;          // «3 бабочки»
+const nwAcc = (k, n) => `${n} ${plur(n, KID[k].a1, KID[k].f[1], KID[k].f[2])}`;  // «положи 1 ягоду»
+const many = k => KID[k].f[2];                                   // «бабочек»
+const cap = s => s[0].toUpperCase() + s.slice(1);
+const NUMW = ['ноль', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять'];
+const ORDK = { m: ['первый', 'второй', 'третий', 'четвёртый', 'пятый'], f: ['первая', 'вторая', 'третья', 'четвёртая', 'пятая'], n: ['первое', 'второе', 'третье', 'четвёртое', 'пятое'] };
+const KAKOY = { m: 'Какой', f: 'Какая', n: 'Какое' };
+const kRange = d => R(KMIN[d], KMAX[d]);
+
+// варианты-числа рядом с ответом, по возрастанию
+function numChoices(n, lo = 0, hi = 10, cnt = 3) {
+  const s = new Set([n]); let guard = 0;
+  while (s.size < cnt && guard++ < 60) { const x = n + pick([-2, -1, 1, 2]); if (x >= lo && x <= hi) s.add(x); }
+  for (let x = lo; s.size < cnt && x <= hi; x++) s.add(x);
+  return [...s].sort((a, b) => a - b).map(String);
+}
+
+// ---------- картинки ----------
+// предметы рядами по 5 — так легче считать. o.num — номера, o.fresh — последние «новые», o.gone — последние «ушли», o.row — в одну строку
+function objs(k, n, o = {}) {
+  let h = `<div class="objs${o.row ? ' row' : ''}${o.small ? ' small' : ''}">`;
+  for (let i = 0; i < n; i++) {
+    const cls = (o.gone && i >= n - o.gone ? ' gone' : '') + (o.fresh && i >= n - o.fresh ? ' fresh' : '');
+    h += `<span class="ob${cls}">${ic(k)}${o.num ? `<b>${i + 1}</b>` : ''}</span>`;
+    if (!o.row && i % 5 === 4 && i < n - 1) h += '<br>';
+  }
+  return h + '</div>';
+}
+const objRow = ks => `<div class="objs row">${ks.map(k => `<span class="ob">${k === '?' ? '<span class="qbox">?</span>' : ic(k)}</span>`).join('')}</div>`;
+// числовой ряд from..to, на месте hole — «?»
+function track(from, to, hole) {
+  return `<div class="track">${range(to - from + 1).map(i => from + i).map(x => `<span class="${x === hole ? 'q' : ''}">${x === hole ? '?' : x}</span>`).join('')}</div>`;
+}
+// «домик» состава числа: на крыше n, в окошках a и b
+function house(n, a, b) {
+  return `<svg viewBox="0 0 160 170" width="170"><path d="M10 66 L80 8 L150 66 Z" fill="#ff8fc4" stroke="${STROKE}" stroke-width="3" stroke-linejoin="round"/>
+    <text x="80" y="56" text-anchor="middle" class="svt big">${n}</text><rect x="22" y="66" width="116" height="96" fill="#fff6e8" stroke="${STROKE}" stroke-width="3"/>
+    <path d="M80 66 V162" stroke="${STROKE}" stroke-width="3"/><text x="51" y="128" text-anchor="middle" class="svt big">${a}</text>
+    <text x="109" y="128" text-anchor="middle" class="svt big" ${b === '?' ? 'fill="#e06d22"' : ''}>${b}</text></svg>`;
+}
+// фигуры
+const SHAPES = { circle: ['круг', 'круга', 'кругов'], square: ['квадрат', 'квадрата', 'квадратов'], triangle: ['треугольник', 'треугольника', 'треугольников'],
+  rect: ['прямоугольник', 'прямоугольника', 'прямоугольников'], oval: ['овал', 'овала', 'овалов'] };
+const SHAPE_LV = [['circle', 'square', 'triangle'], ['circle', 'square', 'triangle', 'rect'], ['circle', 'square', 'triangle', 'rect', 'oval']];
+const SCOL = ['#ff8fc4', '#7cc0ef', '#ffd23f', '#6fd6a8', '#b48ef0', '#ff9f43'];
+function shapeEl(kind, col, x, y, s) {   // фигура в квадрате s×s с левым верхним углом (x, y)
+  const st = `fill="${col}" stroke="${STROKE}" stroke-width="3" stroke-linejoin="round"`, c = s / 2;
+  if (kind === 'circle') return `<circle cx="${x + c}" cy="${y + c}" r="${s * .42}" ${st}/>`;
+  if (kind === 'square') return `<rect x="${x + s * .12}" y="${y + s * .12}" width="${s * .76}" height="${s * .76}" ${st}/>`;
+  if (kind === 'triangle') return `<path d="M${x + c} ${y + s * .08} L${x + s * .94} ${y + s * .88} L${x + s * .06} ${y + s * .88} Z" ${st}/>`;
+  if (kind === 'rect') return `<rect x="${x + s * .04}" y="${y + s * .26}" width="${s * .92}" height="${s * .48}" ${st}/>`;
+  return `<ellipse cx="${x + c}" cy="${y + c}" rx="${s * .46}" ry="${s * .28}" ${st}/>`;
+}
+const shapeSVG = (kind, col, sz = 80) => `<svg viewBox="0 0 100 100" width="${sz}" height="${sz}">${shapeEl(kind, col, 0, 0, 100)}</svg>`;
+function shapeScene(list) {   // list: [kind, ...] — разложить по сетке 4×3 с небольшим сдвигом
+  const cells = shuffle(range(12)).slice(0, list.length);
+  return `<svg viewBox="0 0 440 330" width="440">${list.map((k, i) => { const c = cells[i], s = R(66, 88);
+    return shapeEl(k, pick(SCOL), (c % 4) * 110 + R(0, 104 - s), Math.floor(c / 4) * 110 + R(0, 104 - s), s); }).join('')}</svg>`;
+}
+
+// ---------- генераторы ----------
+function genKCount(d) {
+  const k = pick(KIDS), n = kRange(d);
+  return T({ q: `Сколько ${many(k)}?`, type: 'choice', choices: numChoices(n, 1, 10), ans: String(n), visual: objs(k, n),
+    hint: 'Показывай на каждую картинку пальчиком и считай: один, два, три… Последнее число — ответ.', hintVisual: objs(k, n, { num: true }),
+    explain: objs(k, n, { num: true }) + ex([`Всего ${nw(k, n)}`]) });
+}
+
+function genKCollect(d) {
+  const k = pick(['apple', 'berry', 'mushroom', 'flower', 'star']), n = kRange(d), total = Math.min(12, n + R(2, 4));
+  return T({ q: `Положи в корзинку ${nwAcc(k, n)}`, type: 'collect', ans: n, collect: { k, total },
+    hint: `Перетаскивай по одной и считай вслух: один, два, три… Нужно ${NUMW[n]}.`, hintVisual: objs(k, n, { num: true }),
+    explain: ex([`Нужно было положить ${nwAcc(k, n)}`]) + objs(k, n, { num: true }) });
+}
+
+const CONFUSE = { 0: [8, 6], 1: [7, 4], 2: [5, 7], 3: [8, 5], 4: [1, 7], 5: [2, 6], 6: [9, 8], 7: [1, 4], 8: [3, 0], 9: [6, 8], 10: [1, 0] };
+function genKDigits(d) {
+  if (Math.random() < .5) {
+    const x = R(d === 0 ? 1 : 0, KMAX[d]), ch = [...new Set([x, ...CONFUSE[x].filter(y => y <= 10)])];
+    while (ch.length < 3 + (d > 0 ? 1 : 0)) { const y = R(0, 10); if (!ch.includes(y)) ch.push(y); }
+    return T({ q: `Найди цифру «${NUMW[x]}»`, type: 'choice', choiceBig: true, choices: shuffle(ch).map(String), ans: String(x),
+      hint: `${cap(NUMW[x])} — это столько: `, hintVisual: x ? objs('star', x, { num: true }) : '<div class="bigdigit">0</div>',
+      explain: `<div class="bigdigit">${x}</div>` + ex([`Это цифра «${NUMW[x]}»`]) });
+  }
+  const k = pick(KIDS), n = kRange(d), ch = numChoices(n, 1, 10);
+  const chView = {}; ch.forEach(c => { chView[c] = objs(k, +c, { small: true }); });
+  return T({ q: `Где ${nw(k, n)}?`, type: 'choice', choices: shuffle(ch), chView, ans: String(n),
+    hint: 'Посчитай картинки в каждой рамке.', explain: objs(k, n, { num: true }) + ex([`Здесь ${nw(k, n)}`]) });
+}
+
+function genKNumline(d) {
+  const max = KMAX[d], kind = d === 0 ? pick(['miss', 'after']) : pick(['miss', 'after', 'before']);
+  if (kind === 'miss') {
+    const from = R(1, max - 4), hole = R(from + (d === 0 ? 1 : 0), from + 4);
+    return T({ q: 'Какое число пропущено?', type: 'choice', choices: numChoices(hole, 1, 10), ans: String(hole), visual: track(from, from + 4, hole),
+      hint: 'Считай по порядку слева направо.', explain: track(from, from + 4) });
+  }
+  const x = kind === 'after' ? R(1, max - 1) : R(2, max), ans = kind === 'after' ? x + 1 : x - 1;
+  const from = Math.max(1, x - 2), to = Math.min(10, from + 4);
+  return T({ q: kind === 'after' ? `Какое число идёт после числа ${x}?` : `Какое число стоит перед числом ${x}?`, type: 'choice',
+    choices: numChoices(ans, 1, 10), ans: String(ans), visual: track(from, to, ans),
+    hint: kind === 'after' ? `После числа идёт число на один больше: ${x} и ещё один.` : `Перед числом стоит число на один меньше.`,
+    explain: track(from, to) + ex([kind === 'after' ? `После ${x} идёт ${ans}` : `Перед ${x} стоит ${ans}`]) });
+}
+
+function genKCompare(d) {
+  const max = KMAX[d], n1 = R(1, max); let n2 = Math.random() < .25 ? n1 : R(1, max);
+  if (n2 === n1 && Math.random() < .5) n2 = n1 < max ? n1 + 1 : n1 - 1;
+  if (d === 2 && Math.random() < .5) {
+    const ans = cmp(n1, n2);
+    return T({ q: `Сравни числа: ${n1} ☐ ${n2}`, say: `Сравни числа ${n1} и ${n2}`, type: 'choice', choices: SIGNS, ans,
+      hint: 'Знак — как открытый ротик: он смотрит на большее число.', hintVisual: `<div class="cmp">${objs('star', n1, { row: true, small: true })}${objs('star', n2, { row: true, small: true })}</div>`,
+      explain: ex([`${n1} ${ans} ${n2}`]) });
+  }
+  const [k1, k2] = shuffle(KIDS).slice(0, 2);
+  const ans = n1 > n2 ? `${cap(many(k1))} больше` : n1 < n2 ? `${cap(many(k2))} больше` : 'Поровну';
+  const vis = `<div class="cmp">${objs(k1, n1, { row: true })}${objs(k2, n2, { row: true })}</div>`;
+  return T({ q: `Чего больше: ${many(k1)} или ${many(k2)}?`, type: 'choice', choiceText: true, choices: [`${cap(many(k1))} больше`, `${cap(many(k2))} больше`, 'Поровну'], ans, visual: vis,
+    hint: 'Соедини каждую картинку сверху с картинкой снизу. У кого остались лишние — тех больше.',
+    explain: vis + ex([`${cap(nw(k1, n1))} и ${nw(k2, n2)}`, ans]) });
+}
+
+function genKCompose(d) {
+  const n = R(Math.max(2, KMIN[d]), KMAX[d]), a = R(1, n - 1), b = n - a;
+  return T({ q: `${n} — это ${a} и сколько ещё?`, type: 'choice', choices: numChoices(b, 0, 10), ans: String(b), visual: house(n, a, '?'),
+    hint: `Посчитай от ${a} до ${n}: сколько ещё шагов?`, hintVisual: objs('star', n, { fresh: b, row: n > 5 }),
+    explain: house(n, a, b) + ex([`${n} — это ${a} и ${b}`]) });
+}
+
+function genKAdd(d) {
+  const k = pick(KIDS), max = KMAX[d], b = R(1, d === 0 ? 2 : 3), a = R(1, max - b), s = a + b, K = KID[k];
+  if (d === 2 && Math.random() < .5) {
+    return T({ q: `${a} + ${b} = ?`, type: 'choice', choices: numChoices(s, 1, 10), ans: String(s), visual: objs(k, a) + `<div class="plusn">+ ${b}</div>`,
+      hint: `Начни с ${a} и досчитай ещё ${b}.`, hintVisual: objs(k, s, { fresh: b }), explain: objs(k, s, { fresh: b }) + ex([`${a} + ${b} = ${s}`]) });
+  }
+  return T({ q: `${K.where} ${nw(k, a)}. ${cap(K.add[b > 1 ? 1 : 0])} ещё ${b}. Сколько ${many(k)} стало?`, long: true, type: 'choice',
+    choices: numChoices(s, 1, 10), ans: String(s), visual: objs(k, s, { fresh: b }),
+    hint: `Было ${a}. Досчитай новые: ${range(b).map(i => a + i + 1).join(', ')}.`, hintVisual: objs(k, s, { fresh: b, num: true }),
+    explain: objs(k, s, { fresh: b, num: true }) + ex([`${a} + ${b} = ${s}`]) });
+}
+
+function genKSub(d) {
+  const k = pick(KIDS), max = KMAX[d], a = R(2, max), b = R(1, Math.min(d === 0 ? 2 : 4, d === 2 ? a : a - 1)), r = a - b, K = KID[k];
+  if (d === 2 && Math.random() < .5) {
+    return T({ q: `${a} − ${b} = ?`, type: 'choice', choices: numChoices(r, 0, 10), ans: String(r), visual: objs(k, a),
+      hint: `Закрой пальчиком ${b} и посчитай, сколько осталось.`, hintVisual: objs(k, a, { gone: b }), explain: objs(k, a, { gone: b }) + ex([`${a} − ${b} = ${r}`]) });
+  }
+  return T({ q: `${K.where} ${nw(k, a)}. ${cap(K.sub[b > 1 ? 1 : 0])} ${b}. Сколько ${many(k)} осталось?`, long: true, type: 'choice',
+    choices: numChoices(r, 0, 10), ans: String(r), visual: objs(k, a, { gone: b }),
+    hint: 'Зачёркнутые ушли. Посчитай те, что остались.', explain: objs(k, a, { gone: b }) + ex([`${a} − ${b} = ${r}`]) });
+}
+
+function genKShapes(d) {
+  const kinds = SHAPE_LV[d];
+  if (Math.random() < .5) {
+    const target = pick(kinds), ch = shuffle([target, ...shuffle(kinds.filter(x => x !== target)).slice(0, d === 0 ? 2 : 3)]);
+    const chView = {}; ch.forEach(k => { chView[SHAPES[k][0]] = shapeSVG(k, pick(SCOL)); });
+    return T({ q: `Найди ${SHAPES[target][0]}`, type: 'choice', choices: ch.map(k => SHAPES[k][0]), chView, ans: SHAPES[target][0],
+      hint: { circle: 'Круг круглый, у него нет углов.', square: 'У квадрата 4 угла и все стороны одинаковые.', triangle: 'У треугольника три угла.',
+        rect: 'У прямоугольника 4 угла, он вытянутый.', oval: 'Овал похож на сплющенный круг или яичко.' }[target],
+      explain: shapeSVG(target, '#ffd23f', 110) + ex([`Это ${SHAPES[target][0]}`]) });
+  }
+  const target = pick(kinds), c = R(1, [3, 4, 5][d]), others = range(R(3, [4, 5, 6][d])).map(() => pick(kinds.filter(x => x !== target)));
+  const list = shuffle([...Array(c).fill(target), ...others]);
+  return T({ q: `Сколько здесь ${SHAPES[target][2]}?`, type: 'choice', choices: numChoices(c, 1, 8), ans: String(c), visual: shapeScene(list),
+    hint: `Ищи только ${SHAPES[target][2]}. Каждый найденный считай вслух.`, hintVisual: shapeSVG(target, '#ffd23f', 70),
+    explain: ex([`${cap(SHAPES[target][2])} здесь: ${c}`]) });
+}
+
+const PATTERNS = [[[0, 1]], [[0, 0, 1], [0, 1, 1], [0, 1]], [[0, 1, 2], [0, 0, 1, 1], [0, 1, 1], [0, 0, 1]]];
+function genKPattern(d) {
+  const pat = pick(PATTERNS[d]), kinds = shuffle(KIDS).slice(0, 4), len = Math.max(6, pat.length * 2 + (pat.length > 2 ? 1 : 0));
+  const seq = range(len).map(i => kinds[pat[i % pat.length]]), nextK = kinds[pat[len % pat.length]];
+  const used = [...new Set(pat)].map(i => kinds[i]), ch = shuffle([...new Set([...used, kinds[3]])]).slice(0, Math.max(3, used.length));
+  if (!ch.includes(nextK)) ch[0] = nextK;
+  const chView = {}; ch.forEach(k => { chView[KID[k].f[0]] = `<div class="objs mid">${ic(k)}</div>`; });
+  return T({ q: 'Что будет дальше?', type: 'choice', choices: shuffle(ch).map(k => KID[k].f[0]), chView, ans: KID[nextK].f[0], visual: objRow([...seq, '?']),
+    hint: 'Найди, какие картинки повторяются. Скажи их вслух по порядку.', explain: objRow([...seq, nextK]) + ex([`Дальше — ${KID[nextK].f[0]}`]) });
+}
+
+function genKPosition(d) {
+  const len = [3, 4, 5][d], row = shuffle(KIDS).slice(0, len), kind = d === 0 ? 'ord' : pick(d === 1 ? ['ord', 'side'] : ['ord', 'side', 'between']);
+  const vis = `<div class="dir">считаем слева →</div>` + objRow(row);
+  const pv = ks => { const v = {}; ks.forEach(k => { v[KID[k].f[0]] = `<div class="objs mid">${ic(k)}</div>`; }); return v; };
+  if (kind === 'ord') {
+    const i = R(0, len - 1), k = row[i], g = KID[k].g;
+    return T({ q: `${KAKOY[g]} по счёту ${KID[k].f[0]}?`, type: 'choice', choiceText: true, choices: numChoices(i, 0, len - 1).map(j => ORDK[g][j]), ans: ORDK[g][i], visual: vis,
+      hint: 'Считай слева направо: первый, второй, третий…', explain: objRow(row) + ex([`${cap(KID[k].f[0])} — ${ORDK[g][i]}`]) });
+  }
+  if (kind === 'side') {
+    const right = Math.random() < .5, i = right ? R(0, len - 2) : R(1, len - 1), k = row[i], ans = row[right ? i + 1 : i - 1];
+    const ch = shuffle([...new Set([ans, ...shuffle(row.filter(x => x !== k && x !== ans)).slice(0, 2)])]);
+    return T({ q: `Что ${right ? 'справа' : 'слева'} от ${KID[k].g1}?`, type: 'choice', choices: ch.map(x => KID[x].f[0]), chView: pv(ch), ans: KID[ans].f[0], visual: objRow(row),
+      hint: right ? 'Справа — значит дальше по строчке, в сторону стрелки →.' : 'Слева — значит ближе к началу строчки.', explain: ex([`${right ? 'Справа' : 'Слева'} от ${KID[k].g1} — ${KID[ans].f[0]}`]) });
+  }
+  const i = R(1, len - 2), ans = row[i], ch = shuffle([ans, row[i - 1], row[i + 1]]);
+  return T({ q: `Что между ${KID[row[i - 1]].i1} и ${KID[row[i + 1]].i1}?`, type: 'choice', choices: ch.map(x => KID[x].f[0]), chView: pv(ch), ans: KID[ans].f[0], visual: objRow(row),
+    hint: 'Между — значит посередине, с одной и с другой стороны соседи.', explain: ex([`Между ними — ${KID[ans].f[0]}`]) });
+}
+
+const FBLOCKS = [
+  { id: 'G', title: '🌸 Цветочная поляна — считаем' },
+  { id: 'H', title: '💧 Весёлый ручеёк — прибавляем и убавляем' },
+  { id: 'J', title: '🌈 Радужный холм — фигуры и загадки' },
+  { id: 'K', title: '☁️ Туча-Путаница' },
+];
+const FISL = [
+  { id: 'kCount', block: 'G', em: 'butterfly', title: 'Сколько?', gen: genKCount,
+    intro: ['Давай считать! Показывай на каждую картинку пальчиком: один, два, три…', 'Последнее число и есть ответ.'], ex: () => objs('butterfly', 3, { num: true }) },
+  { id: 'kCollect', block: 'G', em: 'basket', title: 'Собери в корзинку', gen: genKCollect,
+    intro: ['Перетаскивай мышкой картинки в корзинку. Можно просто нажать на картинку.', 'Положи ровно столько, сколько просят, и нажми «Проверить».'], ex: () => objs('berry', 3) },
+  { id: 'kDigits', block: 'G', em: 'digits', title: 'Цифры', gen: genKDigits,
+    intro: ['Каждое число можно записать цифрой.', 'Цифра 3 — это три предмета.'], ex: () => '<div class="bigdigit">3</div>' + objs('star', 3) },
+  { id: 'kLine', block: 'G', em: 'numline', title: 'Числа по порядку', gen: genKNumline,
+    intro: ['Числа стоят по порядку: 1, 2, 3, 4, 5…', 'Следующее число на один больше, а предыдущее — на один меньше.'], ex: () => track(1, 5) },
+  { id: 'kCompare', block: 'G', em: 'scales', title: 'Больше, меньше, поровну', gen: genKCompare,
+    intro: ['Чтобы узнать, чего больше, составь пары: одну картинку сверху и одну снизу.', 'У кого остались лишние без пары — тех больше.'],
+    ex: () => `<div class="cmp">${objs('apple', 4, { row: true })}${objs('flower', 3, { row: true })}</div>` },
+  { id: 'kHouse', block: 'H', em: 'house', title: 'Домики чисел', gen: genKCompose,
+    intro: ['В домике живёт число. Его можно разделить на две части.', '5 — это 2 и 3.'], ex: () => house(5, 2, 3) },
+  { id: 'kAdd', block: 'H', em: 'plus', title: 'Прилетели ещё', gen: genKAdd,
+    intro: ['Когда прилетают ещё — становится больше. Это сложение.', '3 и ещё 2 — будет 5: 3 + 2 = 5.'], ex: () => objs('butterfly', 5, { fresh: 2 }) },
+  { id: 'kSub', block: 'H', em: 'minus', title: 'Улетели', gen: genKSub,
+    intro: ['Когда улетают — становится меньше. Это вычитание.', 'Было 5, улетели 2 — осталось 3: 5 − 2 = 3.'], ex: () => objs('ladybug', 5, { gone: 2 }) },
+  { id: 'kShapes', block: 'J', em: 'shapes', title: 'Фигуры', gen: genKShapes,
+    intro: ['Круг, квадрат, треугольник, прямоугольник, овал.', 'У треугольника три угла, у квадрата — четыре.'],
+    ex: () => ['circle', 'square', 'triangle', 'rect', 'oval'].map((k, i) => shapeSVG(k, SCOL[i], 70)).join('') },
+  { id: 'kPattern', block: 'J', em: 'pattern', title: 'Что дальше?', gen: genKPattern,
+    intro: ['Картинки повторяются по правилу.', 'Найди правило — и узнаешь, что будет дальше!'], ex: () => objRow(['apple', 'flower', 'apple', 'flower', 'apple', '?']) },
+  { id: 'kWhere', block: 'J', em: 'leftright', title: 'Где? Какой по счёту?', gen: genKPosition,
+    intro: ['Считаем всегда слева направо, по стрелке.', 'Слева — в начале строчки, справа — в конце.'], ex: () => `<div class="dir">считаем слева →</div>` + objRow(['mushroom', 'butterfly', 'star']) },
+  { id: 'kBoss', block: 'K', em: 'cloud', title: 'Прогони тучу', boss: true,
+    intro: ['Туча-Путаница закрыла солнышко над волшебным садом!', 'Решай задачки со всех полянок — каждый верный ответ прогоняет тучку ✨'],
+    ex: () => `<div style="font-size:90px">${ic('cloud')}</div>` },
+];
+
 // ================= ПРОВЕРКА ОТВЕТА =================
 function checkAns(t, g) {
   switch (t.type) {
@@ -863,7 +1158,7 @@ function checkAns(t, g) {
     case 'fraction': return +g.d > 0 && +g.n * t.ans.d === t.ans.n * +g.d;
     case 'mixed': return +g.w === t.ans.w && +g.d > 0 && +g.n < +g.d && +g.n * t.ans.d === t.ans.n * +g.d;
     case 'choice': return g.v === t.ans;
-    case 'shade': return g.count === t.ans;
+    case 'shade': case 'collect': return g.count === t.ans;
   }
   return false;
 }
@@ -874,6 +1169,7 @@ function fmtAns(t) {
     case 'fraction': return `${a.n}/${a.d}`;
     case 'mixed': return `${a.w} ${a.n}/${a.d}`;
     case 'shade': return `закрасить ${a} из ${t.shade.n}`;
+    case 'collect': return `положить ${a}`;
     default: return String(a);
   }
 }
@@ -883,6 +1179,7 @@ function fmtGiven(t, g) {
     case 'fraction': return `${g.n}/${g.d}`;
     case 'mixed': return `${g.w} ${g.n}/${g.d}`;
     case 'shade': return `закрасил ${g.count}`;
+    case 'collect': return `положено ${g.count}`;
     default: return String(g.v);
   }
 }
@@ -1126,14 +1423,16 @@ function fairySVG(stage, eq, mood, o = {}) {
 
 // ---------- герои: всё, чем дракон отличается от феи ----------
 const HEROES = {
-  dragon: { svg: dragonSVG, colors: COLORS, shop: SHOP, slots: SLOTS, base: 'c_green', names: STAGES.map(x => x.name), he: 'он',
+  dragon: { svg: dragonSVG, colors: COLORS, shop: SHOP, slots: SLOTS, base: 'c_green', isl: ISL, blocks: BLOCKS, rnd: [8, 10], names: STAGES.map(x => x.name), he: 'он',
     t: { my: 'Мой дракон', Who: 'Дракон', who: 'дракон', hello0: 'Я — твой дракон, пока ещё в яйце. Решай задачи — и я вылуплюсь!', missed: 'Я соскучился 🐉',
       born: 'Яйцо треснуло… Дракон вылупился!', grew: 'Твой дракон вырос!', rest: 'Драконы тоже отдыхают',
-      shop0: 'Шапки и очки появятся, когда дракон вылупится. А цвет видно уже на яйце!' } },
-  fairy: { svg: fairySVG, colors: FCOLORS, shop: FSHOP, slots: FSLOTS, base: 'f_pink', names: ['Бутон', 'Маленькая фея', 'Фея с крыльями', 'Лесная фея', 'Королева фей'], he: 'она',
+      shop0: 'Шапки и очки появятся, когда дракон вылупится. А цвет видно уже на яйце!',
+      hit: '🔥 Удар по троллю!', bossWin: '👹 Тролль побеждён! Сокровища спасены!', bossLose: 'Тролль убежал… но мы его догоним!' } },
+  fairy: { svg: fairySVG, colors: FCOLORS, shop: FSHOP, slots: FSLOTS, base: 'f_pink', isl: FISL, blocks: FBLOCKS, rnd: [6, 8], names: ['Бутон', 'Маленькая фея', 'Фея с крыльями', 'Лесная фея', 'Королева фей'], he: 'она',
     t: { my: 'Моя фея', Who: 'Фея', who: 'фея', hello0: 'Я — твоя фея, пока ещё сплю в бутоне. Решай задачи — и я проснусь!', missed: 'Я соскучилась ✨',
       born: 'Бутон раскрылся… Фея проснулась!', grew: 'Твоя фея выросла!', rest: 'Феи тоже отдыхают',
-      shop0: 'Украшения появятся, когда фея проснётся. А цвет платья видно уже на бутоне!' } },
+      shop0: 'Украшения появятся, когда фея проснётся. А цвет платья видно уже на бутоне!',
+      hit: '✨ Тучка тает!', bossWin: '✨ Туча убежала! Солнышко снова светит!', bossLose: 'Туча спряталась… но мы её прогоним!' } },
 };
 const H = (p = P) => HEROES[p.hero];
 function myDragon(mood, size, cls) {
@@ -1229,11 +1528,11 @@ $('#navShop').onclick = () => leaveGuard(showShop);
 $('#navParent').onclick = () => leaveGuard(askParent);
 $('#navSound').onclick = () => { S.settings.sound = !S.settings.sound; save(); renderHeader(); };
 
-const unlocked = i => S.settings.unlockAll || i === 0 || islState(ISL[i - 1].id).stars >= 2;
+const unlocked = i => S.settings.unlockAll || i === 0 || islState(H().isl[i - 1].id).stars >= 2;
 function recommended() {
-  let i = ISL.findIndex((x, k) => unlocked(k) && islState(x.id).stars < 2);
-  if (i < 0) i = ISL.findIndex((x, k) => unlocked(k) && islState(x.id).stars < 3);
-  return i < 0 ? ISL.length - 1 : i;
+  let i = H().isl.findIndex((x, k) => unlocked(k) && islState(x.id).stars < 2);
+  if (i < 0) i = H().isl.findIndex((x, k) => unlocked(k) && islState(x.id).stars < 3);
+  return i < 0 ? H().isl.length - 1 : i;
 }
 
 // ================= КАРТА =================
@@ -1252,17 +1551,17 @@ function showMap() {
   setScreen('map', `
     <div class="hero">${myDragon('happy', 170)}
       <div><div class="bubble pop">${emo(esc(hello))}</div>
-      <div style="margin-top:14px"><button class="btn acc big" id="goRec">▶ ${ic(ISL[rec].em)} ${ISL[rec].title}</button></div></div></div>
-    ${BLOCKS.map(b => `<section class="block block-${b.id}"><h2>${emo(b.title)}</h2><div class="isl-grid">${ISL.map((x, i) => (x.block === b.id ? card(x, i) : '')).join('')}</div></section>`).join('')}`);
+      <div style="margin-top:14px"><button class="btn acc big" id="goRec">▶ ${ic(H().isl[rec].em)} ${H().isl[rec].title}</button></div></div></div>
+    ${H().blocks.map(b => `<section class="block block-${b.id}"><h2>${emo(b.title)}</h2><div class="isl-grid">${H().isl.map((x, i) => (x.block === b.id ? card(x, i) : '')).join('')}</div></section>`).join('')}`);
   $('#goRec').onclick = () => openIsland(rec);
   $$('.isl').forEach(el => el.onclick = () => {
     const i = +el.dataset.i;
-    if (!unlocked(i)) { modal(`<h2>${ic('lock')} Пока закрыто</h2><p>Получи 2 звезды на острове «${ISL[i - 1].title}», и этот остров откроется!</p>`, [{ text: 'Понятно' }]); return; }
+    if (!unlocked(i)) { modal(`<h2>${ic('lock')} Пока закрыто</h2><p>Получи 2 звезды на острове «${H().isl[i - 1].title}», и этот остров откроется!</p>`, [{ text: 'Понятно' }]); return; }
     openIsland(i);
   });
   renderHeader();
 }
-function openIsland(i) { const isl = ISL[i]; if (!S.introSeen[isl.id]) showIntro(isl); else startRound(isl); }
+function openIsland(i) { const isl = H().isl[i]; if (!S.introSeen[isl.id]) showIntro(isl); else startRound(isl); }
 
 // ================= ВСТУПЛЕНИЕ =================
 function showIntro(isl, back) {
@@ -1280,13 +1579,13 @@ function showIntro(isl, back) {
 let G = null, sinceBreak = 0;
 function startRound(isl) {
   const st = islState(isl.id);
-  G = { isl, d: isl.boss ? 1 : st.lvl, total: isl.boss ? 10 : 8, n: 0, results: [], okRun: 0, badRun: 0, extras: 0, seen: new Set(), hp: 10, streak: 0 };
+  G = { isl, d: isl.boss ? 1 : st.lvl, total: H().rnd[isl.boss ? 1 : 0], n: 0, results: [], okRun: 0, badRun: 0, extras: 0, seen: new Set(), hp: 10, streak: 0 };
   nextTask();
 }
 function makeTask() {
   let t, src = G.isl, d = G.d;
   for (let tries = 0; tries < 12; tries++) {
-    if (G.isl.boss) { src = pick(ISL.filter(x => !x.boss)); d = Math.random() < .3 ? 2 : 1; }
+    if (G.isl.boss) { src = pick(H().isl.filter(x => !x.boss)); d = Math.random() < .3 ? 2 : 1; }
     t = src.gen(d, { factErrors: S.factErrors });
     if (!G.seen.has(t.q)) break;
   }
@@ -1312,23 +1611,26 @@ function answerHTML(t) {
     case 'remainder': return `${lbl}<input class="inp" data-f="q" autocomplete="off"><span>ост.</span><input class="inp sm" data-f="r" autocomplete="off">${btn}`;
     case 'fraction': return `${lbl}${fin('n', 'd')}${btn}`;
     case 'mixed': return `${lbl}<input class="inp sm" data-f="w" autocomplete="off">${fin('n', 'd')}${btn}`;
-    case 'choice': return `<div class="choices">${t.choices.map(c => `<button class="choice ${t.choiceText ? 'txt' : ''}" data-v="${esc(c)}">${rq(c)}</button>`).join('')}</div>`;
+    case 'choice': return `<div class="choices">${t.choices.map(c => `<button class="choice ${t.choiceText ? 'txt' : ''}${t.chView ? ' pic' : ''}${t.choiceBig ? ' big' : ''}" data-v="${esc(c)}">${t.chView ? t.chView[c] : rq(c)}</button>`).join('')}</div>`;
+    case 'collect': return `<span>В корзинке: <b id="colCount">0</b></span>${btn}`;
     case 'shade': return `<span>Закрашено частей: <b id="shCount">0</b></span>${btn}`;
   }
 }
-const usesKeypad = t => !['choice', 'shade'].includes(t.type);
+const usesKeypad = t => !['choice', 'shade', 'collect'].includes(t.type);
 
 function renderTask() {
   const t = G.cur.task, boss = G.isl.boss;
   const dots = range(G.total).map(i => `<i class="${G.results[i] || (i === G.n ? 'cur' : '')}"></i>`).join('');
   let vis = t.visual || '';
+  if (t.type === 'collect') vis = `<div class="collect"><div class="tray" id="tray">${range(t.collect.total).map(i => `<span class="ob drag" draggable="true" data-ci="${i}">${ic(t.collect.k)}</span>`).join('')}</div>
+    <div class="basket" id="basket"><div class="bk-in" id="bkIn"></div>${ic('basket')}</div></div>`;
   if (t.type === 'shade') vis = t.shade.kind === 'pie' ? pie(t.shade.n, [], { click: true, size: 240 }) : bar(t.shade.n, [], { click: true, W: 520, h: 70 });
   setScreen('play', `
     <div class="play-top"><button class="btn ghost" id="toMap">← Карта</button><div class="prog">${dots}</div>
       <div class="lvtag">${ic(G.isl.em)} ${boss ? 'Битва' : 'уровень: ' + LV[G.d]}</div></div>
     <div class="play-main">
       <div class="buddy">
-        ${boss ? `<div class="boss-box" id="bossBox"><div class="troll">${ic('troll')}</div><div class="hp"><i id="hpBar" style="width:${G.hp * 10}%"></i></div></div>` : ''}
+        ${boss ? `<div class="boss-box" id="bossBox"><div class="troll">${ic(G.isl.em)}</div><div class="hp"><i id="hpBar" style="width:${G.hp * 10}%"></i></div></div>` : ''}
         <div class="bubble" id="bubble"></div><div id="buddy">${myDragon('happy', 190)}</div></div>
       <div class="card task">
         <div class="q ${t.long ? 'long' : ''}">${rq(t.q)}</div>
@@ -1346,7 +1648,7 @@ function renderTask() {
     </div>`);
   bubble(G.n === 0 ? pick(['Поехали! Первая задача 👇', 'Начинаем! Ты справишься 💪']) : pick(['Следующая!', 'А теперь эта 👇', 'Дальше!', 'Вперёд!']));
   $('#toMap').onclick = () => leaveGuard(showMap);
-  $('#sayBtn').onclick = () => speak((t.say || t.q) + (t.type === 'choice' && !t.choices.includes('<') ? '. Варианты: ' + t.choices.join(', ') : ''));
+  $('#sayBtn').onclick = () => speak((t.say || t.q) + (t.type === 'choice' && !t.chView && !t.choices.includes('<') ? '. Варианты: ' + t.choices.join(', ') : ''));
   $('#hintBtn').onclick = useHint;
   if ($('#howBtn')) $('#howBtn').onclick = () => modal(`<h2>${ic(G.isl.em)} ${G.isl.title}</h2>${G.isl.intro.map(x => `<p>${rq(x)}</p>`).join('')}<div class="visual">${G.isl.ex()}</div>`, [{ text: ic('sound'), cls: 'ghost', keep: true, fn: () => speak(G.isl.intro.join(' ')) }, { text: 'Понятно ✓' }]);
   if ($('#checkBtn')) $('#checkBtn').onclick = checkAnswer;
@@ -1362,8 +1664,27 @@ function renderTask() {
       $('#shCount').textContent = sh.size; SFX.step();
     });
   }
+  if (t.type === 'collect') bindCollect();
   if (G.cur.stepMode) renderSteps();
   focusNext();
+}
+// корзинка: картинку можно перетащить или просто нажать на неё
+function bindCollect() {
+  const tray = $('#tray'), bin = $('#bkIn'), basket = $('#basket');
+  const move = el => { if (G.cur.done) return; (el.parentNode === bin ? tray : bin).appendChild(el); $('#colCount').textContent = bin.children.length; SFX.step(); };
+  $$('#visual .drag').forEach(el => {
+    el.onclick = () => move(el);
+    el.ondragstart = e => e.dataTransfer.setData('text/plain', el.dataset.ci);
+  });
+  [[basket, bin], [tray, tray]].forEach(([zone, box]) => {
+    zone.ondragover = e => { e.preventDefault(); zone.classList.add('over'); };
+    zone.ondragleave = () => zone.classList.remove('over');
+    zone.ondrop = e => {
+      e.preventDefault(); zone.classList.remove('over');
+      const el = $(`#visual [data-ci="${e.dataTransfer.getData('text/plain')}"]`);
+      if (el && el.parentNode !== box) move(el);
+    };
+  });
 }
 
 function bubble(text, mood, kind) {
@@ -1469,6 +1790,7 @@ function showHintBox() {
 // ---------- проверка ----------
 function readGiven(t) {
   if (t.type === 'shade') return { count: G.cur.shaded.size };
+  if (t.type === 'collect') return { count: $('#bkIn').children.length };
   const g = {};
   $$('#answer .inp').forEach(el => { g[el.dataset.f] = el.value; });
   return g;
@@ -1481,6 +1803,7 @@ function checkAnswer(choiceVal, choiceBtn) {
   else {
     g = readGiven(t);
     if (t.type === 'shade' && g.count === 0) { bubble('Нажимай на части фигуры, чтобы закрасить их 🖌️', 'think'); return; }
+    if (t.type === 'collect' && g.count === 0) { bubble('Перетащи картинки в корзинку 🙂', 'think'); return; }
     const empty = $$('#answer .inp').find(x => !x.value);
     if (empty) { empty.focus(); bubble('Заполни все окошки 🙂', 'think'); return; }
   }
@@ -1505,7 +1828,7 @@ function onCorrect(btn) {
   let msg = pick(['Отлично!', 'Супер!', 'Верно! 🔥', `Так держать, ${S.name}!`, 'Ты молодец!', 'Великолепно!', `${H().t.Who} гордится тобой!`, 'В точку!', 'Правильно! 💎']);
   if (!first) msg = pick(['Получилось! 👍', `Вот это да — ${gg('разобрался', 'разобралась')}!`, `Верно! Ты не ${gg('сдался', 'сдалась')} 💪`]);
   msg += ` +${gain} 💎`;
-  if (G.isl.boss) { G.hp = Math.max(0, G.hp - 1); $('#hpBar').style.width = G.hp * 10 + '%'; const bb = $('#bossBox'); bb.classList.remove('hit'); void bb.offsetWidth; bb.classList.add('hit'); msg = '🔥 Удар по троллю! ' + msg; }
+  if (G.isl.boss) { G.hp = Math.max(0, G.hp - 1); $('#hpBar').style.width = G.hp * 10 + '%'; const bb = $('#bossBox'); bb.classList.remove('hit'); void bb.offsetWidth; bb.classList.add('hit'); msg = H().t.hit + ' ' + msg; }
   adapt(res);
   if (G.adaptMsg) { msg += ' ' + G.adaptMsg; G.adaptMsg = null; }
   bubble(msg, 'happy', 'good');
@@ -1519,7 +1842,7 @@ function onCorrect(btn) {
 function onWrong(g, btn) {
   const c = G.cur, t = c.task;
   c.attempts++; SFX.bad();
-  const els = btn ? [btn] : (t.type === 'shade' ? [$('#visual svg')] : $$('#answer .inp'));
+  const els = btn ? [btn] : (t.type === 'shade' ? [$('#visual svg')] : t.type === 'collect' ? [$('#basket')] : $$('#answer .inp'));
   els.forEach(el => { if (!el) return; el.classList.add('wrong', 'shake'); setTimeout(() => el.classList.remove('shake'), 500); });
   const dmsg = t.diag ? t.diag(g) : null;
   if (c.attempts === 1) {
@@ -1540,6 +1863,7 @@ function onWrong(g, btn) {
   adapt('bad');
   $$('#answer .inp').forEach(el => el.disabled = true);
   $$('#answer .choice').forEach(el => { el.disabled = true; if (el.dataset.v === t.ans) el.classList.add('right'); });
+  if (t.type === 'collect') { $$('#visual .drag').forEach((el, i) => (i < t.ans ? $('#bkIn') : $('#tray')).appendChild(el)); $('#colCount').textContent = t.ans; }
   if (t.type === 'shade') {
     const set = new Set(range(t.ans));
     $$('#visual .sector').forEach(el => el.setAttribute('fill', set.has(+el.dataset.i) ? SH : EMPTY));
@@ -1587,25 +1911,25 @@ function checkStage() {
 function endRound() {
   const isl = G.isl, okc = G.results.filter(r => r === 'ok').length, all = G.results.length;
   const ratio = okc / all, stars = ratio >= .85 ? 3 : ratio >= .6 ? 2 : 1;
-  const idx = ISL.indexOf(isl), wasUnlocked = idx + 1 < ISL.length && unlocked(idx + 1);
+  const idx = H().isl.indexOf(isl), wasUnlocked = idx + 1 < H().isl.length && unlocked(idx + 1);
   const st = Object.assign(islState(isl.id)); st.stars = Math.max(st.stars, stars); st.lvl = G.d; st.rounds++;
   S.islands[isl.id] = st;
   const bonus = stars * 3; S.crystals += bonus;
   save(); renderHeader();
-  const newUnlock = idx + 1 < ISL.length && !wasUnlocked && unlocked(idx + 1);
+  const newUnlock = idx + 1 < H().isl.length && !wasUnlocked && unlocked(idx + 1);
   SFX.win(); if (stars >= 2) confetti(200);
-  const title = isl.boss ? (stars >= 2 ? ic('troll') + ' Тролль побеждён! Сокровища спасены!' : 'Тролль убежал… но мы его догоним!') : stars === 3 ? 'Блестяще!' : stars === 2 ? 'Отличный раунд!' : 'Раунд пройден!';
+  const title = isl.boss ? emo(esc(stars >= 2 ? H().t.bossWin : H().t.bossLose)) : stars === 3 ? 'Блестяще!' : stars === 2 ? 'Отличный раунд!' : 'Раунд пройден!';
   const tip = stars === 1 ? 'Чтобы открыть следующий остров, нужно 2 звезды. Сыграй ещё раз — ты уже знаешь, как решать!' : '';
   setScreen('end', `<div class="center-wrap card">
     <h1 style="margin:0">${title}</h1>${myDragon('happy', 200, 'happy-jump')}
     <div class="end-stars">${[0, 1, 2].map(k => `<span class="${k < stars ? 'on' : ''}">★</span>`).join('')}</div>
     <div style="font-size:24px">С первой попытки: <b>${okc} из ${all}</b> &nbsp;·&nbsp; Бонус: <b>+${bonus} ${ic('crystal')}</b></div>
-    ${newUnlock ? `<div class="bubble good">${ic('party')} Открыт новый остров: ${ic(ISL[idx + 1].em)} <b>${ISL[idx + 1].title}</b>!</div>` : ''}
+    ${newUnlock ? `<div class="bubble good">${ic('party')} Открыт новый остров: ${ic(H().isl[idx + 1].em)} <b>${H().isl[idx + 1].title}</b>!</div>` : ''}
     ${tip ? `<div class="bubble">${tip}</div>` : ''}
     <div class="row-btns">
       <button class="btn ghost big" id="eMap">${ic('map')} Карта</button>
       <button class="btn ${newUnlock ? 'ghost' : 'pri'} big" id="eAgain">${ic('repeat')} Ещё раунд</button>
-      ${idx + 1 < ISL.length && unlocked(idx + 1) ? `<button class="btn ${newUnlock ? 'pri' : 'acc'} big" id="eNext">Дальше: ${ic(ISL[idx + 1].em)} ▶</button>` : ''}
+      ${idx + 1 < H().isl.length && unlocked(idx + 1) ? `<button class="btn ${newUnlock ? 'pri' : 'acc'} big" id="eNext">Дальше: ${ic(H().isl[idx + 1].em)} ▶</button>` : ''}
     </div></div>`);
   $('#eMap').onclick = showMap;
   $('#eAgain').onclick = () => startRound(isl);
@@ -1683,14 +2007,14 @@ function showParent() {
   const maxSec = Math.max(60, ...days.map(d => d.sec));
   const week = days.slice(7).reduce((a, d) => a + d.sec, 0);
   const accCls = p => (p >= 80 ? 'acc-good' : p >= 55 ? 'acc-mid' : 'acc-bad');
-  const rows = ISL.filter(x => !x.boss).map((x, i) => {
+  const rows = H().isl.filter(x => !x.boss).map((x, i) => {
     const s = S.stats[x.id] || { ok: 0, meh: 0, bad: 0 }, n = s.ok + s.meh + s.bad, st = islState(x.id);
     const p = n ? Math.round(s.ok / n * 100) : null;
     return `<tr><td>${i + 1}. ${ic(x.em)} ${x.title}</td><td>${'★'.repeat(st.stars)}${'☆'.repeat(3 - st.stars)}</td><td>${st.rounds ? LV[st.lvl] : '—'}</td><td>${n}</td>
       <td class="${p == null ? '' : accCls(p)}">${p == null ? '—' : p + '%'}</td><td>${s.meh}</td><td>${s.bad}</td></tr>`;
   }).join('');
   const facts = Object.entries(S.factErrors).filter(e => e[1] > 0).sort((a, b) => b[1] - a[1]).slice(0, 16);
-  const islName = id => (ISL.find(x => x.id === id) || { title: id }).title;
+  const islName = id => (H().isl.find(x => x.id === id) || { title: id }).title;
   const set = S.settings;
   setScreen('parent', `<div class="parent">
     <h1>${ic('family')} Панель родителя</h1>
@@ -1707,8 +2031,8 @@ function showParent() {
     <h2>Темы</h2>
     <table><tr><th>Остров</th><th>Звёзды</th><th>Уровень</th><th>Задач</th><th>С 1-й попытки</th><th>С подсказкой / 2-й попытки</th><th>Не решено</th></tr>${rows}</table>
     <p style="font-size:16px;color:var(--muted)">Ниже 55% с первой попытки — тема требует внимания. Уровень меняется сам: после 3 верных ответов подряд задачи усложняются, после 2 ошибок подряд упрощаются.</p>
-    <h2>Трудные примеры таблицы умножения</h2>
-    ${facts.length ? `<div class="chips">${facts.map(([k, v]) => `<span class="chip">${k.replace('x', ' × ')} — ${v} ${plur(v, 'ошибка', 'ошибки', 'ошибок')}</span>`).join('')}</div><p style="font-size:16px;color:var(--muted)">Эти примеры чаще попадаются на острове «Разминка». После верного ответа с первой попытки счётчик уменьшается.</p>` : `<p>Пока нет ${ic('party')}</p>`}
+    ${P.hero === 'dragon' ? `<h2>Трудные примеры таблицы умножения</h2>
+    ${facts.length ? `<div class="chips">${facts.map(([k, v]) => `<span class="chip">${k.replace('x', ' × ')} — ${v} ${plur(v, 'ошибка', 'ошибки', 'ошибок')}</span>`).join('')}</div><p style="font-size:16px;color:var(--muted)">Эти примеры чаще попадаются на острове «Разминка». После верного ответа с первой попытки счётчик уменьшается.</p>` : `<p>Пока нет ${ic('party')}</p>`}` : ''}
     <h2>Последние ошибки</h2>
     ${S.mistakes.length ? `<table><tr><th>Когда</th><th>Тема</th><th>Задача</th><th>Ответ ребёнка</th><th>Верно</th></tr>${S.mistakes.slice(0, 25).map(m => `<tr><td>${new Date(m.t).toLocaleString('ru', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</td><td>${esc(islName(m.isl))}</td><td>${rq(m.q)}</td><td style="color:var(--bad)">${rq(m.given)}</td><td style="color:var(--ok)">${rq(m.right)}</td></tr>`).join('')}</table>` : '<p>Ошибок пока нет.</p>'}
     <h2>Настройки</h2>
@@ -1754,7 +2078,11 @@ function showParent() {
     const f = e.target.files[0]; if (!f) return;
     const rd = new FileReader();
     rd.onload = () => {
-      try { const s = JSON.parse(rd.result); if (typeof s.xp !== 'number') throw 0; localStorage.setItem(P.key, JSON.stringify(s)); S = load(); renderHeader(); showParent(); modal('<h2>Готово</h2><p>Прогресс загружен.</p>', [{ text: 'OK' }]); }
+      try {
+        const s = JSON.parse(rd.result); if (typeof s.xp !== 'number') throw 0;
+        const hero = s.equipped && /^f_/.test(s.equipped.color) ? 'fairy' : 'dragon';
+        if (hero !== P.hero) { modal(`<h2>Это файл другого ребёнка</h2><p>В этом файле ${HEROES[hero].t.who}, а сейчас открыта вкладка «${esc(S.name)}». Переключитесь на вкладку нужного ребёнка и загрузите файл там.</p>`, [{ text: 'OK' }]); return; }
+        localStorage.setItem(P.key, JSON.stringify(s)); S = load(); renderHeader(); showParent(); modal('<h2>Готово</h2><p>Прогресс загружен.</p>', [{ text: 'OK' }]); }
       catch (err) { modal('<h2>Не получилось</h2><p>Этот файл не похож на сохранение прогресса.</p>', [{ text: 'OK' }]); }
     };
     rd.readAsText(f);
@@ -1829,7 +2157,7 @@ document.addEventListener('keydown', e => {
     e.preventDefault();
     if (c.done) return goNext();
     if (ae && ae.classList.contains('inp')) return submitFrom(ae);
-    if (c.task.type === 'shade') return checkAnswer();
+    if (c.task.type === 'shade' || c.task.type === 'collect') return checkAnswer();
     return;
   }
   if (c.done) return;
