@@ -963,7 +963,7 @@ function modal(html, btns) {
   bg.innerHTML = `<div class="modal">${html}<div class="row-btns">${btns.map((b, i) => `<button class="btn ${b.cls || 'pri'}" data-i="${i}">${b.text}</button>`).join('')}</div></div>`;
   document.body.appendChild(bg);
   const close = () => { bg.remove(); document.removeEventListener('keydown', onKey, true); };
-  const onKey = e => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); const b = btns[btns.length - 1]; close(); b.fn && b.fn(); } };
+  const onKey = e => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); bg.querySelector(`button[data-i="${btns.length - 1}"]`).click(); } };
   document.addEventListener('keydown', onKey, true);
   bg.querySelectorAll('button[data-i]').forEach(el => el.onclick = () => { const b = btns[+el.dataset.i]; if (b.keep) { b.fn && b.fn(bg, close); return; } close(); b.fn && b.fn(); });
   const inp = bg.querySelector('input'); if (inp) setTimeout(() => inp.focus(), 50);
@@ -1428,11 +1428,10 @@ function showShop() {
 // ================= РОДИТЕЛЯМ =================
 function askParent() {
   const a = R(6, 9), b = R(6, 9), c = R(11, 39);
-  const m = modal(`<h2>Для взрослых</h2><p>Сколько будет ${a} × ${b} + ${c}?</p><input class="inp" id="pin" style="width:160px">`, [
+  modal(`<h2>Для взрослых</h2><p>Сколько будет ${a} × ${b} + ${c}?</p><input class="inp" id="pin" style="width:160px">`, [
     { text: 'Отмена', cls: 'ghost' },
     { text: 'Войти', keep: true, fn: (bg, close) => { if (+bg.querySelector('#pin').value === a * b + c) { close(); showParent(); } else bg.querySelector('#pin').classList.add('wrong', 'shake'); } },
   ]);
-  m.bg.querySelector('#pin').addEventListener('keydown', e => { if (e.key === 'Enter') { e.stopPropagation(); m.bg.querySelector('button[data-i="1"]').click(); } });
 }
 function fmtMin(sec) { const m = Math.round(sec / 60); return m < 60 ? m + ' мин' : Math.floor(m / 60) + ' ч ' + (m % 60) + ' мин'; }
 function showParent() {
