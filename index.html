@@ -171,6 +171,13 @@ main{max-width:1280px;margin:0 auto;padding:20px}
 .bk-in{position:absolute;left:8%;right:8%;bottom:58%;font-size:30px;line-height:1;display:flex;flex-wrap:wrap-reverse;justify-content:center}
 .block-G{background:#fdeef6} .block-H{background:#e6f4fb} .block-J{background:#f3edfd} .block-K{background:#eef0f3}
 
+/* ---------- магазин: разделы и награды ---------- */
+details.sl>summary{font-size:22px;font-weight:bold;margin:18px 0 10px;cursor:pointer;list-style-position:inside}
+details.sl>summary span{font-size:15px;font-weight:normal;color:var(--muted)}
+.item .cond{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.25}
+.item .itempic{display:block;margin:0 auto}
+.award-pic{display:flex;justify-content:center;font-size:110px;margin:6px 0}
+
 /* ---------- выбор игрока и PIN ---------- */
 body.no-profile #hdrDragon,body.no-profile #crystals,body.no-profile #navMap,body.no-profile #navShop,body.no-profile #navSound,body.no-profile #navSwitch{display:none}
 .who{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:10px}
@@ -1236,6 +1243,10 @@ const COLORS = {
   c_purple: { main: '#a77be0', belly: '#eadcfb', dark: '#6f48a8' },
   c_red: { main: '#f0745e', belly: '#ffe0d6', dark: '#b84a39' },
   c_gold: { main: '#f5c242', belly: '#fff3c4', dark: '#c48f12' },
+  c_teal: { main: '#3fc1b0', belly: '#d3f5ef', dark: '#22877a' },
+  c_pink: { main: '#f58fc0', belly: '#ffe0ef', dark: '#c95b92' },
+  c_ice: { main: '#a9dcf5', belly: '#f0fbff', dark: '#5fa7cf' },
+  c_night: { main: '#4a4f7a', belly: '#c9cde8', dark: '#2b2f52' },
 };
 const SHOP = [
   { id: 'c_green', slot: 'color', name: 'Зелёный', price: 0, ic: 'dot' },
@@ -1253,8 +1264,43 @@ const SHOP = [
   { id: 'n_scarf', slot: 'neck', name: 'Шарф', price: 30, ic: 'scarf' },
   { id: 'w_rainbow', slot: 'wings', name: 'Радужные крылья', price: 80, ic: 'rainbow' },
   { id: 'x_fire', slot: 'extra', name: 'Огненное дыхание', price: 150, ic: 'fire' },
+  { id: 'c_teal', slot: 'color', name: 'Бирюзовый', price: 50, ic: 'dot' },
+  { id: 'c_pink', slot: 'color', name: 'Розовый', price: 50, ic: 'dot' },
+  { id: 'c_ice', slot: 'color', name: 'Ледяной', price: 70, ic: 'dot' },
+  { id: 'c_night', slot: 'color', name: 'Ночной', price: 90, ic: 'dot' },
+  { id: 'p_spots', slot: 'pat', name: 'Пятнышки', price: 40 },
+  { id: 'p_stripes', slot: 'pat', name: 'Полоски', price: 40 },
+  { id: 'p_zigzag', slot: 'pat', name: 'Зигзаги', price: 50 },
+  { id: 'p_stars', slot: 'pat', name: 'Звёздочки', price: 60 },
+  { id: 'h_beanie', slot: 'hat', name: 'Шапка с помпоном', price: 45 },
+  { id: 'h_cowboy', slot: 'hat', name: 'Ковбойская шляпа', price: 60 },
+  { id: 'h_pirate', slot: 'hat', name: 'Пиратская шляпа', price: 70 },
+  { id: 'h_knight', slot: 'hat', name: 'Рыцарский шлем', price: 90 },
+  { id: 'h_victory', slot: 'hat', name: 'Корона победителя', award: { type: 'boss' }, cond: 'Победи тролля' },
+  { id: 'e_monocle', slot: 'eyes', name: 'Монокль', price: 40 },
+  { id: 'e_stars', slot: 'eyes', name: 'Очки-звёздочки', price: 50 },
+  { id: 'e_mask', slot: 'eyes', name: 'Маска супергероя', price: 60 },
+  { id: 'n_tie', slot: 'neck', name: 'Галстук', price: 35 },
+  { id: 'n_medal', slot: 'neck', name: 'Медаль', price: 50 },
+  { id: 'n_cape', slot: 'neck', name: 'Плащ супергероя', price: 120 },
+  { id: 'w_bat', slot: 'wings', name: 'Крылья летучей мыши', price: 110 },
+  { id: 'w_fire', slot: 'wings', name: 'Огненные крылья', price: 140 },
+  { id: 'w_ice', slot: 'wings', name: 'Ледяные крылья', price: 140 },
+  { id: 'w_gold', slot: 'wings', name: 'Золотые крылья', award: { type: 'block', block: 'A' }, cond: 'Получи 3 звезды на всех Огненных островах' },
+  { id: 'x_ice', slot: 'extra', name: 'Ледяное дыхание', price: 160 },
+  { id: 'x_bolt', slot: 'extra', name: 'Молнии', price: 180 },
+  { id: 'x_rainbow', slot: 'extra', name: 'Радужное дыхание', price: 220 },
+  { id: 'pet_firefly', slot: 'pet', name: 'Светлячок', price: 90 },
+  { id: 'pet_turtle', slot: 'pet', name: 'Черепашка', price: 100 },
+  { id: 'pet_cat', slot: 'pet', name: 'Котёнок', price: 120 },
+  { id: 'pet_owl', slot: 'pet', name: 'Совёнок', price: 130 },
+  { id: 'pet_baby', slot: 'pet', name: 'Дракончик', award: { type: 'stars3', n: 10 }, cond: 'Получи 3 звезды на 10 островах' },
+  { id: 'bg_cave', slot: 'bg', name: 'Пещера с кристаллами', price: 120 },
+  { id: 'bg_castle', slot: 'bg', name: 'Замок', price: 150 },
+  { id: 'bg_volcano', slot: 'bg', name: 'Вулкан', price: 150 },
+  { id: 'bg_night', slot: 'bg', name: 'Ночное небо', price: 180 },
 ];
-const SLOTS = { color: 'Цвет', hat: 'На голову', eyes: 'Очки', neck: 'На шею', wings: 'Крылья', extra: 'Суперсила' };
+const SLOTS = { color: 'Цвет', pat: 'Узор', hat: 'На голову', eyes: 'Очки и маски', neck: 'На шею', wings: 'Крылья', extra: 'Суперсила', pet: 'Питомец', bg: 'Фон' };
 
 function dragonSVG(stage, eq, mood, o = {}) {
   eq = eq || {}; const c = COLORS[eq.color] || COLORS.c_green, sz = o.size || 200, cls = o.cls || '';
@@ -1271,8 +1317,7 @@ function dragonSVG(stage, eq, mood, o = {}) {
   const mouth = mood === 'think' ? `<path d="M93 106 Q100 103 107 106" stroke="${c.dark}" stroke-width="3" fill="none" stroke-linecap="round"/>`
     : mood === 'wow' ? `<ellipse cx="100" cy="106" rx="5" ry="6" fill="${c.dark}"/>`
     : `<path d="M90 103 Q100 114 110 103" stroke="${c.dark}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
-  const wingFill = eq.wings === 'w_rainbow' ? 'url(#rbw)' : c.dark;
-  const wing = `<path d="M64 128 Q22 112 16 66 Q40 82 50 76 Q52 96 72 104 Z" fill="${wingFill}" opacity=".95"/>`;
+  const wing = dWing(eq.wings, c), pid = 'dp' + (++SVGID);
   const hats = {
     h_party: `<path d="M100 6 L82 52 L118 52 Z" fill="#ff6fae"/><circle cx="100" cy="6" r="6" fill="#ffd23f"/><circle cx="94" cy="38" r="3" fill="#fff"/><circle cx="104" cy="26" r="3" fill="#fff"/><circle cx="108" cy="44" r="3" fill="#fff"/>`,
     h_cap: `<path d="M68 56 Q70 22 102 22 Q132 26 132 56 Z" fill="#e63946"/><path d="M126 52 Q150 46 160 58 Q140 62 124 58 Z" fill="#b5212e"/><circle cx="101" cy="23" r="4" fill="#b5212e"/>`,
@@ -1288,7 +1333,7 @@ function dragonSVG(stage, eq, mood, o = {}) {
     n_bow: `<path d="M100 121 L83 111 L83 131 Z M100 121 L117 111 L117 131 Z" fill="#7b5cff"/><circle cx="100" cy="121" r="5" fill="#5a3fe0"/>`,
   };
   return `<svg class="dragon ${cls}" viewBox="0 0 200 200" width="${sz}" height="${sz}">
-    <defs><linearGradient id="rbw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5e5e"/><stop offset=".35" stop-color="#ffd23f"/><stop offset=".65" stop-color="#4fd18b"/><stop offset="1" stop-color="#5a8dff"/></linearGradient>
+    <defs>${GRADS}
     <radialGradient id="aura"><stop offset=".55" stop-color="#fff3b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff3b0" stop-opacity="0"/></radialGradient></defs>
     ${stage === 4 ? '<circle cx="100" cy="110" r="96" fill="url(#aura)"/>' : ''}
     <ellipse cx="100" cy="191" rx="${50 * s}" ry="7" fill="rgba(0,0,0,.12)"/>
@@ -1296,14 +1341,17 @@ function dragonSVG(stage, eq, mood, o = {}) {
       <path d="M132 160 Q178 172 176 128 Q175 112 186 104" stroke="${c.main}" stroke-width="16" fill="none" stroke-linecap="round"/>
       <path d="M180 100 L198 90 L194 114 Z" fill="${c.dark}"/>
       ${stage >= 2 ? wing + `<g transform="translate(200 0) scale(-1 1)">${wing}</g>` : ''}
+      ${backOf(DX, eq, c)}
       <ellipse cx="78" cy="182" rx="15" ry="9" fill="${c.dark}"/><ellipse cx="122" cy="182" rx="15" ry="9" fill="${c.dark}"/>
       <ellipse cx="100" cy="142" rx="44" ry="40" fill="${c.main}"/>
+      ${DX.pat[eq.pat] ? `<clipPath id="${pid}"><ellipse cx="100" cy="142" rx="44" ry="40"/></clipPath><g clip-path="url(#${pid})">${DX.pat[eq.pat](c)}</g>` : ''}
       <ellipse cx="100" cy="150" rx="27" ry="28" fill="${c.belly}"/>
       <path d="M80 138 Q100 144 120 138 M77 152 Q100 158 123 152 M80 166 Q100 171 120 166" stroke="${c.main}" opacity=".5" stroke-width="2.5" fill="none"/>
       <ellipse cx="64" cy="146" rx="9" ry="14" fill="${c.main}" transform="rotate(25 64 146)"/><ellipse cx="136" cy="146" rx="9" ry="14" fill="${c.main}" transform="rotate(-25 136 146)"/>
       ${stage >= 2 ? `<path d="M76 58 Q62 40 64 24 Q78 40 88 52 Z" fill="#f6e7b8" stroke="#d9c48a" stroke-width="2"/><path d="M124 58 Q138 40 136 24 Q122 40 112 52 Z" fill="#f6e7b8" stroke="#d9c48a" stroke-width="2"/>` : ''}
       ${stage >= 3 ? `<polygon points="86,54 93,34 100,52 107,34 114,54" fill="${c.dark}"/>` : ''}
       <ellipse cx="100" cy="82" rx="40" ry="35" fill="${c.main}"/>
+      ${DX.pat[eq.pat] ? `<clipPath id="${pid}h"><ellipse cx="100" cy="82" rx="40" ry="35"/></clipPath><g clip-path="url(#${pid}h)">${DX.pat[eq.pat](c)}</g>` : ''}
       <ellipse cx="100" cy="99" rx="21" ry="13" fill="${c.belly}"/>
       <ellipse cx="93" cy="96" rx="2.5" ry="2" fill="${c.dark}"/><ellipse cx="107" cy="96" rx="2.5" ry="2" fill="${c.dark}"/>
       <ellipse cx="84" cy="76" rx="10" ry="11" fill="#fff"/><ellipse cx="116" cy="76" rx="10" ry="11" fill="#fff"/>
@@ -1311,8 +1359,8 @@ function dragonSVG(stage, eq, mood, o = {}) {
       <circle cx="88" cy="75" r="2" fill="#fff"/><circle cx="120" cy="75" r="2" fill="#fff"/>
       <ellipse cx="70" cy="94" rx="6" ry="4" fill="#ff9aa2" opacity=".6"/><ellipse cx="130" cy="94" rx="6" ry="4" fill="#ff9aa2" opacity=".6"/>
       ${mouth}
-      ${neck[eq.neck] || ''}${eyes[eq.eyes] || ''}${hats[eq.hat] || ''}
-      ${eq.extra === 'x_fire' ? `<g class="flame"><path d="M80 102 Q56 92 40 104 Q52 106 44 116 Q60 110 64 118 Q70 108 80 106 Z" fill="#ff9f1c"/><path d="M76 103 Q62 99 54 106 Q64 108 60 113 Q70 108 76 105Z" fill="#ffd23f"/></g>` : ''}
+      ${neck[eq.neck] || accOf(DX.neck, eq.neck, c)}${eyes[eq.eyes] || accOf(DX.eyes, eq.eyes, c)}${hats[eq.hat] || accOf(DX.hat, eq.hat, c)}
+      ${eq.extra === 'x_fire' ? `<g class="flame"><path d="M80 102 Q56 92 40 104 Q52 106 44 116 Q60 110 64 118 Q70 108 80 106 Z" fill="#ff9f1c"/><path d="M76 103 Q62 99 54 106 Q64 108 60 113 Q70 108 76 105Z" fill="#ffd23f"/></g>` : ''}${accOf(DX.extra, eq.extra, c)}
     </g>
     ${stage === 4 ? '<use href="#i-sparkle" x="10" y="20" width="26" height="26"/><use href="#i-sparkle" x="152" y="44" width="20" height="20"/>' : ''}</svg>`;
 }
@@ -1323,6 +1371,10 @@ const FCOLORS = {
   f_lilac: { main: '#b48ef0', light: '#ece2fd', dark: '#7b5cc9' },
   f_mint: { main: '#6fd6a8', light: '#d6f7e8', dark: '#2fa577' },
   f_gold: { main: '#f5c242', light: '#fff3c4', dark: '#c48f12' },
+  f_peach: { main: '#ffb48a', light: '#ffe6d6', dark: '#e07f52' },
+  f_teal: { main: '#3fc1b0', light: '#d3f5ef', dark: '#22877a' },
+  f_rainbow: { main: 'url(#fdrb)', light: '#ffffff', dark: '#b48ef0' },
+  f_starry: { main: '#3f3a8c', light: '#8f86e0', dark: '#2b2766' },
 };
 const FSHOP = [
   { id: 'f_pink', slot: 'color', name: 'Розовое', price: 0, ic: 'dot' },
@@ -1339,8 +1391,40 @@ const FSHOP = [
   { id: 'f_rainbow', slot: 'wings', name: 'Радужные крылья', price: 80, ic: 'rainbow' },
   { id: 'f_starw', slot: 'wings', name: 'Звёздные крылья', price: 90, ic: 'starwings' },
   { id: 'f_wand', slot: 'extra', name: 'Волшебная палочка', price: 150, ic: 'wand' },
+  { id: 'f_peach', slot: 'color', name: 'Персиковое', price: 50, ic: 'dot' },
+  { id: 'f_teal', slot: 'color', name: 'Бирюзовое', price: 50, ic: 'dot' },
+  { id: 'f_rainbow', slot: 'color', name: 'Радужное', price: 180, ic: 'rainbow' },
+  { id: 'f_starry', slot: 'color', name: 'Звёздное', ic: 'star', award: { type: 'stars3', n: 8 }, cond: 'Получи 3 звезды на 8 островах' },
+  { id: 'fp_dots', slot: 'pat', name: 'Горошек', price: 35 },
+  { id: 'fp_stripes', slot: 'pat', name: 'Полоски', price: 35 },
+  { id: 'fp_flowers', slot: 'pat', name: 'Цветочки', price: 45 },
+  { id: 'fp_stars', slot: 'pat', name: 'Звёздочки', price: 50 },
+  { id: 'f_flower', slot: 'hat', name: 'Цветок в волосах', price: 35 },
+  { id: 'f_cat', slot: 'hat', name: 'Ушки котика', price: 45 },
+  { id: 'f_clips', slot: 'hat', name: 'Заколки-бабочки', price: 50 },
+  { id: 'f_astro', slot: 'hat', name: 'Колпак звездочёта', price: 70 },
+  { id: 'f_sun', slot: 'hat', name: 'Солнечная корона', award: { type: 'boss' }, cond: 'Прогони тучу' },
+  { id: 'f_hearts', slot: 'eyes', name: 'Очки-сердечки', price: 45 },
+  { id: 'f_mask', slot: 'eyes', name: 'Маскарадная маска', price: 60 },
+  { id: 'f_scarf', slot: 'neck', name: 'Шарфик', price: 35 },
+  { id: 'f_shell', slot: 'neck', name: 'Ожерелье-ракушка', price: 45 },
+  { id: 'f_pearls', slot: 'neck', name: 'Жемчуг', price: 50 },
+  { id: 'f_drag', slot: 'wings', name: 'Стрекозиные крылья', price: 110 },
+  { id: 'f_bfly', slot: 'wings', name: 'Крылья бабочки', price: 120 },
+  { id: 'f_goldw', slot: 'wings', name: 'Золотые крылья', price: 150 },
+  { id: 'f_bubbles', slot: 'extra', name: 'Мыльные пузыри', price: 100 },
+  { id: 'f_glitter', slot: 'extra', name: 'Облако блёсток', price: 120 },
+  { id: 'f_rbarc', slot: 'extra', name: 'Радуга над головой', price: 180 },
+  { id: 'fp_hedge', slot: 'pet', name: 'Ёжик', price: 100 },
+  { id: 'fp_bunny', slot: 'pet', name: 'Зайчик', price: 110 },
+  { id: 'fp_kitten', slot: 'pet', name: 'Котёнок', price: 120 },
+  { id: 'fp_unicorn', slot: 'pet', name: 'Единорожка', award: { type: 'block', block: 'G' }, cond: 'Получи 3 звезды на всей Цветочной поляне' },
+  { id: 'fbg_meadow', slot: 'bg', name: 'Цветочная поляна', price: 100 },
+  { id: 'fbg_mush', slot: 'bg', name: 'Грибной домик', price: 140 },
+  { id: 'fbg_cloud', slot: 'bg', name: 'Замок в облаках', price: 160 },
+  { id: 'fbg_sea', slot: 'bg', name: 'Подводное царство', price: 160 },
 ];
-const FSLOTS = { color: 'Платье', hat: 'На голову', neck: 'На шею', wings: 'Крылья', extra: 'Волшебство' };
+const FSLOTS = { color: 'Платье', pat: 'Узор платья', hat: 'На голову', eyes: 'Очки и маски', neck: 'На шею', wings: 'Крылья', extra: 'Волшебство', pet: 'Питомец', bg: 'Фон' };
 const starPts = (cx, cy, r) => range(10).map(k => { const a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * .45 : r; return `${(cx + rr * Math.cos(a)).toFixed(1)},${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join(' ');
 
 function fairySVG(stage, eq, mood, o = {}) {
@@ -1349,7 +1433,7 @@ function fairySVG(stage, eq, mood, o = {}) {
     // бутон: фея спит внутри; когда скоро раскроется — открывает глаза и светится
     const eyes = o.crack ? '<circle cx="91" cy="100" r="3.2" fill="#1d2433"/><circle cx="109" cy="100" r="3.2" fill="#1d2433"/><circle cx="92" cy="99" r="1.1" fill="#fff"/><circle cx="110" cy="99" r="1.1" fill="#fff"/>'
       : `<path d="M86 100 Q91 104 96 100 M104 100 Q109 104 114 100" stroke="${c.dark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
-    return `<svg class="dragon egg ${cls}" viewBox="0 0 200 200" width="${sz}" height="${sz}">
+    return `<svg class="dragon egg ${cls}" viewBox="0 0 200 200" width="${sz}" height="${sz}"><defs>${GRADS}</defs>
       <ellipse cx="100" cy="188" rx="40" ry="7" fill="rgba(0,0,0,.12)"/>
       ${o.crack ? '<circle cx="100" cy="88" r="62" fill="#fff3b0" opacity=".55"/>' : ''}
       <path d="M100 186 Q95 160 100 130" stroke="#4fae6a" stroke-width="7" fill="none" stroke-linecap="round"/>
@@ -1367,13 +1451,7 @@ function fairySVG(stage, eq, mood, o = {}) {
     : mood === 'wow' ? '<ellipse cx="100" cy="95" rx="3.5" ry="4.5" fill="#c0566e"/>'
     : '<path d="M92 92 Q100 100 108 92" stroke="#c0566e" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
   // крылья: с 2-й стадии; узор и размер растут вместе с феей
-  const wf = eq.wings === 'f_rainbow' ? 'url(#frbw)' : eq.wings === 'f_starw' ? '#ece6ff' : 'rgba(200,232,252,.9)';
-  const ws = eq.wings === 'f_starw' ? '#b48ef0' : stage === 4 ? '#e6b422' : '#8fcaf0';
-  const big = stage >= 3 ? 1.12 : 1;
-  const wingStars = eq.wings === 'f_starw' ? `<polygon points="${starPts(52, 98, 6)}" fill="#ffd23f"/><polygon points="${starPts(68, 116, 4)}" fill="#ffd23f"/><polygon points="${starPts(62, 142, 4)}" fill="#ffd23f"/>` : '';
-  const veins = stage >= 3 && eq.wings !== 'f_rainbow' ? `<path d="M96 120 Q70 104 44 94 M96 124 Q76 132 58 146" stroke="${ws}" stroke-width="1.5" fill="none" opacity=".7"/>` : '';
-  const wing = `<g transform="translate(96 122) scale(${big}) translate(-96 -122)"><ellipse cx="60" cy="102" rx="38" ry="22" fill="${wf}" stroke="${ws}" stroke-width="2" transform="rotate(-28 60 102)"/>
-    <ellipse cx="70" cy="140" rx="24" ry="14" fill="${wf}" stroke="${ws}" stroke-width="2" transform="rotate(24 70 140)"/>${veins}${wingStars}</g>`;
+  const wing = fWing(eq.wings, stage), pid = 'fp' + (++SVGID);
   const hats = {
     f_wreath: [[74, 52, '#ff8fc4'], [86, 44, '#ffd23f'], [100, 41, '#7cc0ef'], [114, 44, '#ff8fc4'], [126, 52, '#b48ef0']].map(([x, y, col]) =>
       `<circle cx="${x}" cy="${y}" r="7" fill="${col}"/><circle cx="${x}" cy="${y}" r="2.6" fill="#fff6c2"/>`).join('') + '<ellipse cx="80" cy="46" rx="5" ry="2.5" fill="#5cc27a" transform="rotate(-30 80 46)"/><ellipse cx="120" cy="46" rx="5" ry="2.5" fill="#5cc27a" transform="rotate(30 120 46)"/>',
@@ -1389,19 +1467,21 @@ function fairySVG(stage, eq, mood, o = {}) {
   const leaves = stage >= 3 ? [68, 84, 100, 116, 132].map((x, i) => `<ellipse cx="${x}" cy="${177 - Math.abs(i - 2) * 2}" rx="7" ry="4" fill="#6fd68a" transform="rotate(${(i - 2) * 12} ${x} 177)"/>`).join('') : '';
   const glitter = stage === 4 ? [[88, 140], [110, 150], [96, 162], [118, 168], [80, 164]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2" fill="#fff" opacity=".9"/>`).join('') : '';
   return `<svg class="dragon ${cls}" viewBox="0 0 200 200" width="${sz}" height="${sz}">
-    <defs><linearGradient id="frbw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9a9a"/><stop offset=".35" stop-color="#ffe17a"/><stop offset=".65" stop-color="#8fe6b4"/><stop offset="1" stop-color="#9ab8ff"/></linearGradient>
+    <defs>${GRADS}
     <radialGradient id="faura"><stop offset=".55" stop-color="#ffe3f2" stop-opacity=".9"/><stop offset="1" stop-color="#ffe3f2" stop-opacity="0"/></radialGradient></defs>
     ${stage === 4 ? '<circle cx="100" cy="110" r="96" fill="url(#faura)"/>' : ''}
     <ellipse cx="100" cy="191" rx="${40 * s}" ry="7" fill="rgba(0,0,0,.12)"/>
     <g transform="translate(100 190) scale(${s}) translate(-100 -190)">
+      ${backOf(FX, eq, c)}
       ${stage >= 2 ? wing + `<g transform="translate(200 0) scale(-1 1)">${wing}</g>` : ''}
       <ellipse cx="100" cy="86" rx="35" ry="38" fill="${hair}"/>
       <rect x="91" y="160" width="7" height="22" rx="3" fill="${skin}"/><rect x="102" y="160" width="7" height="22" rx="3" fill="${skin}"/>
       <ellipse cx="93" cy="184" rx="9" ry="5" fill="${c.dark}"/><ellipse cx="107" cy="184" rx="9" ry="5" fill="${c.dark}"/>
       <path d="M88 110 Q76 124 72 140" stroke="${skin}" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M112 110 Q124 124 128 140" stroke="${skin}" stroke-width="8" fill="none" stroke-linecap="round"/>
       <circle cx="72" cy="141" r="5.5" fill="${skin}"/><circle cx="128" cy="141" r="5.5" fill="${skin}"/>
-      <path d="M86 106 Q100 100 114 106 L117 126 L138 172 Q100 186 62 172 L83 126 Z" fill="${c.main}"/>
+      <path d="${FDRESS}" fill="${c.main}"/>
       <path d="M83 126 L117 126 L138 172 Q100 186 62 172 Z" fill="${c.light}" opacity=".35"/>
+      ${FX.pat[eq.pat] || eq.color === 'f_starry' ? `<clipPath id="${pid}"><path d="${FDRESS}"/></clipPath><g clip-path="url(#${pid})">${accOf(FX.pat, eq.pat, c)}${eq.color === 'f_starry' ? STARRY : ''}</g>` : ''}
       <rect x="82" y="122" width="36" height="6" rx="3" fill="${c.dark}"/>
       ${leaves}${glitter}
       <rect x="96" y="98" width="8" height="10" fill="${skin}"/>
@@ -1415,20 +1495,164 @@ function fairySVG(stage, eq, mood, o = {}) {
       ${mood === 'think' ? '<path d="M83 70 Q89 67 95 70 M105 70 Q111 67 117 70" stroke="#b07a3a" stroke-width="2" fill="none" stroke-linecap="round"/>' : ''}
       <ellipse cx="80" cy="89" rx="6" ry="4" fill="#ff9aa2" opacity=".6"/><ellipse cx="120" cy="89" rx="6" ry="4" fill="#ff9aa2" opacity=".6"/>
       ${mouth}
-      ${neck[eq.neck] || ''}${hats[eq.hat] || ''}
-      ${eq.extra === 'f_wand' ? `<g class="twinkle"><path d="M128 142 L152 106" stroke="#a0663a" stroke-width="4" stroke-linecap="round"/><polygon points="${starPts(154, 102, 11)}" fill="#ffd23f" stroke="#e6b422" stroke-width="1.5"/><circle cx="168" cy="92" r="2.5" fill="#ffd23f"/><circle cx="142" cy="88" r="2" fill="#ff8fc4"/><circle cx="166" cy="114" r="2" fill="#7cc0ef"/></g>` : ''}
+      ${neck[eq.neck] || accOf(FX.neck, eq.neck, c)}${accOf(FX.eyes, eq.eyes, c)}${hats[eq.hat] || accOf(FX.hat, eq.hat, c)}
+      ${eq.extra === 'f_wand' ? `<g class="twinkle"><path d="M128 142 L152 106" stroke="#a0663a" stroke-width="4" stroke-linecap="round"/><polygon points="${starPts(154, 102, 11)}" fill="#ffd23f" stroke="#e6b422" stroke-width="1.5"/><circle cx="168" cy="92" r="2.5" fill="#ffd23f"/><circle cx="142" cy="88" r="2" fill="#ff8fc4"/><circle cx="166" cy="114" r="2" fill="#7cc0ef"/></g>` : ''}${accOf(FX.extra, eq.extra, c)}
     </g>
     ${stage === 4 ? '<use href="#i-sparkle" x="12" y="20" width="26" height="26"/><use href="#i-sparkle" x="156" y="40" width="22" height="22"/><use href="#i-sparkle" x="24" y="120" width="16" height="16"/>' : ''}</svg>`;
 }
 
+// ---------- новые вещи: рисуются в координатах героя 200×200 ----------
+let SVGID = 0;  // уникальные id для clipPath/градиентов внутри каждой картинки
+const heart = (cx, cy, s, fill, stroke) => `<path transform="translate(${cx} ${cy}) scale(${s})" d="M0 7 L-7 0 A4 4 0 0 1 0 -5 A4 4 0 0 1 7 0 Z" fill="${fill}" stroke="${stroke}" stroke-width="1.4" stroke-linejoin="round"/>`;
+const flame = (a, b) => `<path d="M80 102 Q56 92 40 104 Q52 106 44 116 Q60 110 64 118 Q70 108 80 106 Z" fill="${a}"/><path d="M76 103 Q62 99 54 106 Q64 108 60 113 Q70 108 76 105Z" fill="${b}"/>`;
+const bgClip = (id, inner) => `<defs><clipPath id="${id}"><rect width="200" height="200" rx="22"/></clipPath></defs><g clip-path="url(#${id})">${inner}</g>`;
+
+// дракон
+const DX = {
+  hat: {
+    h_knight: () => '<path d="M62 72 Q60 26 100 24 Q140 26 138 72 Q120 62 100 62 Q80 62 62 72 Z" fill="#b8c2cc" stroke="#7d8a96" stroke-width="2.5"/><path d="M100 25 V62" stroke="#7d8a96" stroke-width="2"/><path d="M100 24 Q96 8 112 2" stroke="#e63946" stroke-width="7" fill="none" stroke-linecap="round"/>',
+    h_pirate: () => '<path d="M58 54 Q100 34 142 54 Q122 46 100 48 Q78 46 58 54 Z" fill="#1d2433"/><path d="M68 52 Q72 20 100 18 Q128 20 132 52 Q100 42 68 52 Z" fill="#2b2f3a"/><path d="M68 52 Q100 42 132 52" stroke="#d4a017" stroke-width="3" fill="none"/><circle cx="100" cy="32" r="6" fill="#fff"/><path d="M95 40 h10" stroke="#fff" stroke-width="2.5"/><circle cx="98" cy="31" r="1.4" fill="#1d2433"/><circle cx="102" cy="31" r="1.4" fill="#1d2433"/>',
+    h_cowboy: () => '<ellipse cx="100" cy="50" rx="56" ry="9" fill="#8a5530"/><path d="M76 50 Q74 20 92 22 Q100 28 108 22 Q126 20 124 50 Z" fill="#a0663a"/><rect x="76" y="40" width="48" height="7" fill="#5a3b1f"/>',
+    h_beanie: () => '<path d="M68 60 Q68 24 100 24 Q132 24 132 60 Z" fill="#5aa9e6"/><path d="M80 30 V58 M92 26 V58 M108 26 V58 M120 30 V58" stroke="#3d8fd6" stroke-width="2"/><rect x="66" y="52" width="68" height="12" rx="6" fill="#3d8fd6"/><circle cx="100" cy="22" r="10" fill="#fff"/>',
+    h_victory: () => '<path d="M70 56 L68 24 L84 40 L100 12 L116 40 L132 24 L130 56 Z" fill="#ffd23f" stroke="#c48f12" stroke-width="2.5" stroke-linejoin="round"/><rect x="70" y="50" width="60" height="8" rx="3" fill="#e0b21e"/><circle cx="100" cy="38" r="6" fill="#e63946"/><circle cx="83" cy="46" r="3.5" fill="#3aa0ff"/><circle cx="117" cy="46" r="3.5" fill="#3aa0ff"/><circle cx="68" cy="24" r="3.5" fill="#fff6c2"/><circle cx="100" cy="12" r="3.5" fill="#fff6c2"/><circle cx="132" cy="24" r="3.5" fill="#fff6c2"/>',
+  },
+  eyes: {
+    e_stars: () => [84, 116].map(x => `<polygon points="${starPts(x, 76, 18)}" fill="rgba(255,210,63,.3)" stroke="#e6b422" stroke-width="3" stroke-linejoin="round"/>`).join('') + '<path d="M98 74 Q100 71 102 74" stroke="#e6b422" stroke-width="3" fill="none"/>',
+    e_mask: () => '<path d="M62 76 L48 70 M62 80 L50 88" stroke="#1d2433" stroke-width="3" stroke-linecap="round"/><path fill-rule="evenodd" d="M62 72 Q82 62 100 70 Q118 62 138 72 L136 86 Q118 94 100 86 Q82 94 64 86 Z M73 77 a11 9 0 1 0 22 0 a11 9 0 1 0 -22 0 Z M105 77 a11 9 0 1 0 22 0 a11 9 0 1 0 -22 0 Z" fill="#1d2433"/>',
+    e_monocle: () => '<circle cx="116" cy="76" r="14" fill="rgba(255,255,255,.15)" stroke="#d4a017" stroke-width="3"/><path d="M129 82 Q138 100 126 116" stroke="#d4a017" stroke-width="1.5" fill="none"/>',
+  },
+  neck: {
+    n_medal: () => `<path d="M86 110 L100 128 L114 110" stroke="#3d8fd6" stroke-width="6" fill="none"/><circle cx="100" cy="133" r="10" fill="#ffd23f" stroke="#d4a017" stroke-width="2.5"/><polygon points="${starPts(100, 133, 6)}" fill="#d4a017"/>`,
+    n_tie: () => '<path d="M94 114 L100 120 L106 114 L106 122 L100 124 L94 122 Z" fill="#b5212e"/><path d="M96 123 L92 150 L100 160 L108 150 L104 123 Z" fill="#e63946"/><path d="M95 134 L105 129 M94 144 L106 139" stroke="#ffd23f" stroke-width="2"/>',
+    n_cape: () => '<path d="M84 114 Q100 120 116 114" stroke="#b5212e" stroke-width="4" fill="none"/><circle cx="84" cy="114" r="4" fill="#ffd23f"/><circle cx="116" cy="114" r="4" fill="#ffd23f"/>',
+  },
+  extra: {
+    x_ice: () => `<g class="flame">${flame('#7cc0ef', '#e6f6ff')}</g><polygon points="${starPts(36, 96, 5)}" fill="#bfe3fb"/><polygon points="${starPts(44, 122, 4)}" fill="#bfe3fb"/>`,
+    x_bolt: () => '<g class="twinkle"><path d="M30 30 L42 30 L34 46 L44 46 L24 72 L30 52 L20 52 Z" fill="#ffd23f" stroke="#e6b422" stroke-width="1.5" stroke-linejoin="round"/><path d="M164 18 L174 18 L168 30 L176 30 L160 50 L164 36 L156 36 Z" fill="#ffd23f" stroke="#e6b422" stroke-width="1.5" stroke-linejoin="round"/></g>',
+    x_rainbow: () => `<g class="flame">${flame('url(#rbw)', 'rgba(255,255,255,.6)')}</g>`,
+  },
+  back: {  // то, что за телом
+    n_cape: () => '<path d="M80 112 Q46 150 50 184 Q100 192 150 184 Q154 150 120 112 Z" fill="#e63946"/><path d="M80 112 Q60 150 64 184" stroke="#b5212e" stroke-width="2" fill="none" opacity=".6"/>',
+  },
+  pat: {  // узор на голове и теле: рисуется дважды, по форме головы и по форме тела; живот и мордочка ложатся сверху
+    p_spots: c => [[72, 62, 6], [128, 62, 6], [90, 52, 4], [112, 52, 4], [64, 90, 5], [136, 90, 5], [64, 126, 6], [136, 126, 6], [60, 150, 6], [140, 150, 6], [70, 172, 5], [130, 172, 5]]
+      .map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c.dark}" opacity=".6"/>`).join(''),
+    p_stripes: c => `<path d="M62 68 L80 74 M60 84 L78 88 M138 68 L120 74 M140 84 L122 88 M92 48 L94 60 M108 48 L106 60 M56 124 L76 130 M54 142 L74 146 M56 160 L76 162 M144 124 L124 130 M146 142 L126 146 M144 160 L124 162" stroke="${c.dark}" stroke-width="5" stroke-linecap="round" opacity=".6"/>`,
+    p_stars: () => [[70, 62, 6], [130, 62, 6], [100, 52, 5], [64, 132, 6], [136, 132, 6], [62, 162, 5], [138, 162, 5]].map(([x, y, r]) => `<polygon points="${starPts(x, y, r)}" fill="#ffd23f"/>`).join(''),
+    p_zigzag: c => `<path d="M60 62 l7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 M52 134 l7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 M52 164 l7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7 7 7 7 -7" stroke="${c.dark}" stroke-width="4" fill="none" opacity=".6"/>`,
+  },
+  bg: {
+    bg_cave: id => bgClip(id, '<rect width="200" height="200" fill="#4a3b5c"/><path d="M0 0 H200 V26 L188 26 L182 46 L174 26 L132 26 L126 40 L120 26 L70 26 L62 50 L54 26 L22 26 L16 40 L10 26 L0 26 Z" fill="#3a2d49"/><rect y="176" width="200" height="24" fill="#3a2d49"/><polygon points="8,190 18,140 30,190" fill="#7cc0ef"/><polygon points="26,190 38,160 48,190" fill="#b48ef0"/><polygon points="158,190 170,150 182,190" fill="#b48ef0"/><polygon points="176,190 186,166 196,190" fill="#7cc0ef"/><polygon points="16,150 18,140 22,152" fill="#fff" opacity=".5"/>'),
+    bg_castle: id => bgClip(id, '<rect width="200" height="200" fill="#cfe9ff"/><ellipse cx="40" cy="30" rx="22" ry="9" fill="#fff"/><ellipse cx="150" cy="22" rx="26" ry="9" fill="#fff"/><rect x="34" y="92" width="132" height="80" fill="#c8cfd8"/><rect x="18" y="70" width="30" height="102" fill="#b8c2cc"/><rect x="152" y="70" width="30" height="102" fill="#b8c2cc"/><path d="M14 72 L33 42 L52 72 Z M148 72 L167 42 L186 72 Z" fill="#e63946"/>' + range(7).map(i => `<rect x="${36 + i * 19}" y="82" width="10" height="12" fill="#c8cfd8"/>`).join('') + '<rect x="88" y="132" width="24" height="40" rx="12" fill="#8a96a3"/><path d="M33 42 V30 l10 4 -10 4" fill="#ffd23f" stroke="#7d8a96" stroke-width="1.5"/><rect y="168" width="200" height="32" fill="#9be08f"/>'),
+    bg_volcano: id => bgClip(id, `<defs><linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6a3d"/><stop offset="1" stop-color="#ffc06b"/></linearGradient></defs><rect width="200" height="200" fill="url(#${id}g)"/><circle cx="70" cy="30" r="12" fill="#8a8f99" opacity=".6"/><circle cx="84" cy="18" r="9" fill="#8a8f99" opacity=".5"/><path d="M14 176 L76 70 L124 70 L186 176 Z" fill="#5a3b2e"/><path d="M76 70 Q100 82 124 70 L116 84 L108 78 L102 98 L96 80 L88 88 Z" fill="#ff8a3d"/><path d="M100 70 Q96 50 104 36" stroke="#ffd23f" stroke-width="5" fill="none" stroke-linecap="round"/><rect y="172" width="200" height="28" fill="#3d2b24"/>`),
+    bg_night: id => bgClip(id, '<rect width="200" height="200" fill="#1f2552"/><circle cx="160" cy="38" r="18" fill="#fff6c2"/><circle cx="154" cy="34" r="4" fill="#f0e3a0"/><circle cx="166" cy="46" r="3" fill="#f0e3a0"/>' + [[20, 20], [50, 50], [90, 18], [120, 60], [30, 90], [180, 100], [70, 80], [110, 30], [12, 140], [190, 150]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i % 3 ? 1.6 : 2.6}" fill="#fff"/>`).join('') + '<path d="M0 180 Q60 160 120 176 T200 170 V200 H0 Z" fill="#2c3a6b"/>'),
+  },
+  pet: {  // питомец внизу слева, локальные координаты ~ 0..60
+    pet_owl: () => '<g transform="translate(6 134)"><path d="M10 18 L11 4 L20 14 Z M42 18 L41 4 L32 14 Z" fill="#8a5530"/><ellipse cx="26" cy="34" rx="18" ry="20" fill="#a0663a"/><ellipse cx="26" cy="40" rx="11" ry="13" fill="#f3e3b5"/><circle cx="19" cy="24" r="7" fill="#fff"/><circle cx="33" cy="24" r="7" fill="#fff"/><circle cx="20" cy="25" r="3.5" fill="#1d2433"/><circle cx="32" cy="25" r="3.5" fill="#1d2433"/><path d="M23 29 L29 29 L26 35 Z" fill="#ff9f43"/><path d="M18 54 v3 M22 54 v3 M30 54 v3 M34 54 v3" stroke="#ff9f43" stroke-width="2" stroke-linecap="round"/></g>',
+    pet_cat: () => '<g transform="translate(4 136)"><path d="M38 48 Q56 40 48 24" stroke="#ff9f43" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="24" cy="40" rx="16" ry="16" fill="#ffb04a"/><path d="M12 12 L13 -1 L22 9 Z M36 12 L35 -1 L26 9 Z" fill="#ffb04a"/><path d="M14 9 L15 3 L19 8 Z M34 9 L33 3 L29 8 Z" fill="#ff8fc4"/><circle cx="24" cy="20" r="13" fill="#ffb04a"/><path d="M18 34 h12 M16 42 h16" stroke="#e07f2a" stroke-width="2" opacity=".6"/><ellipse cx="19" cy="19" rx="2" ry="3" fill="#1d2433"/><ellipse cx="29" cy="19" rx="2" ry="3" fill="#1d2433"/><path d="M22 24 h4 l-2 2 Z" fill="#ff6f91"/><path d="M8 22 h8 M8 26 l8 -1 M40 22 h-8 M40 26 l-8 -1" stroke="#8a5530" stroke-width="1"/></g>',
+    pet_turtle: () => '<g transform="translate(2 150)"><ellipse cx="14" cy="34" rx="5" ry="4" fill="#8fd68a"/><ellipse cx="44" cy="34" rx="5" ry="4" fill="#8fd68a"/><circle cx="56" cy="24" r="8" fill="#8fd68a"/><circle cx="59" cy="22" r="1.6" fill="#1d2433"/><path d="M6 32 Q8 6 30 6 Q52 6 54 32 Z" fill="#3aa66b"/><path d="M30 10 L22 18 L26 30 M30 10 L38 18 L34 30 M22 18 H38 M12 26 L22 18 M48 26 L38 18" stroke="#2b8754" stroke-width="2" fill="none"/></g>',
+    pet_firefly: () => '<g class="twinkle" transform="translate(16 30)"><circle cx="18" cy="22" r="18" fill="#fff3b0" opacity=".7"/><ellipse cx="12" cy="10" rx="7" ry="4" fill="#d8eefc" transform="rotate(-30 12 10)"/><ellipse cx="22" cy="9" rx="7" ry="4" fill="#d8eefc" transform="rotate(30 22 9)"/><ellipse cx="17" cy="17" rx="5" ry="6" fill="#3d4a5c"/><circle cx="17" cy="27" r="6" fill="#ffd23f"/><circle cx="15" cy="13" r="1.3" fill="#fff"/></g>',
+    pet_baby: () => '<g transform="translate(4 138)"><path d="M36 46 Q54 48 52 32" stroke="#4fae6a" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M12 32 Q0 26 2 12 Q10 20 16 22 Z" fill="#3a8f55"/><ellipse cx="24" cy="44" rx="14" ry="13" fill="#5cc27a"/><ellipse cx="24" cy="47" rx="8" ry="8" fill="#d9f5c9"/><path d="M16 16 L13 4 L21 12 Z M32 16 L35 4 L27 12 Z" fill="#f6e7b8"/><circle cx="24" cy="22" r="12" fill="#5cc27a"/><circle cx="19" cy="21" r="3.6" fill="#fff"/><circle cx="29" cy="21" r="3.6" fill="#fff"/><circle cx="19.6" cy="21.6" r="2" fill="#1d2433"/><circle cx="29.6" cy="21.6" r="2" fill="#1d2433"/><path d="M20 28 Q24 31 28 28" stroke="#3a8f55" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>',
+  },
+};
+// крылья дракона: заливка и узор поверх
+const DWING = {
+  w_rainbow: { fill: 'url(#rbw)' }, w_fire: { fill: 'url(#dfire)' }, w_gold: { fill: 'url(#dgold)', line: '<path d="M64 128 L26 78 M64 128 L40 92" stroke="#c48f12" stroke-width="2" fill="none" opacity=".6"/>' },
+  w_ice: { fill: '#cfeaff', stroke: '#7cc0ef', line: '<path d="M64 128 L26 78 M64 128 L40 92 M60 112 L46 96" stroke="#7cc0ef" stroke-width="2" fill="none"/>' },
+  w_bat: { fill: '#2b2f3a', line: '<path d="M64 128 L20 72 M64 128 L34 90 M64 128 L48 100" stroke="#596070" stroke-width="2.5" fill="none"/>' },
+};
+
+// фея
+const FX = {
+  hat: {
+    f_cat: () => '<path d="M74 54 L72 30 L90 44 Z M126 54 L128 30 L110 44 Z" fill="#1d2433"/><path d="M76 49 L75 36 L85 45 Z M124 49 L125 36 L115 45 Z" fill="#ff8fc4"/><path d="M70 62 Q100 34 130 62" stroke="#1d2433" stroke-width="5" fill="none" stroke-linecap="round"/>',
+    f_astro: () => `<path d="M80 48 L106 -6 L122 48 Z" fill="#4b3fb5"/><ellipse cx="100" cy="48" rx="34" ry="7" fill="#3a2f99"/><polygon points="${starPts(104, 30, 5)}" fill="#ffd23f"/><polygon points="${starPts(95, 40, 3.5)}" fill="#ffd23f"/><path d="M110 10 a6 6 0 1 0 5 9 a5 5 0 1 1 -5 -9 Z" fill="#fff6c2"/>`,
+    f_clips: () => '<use href="#i-butterfly" x="60" y="46" width="24" height="24"/><use href="#i-butterfly" x="116" y="46" width="24" height="24"/>',
+    f_flower: () => range(5).map(i => { const a = i * 72 * Math.PI / 180; return `<circle cx="${(124 + 8 * Math.sin(a)).toFixed(1)}" cy="${(50 - 8 * Math.cos(a)).toFixed(1)}" r="6.5" fill="#ff5e8a"/>`; }).join('') + '<circle cx="124" cy="50" r="5" fill="#ffd23f"/><ellipse cx="110" cy="58" rx="7" ry="3.5" fill="#6fd68a" transform="rotate(30 110 58)"/>',
+    f_sun: () => range(9).map(i => { const a = (-150 + i * 15) * Math.PI / 180, p = (r, d) => `${(100 + r * Math.cos(a + d)).toFixed(1)},${(66 + r * Math.sin(a + d)).toFixed(1)}`; return `<polygon points="${p(30, -.09)} ${p(48, 0)} ${p(30, .09)}" fill="#ffbf1f"/>`; }).join('') + '<path d="M72 58 Q100 30 128 58" stroke="#ffd23f" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="100" cy="38" r="6" fill="#ff5e3a"/>',
+  },
+  eyes: {
+    f_hearts: () => heart(89, 80, 1.7, 'rgba(255,94,138,.35)', '#e0406e') + heart(111, 80, 1.7, 'rgba(255,94,138,.35)', '#e0406e') + '<path d="M96 78 Q100 75 104 78" stroke="#e0406e" stroke-width="2" fill="none"/>',
+    f_mask: () => '<path d="M128 76 Q150 54 140 38 Q134 60 122 74 Z" fill="#ff8fc4"/><path fill-rule="evenodd" d="M70 74 Q86 66 100 74 Q114 66 130 74 L128 86 Q114 92 100 86 Q86 92 72 86 Z M82 80 a7 6 0 1 0 14 0 a7 6 0 1 0 -14 0 Z M104 80 a7 6 0 1 0 14 0 a7 6 0 1 0 -14 0 Z" fill="#b48ef0"/><circle cx="100" cy="76" r="2.5" fill="#ffd23f"/>',
+  },
+  neck: {
+    f_pearls: () => [[86, 106], [90, 110], [95, 112.5], [100, 113.5], [105, 112.5], [110, 110], [114, 106]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.2" fill="#fffaf0" stroke="#e8dcc8" stroke-width="1"/><circle cx="${x - 1}" cy="${y - 1}" r="1" fill="#fff"/>`).join(''),
+    f_scarf: () => '<path d="M84 102 Q100 112 116 102 L117 110 Q100 120 83 110 Z" fill="#7cc0ef"/><path d="M106 110 L112 132 L104 134 L100 113 Z" fill="#5aa9e6"/>',
+    f_shell: () => '<path d="M87 105 Q100 116 113 105" stroke="#d4a017" stroke-width="1.8" fill="none"/><path d="M100 127 L91 116 Q100 107 109 116 Z" fill="#ffd6ea" stroke="#e0609e" stroke-width="1.2" stroke-linejoin="round"/><path d="M100 127 L95 114 M100 127 L100 111 M100 127 L105 114" stroke="#e0609e" stroke-width="1"/>',
+  },
+  extra: {
+    f_glitter: () => '<g class="twinkle"><use href="#i-sparkle" x="38" y="58" width="22" height="22"/><use href="#i-sparkle" x="142" y="66" width="18" height="18"/><use href="#i-sparkle" x="146" y="128" width="22" height="22"/><use href="#i-sparkle" x="32" y="128" width="16" height="16"/><use href="#i-sparkle" x="118" y="16" width="16" height="16"/></g>',
+    f_bubbles: () => `<g class="twinkle">${[[152, 60, 9], [166, 90, 6], [148, 112, 7], [42, 66, 7], [32, 98, 5]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="rgba(200,235,255,.35)" stroke="#7cc0ef" stroke-width="1.5"/><circle cx="${x - r * .35}" cy="${y - r * .35}" r="${r * .25}" fill="#fff"/>`).join('')}</g>`,
+    f_rbarc: () => '',
+  },
+  back: {
+    f_rbarc: () => `<g fill="none" stroke-width="6">${['#ff7a7a', '#ffd23f', '#4fd18b', '#5a8dff'].map((col, i) => `<path d="M${36 + i * 6} 84 A${64 - i * 6} ${62 - i * 6} 0 0 1 ${164 - i * 6} 84" stroke="${col}"/>`).join('')}</g>`,
+  },
+  pat: {  // узор платья (обрезается по платью)
+    fp_dots: () => [[94, 112], [106, 114], [90, 134], [104, 136], [80, 152], [96, 156], [112, 152], [124, 160], [72, 166], [88, 172], [104, 174], [120, 172]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.2" fill="#fff" opacity=".9"/>`).join(''),
+    fp_stars: () => [[100, 112], [90, 138], [110, 140], [80, 160], [100, 162], [120, 160], [92, 176], [112, 176]].map(([x, y]) => `<polygon points="${starPts(x, y, 5)}" fill="#ffd23f"/>`).join(''),
+    fp_flowers: () => [[100, 112], [88, 140], [112, 142], [78, 164], [100, 166], [122, 164]].map(([x, y]) => range(5).map(i => { const a = i * 72 * Math.PI / 180; return `<circle cx="${(x + 3.4 * Math.sin(a)).toFixed(1)}" cy="${(y - 3.4 * Math.cos(a)).toFixed(1)}" r="2.6" fill="#fff"/>`; }).join('') + `<circle cx="${x}" cy="${y}" r="2" fill="#ffd23f"/>`).join(''),
+    fp_stripes: c => `<path d="M60 136 H140 M60 148 H140 M60 160 H140 M60 172 H140" stroke="${c.light}" stroke-width="5" opacity=".9"/>`,
+  },
+  bg: {
+    fbg_meadow: id => bgClip(id, '<rect width="200" height="200" fill="#d8f0ff"/><circle cx="164" cy="36" r="16" fill="#ffe17a"/><ellipse cx="40" cy="190" rx="90" ry="44" fill="#8fdc8a"/><ellipse cx="170" cy="196" rx="90" ry="40" fill="#7fd07a"/>' + [[20, 168, '#ff8fc4'], [44, 178, '#ffd23f'], [160, 172, '#b48ef0'], [182, 182, '#ff8fc4'], [140, 186, '#fff']].map(([x, y, col]) => `<circle cx="${x}" cy="${y}" r="4" fill="${col}"/><circle cx="${x}" cy="${y}" r="1.5" fill="#ffd23f"/>`).join('')),
+    fbg_mush: id => bgClip(id, '<rect width="200" height="200" fill="#e9f7e4"/><rect x="138" y="96" width="44" height="80" rx="8" fill="#f6e7c8"/><path d="M118 104 Q160 34 200 104 Z" fill="#e2604f"/><circle cx="146" cy="84" r="6" fill="#fff"/><circle cx="166" cy="68" r="5" fill="#fff"/><circle cx="182" cy="90" r="6" fill="#fff"/><rect x="150" y="140" width="18" height="36" rx="9" fill="#a0663a"/><circle cx="160" cy="116" r="7" fill="#7cc0ef" stroke="#a0663a" stroke-width="2"/><rect y="172" width="200" height="28" fill="#8fdc8a"/><ellipse cx="30" cy="40" rx="20" ry="8" fill="#fff"/>'),
+    fbg_cloud: id => bgClip(id, `<defs><linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d8f0"/><stop offset="1" stop-color="#d8dcff"/></linearGradient></defs><rect width="200" height="200" fill="url(#${id}g)"/><rect x="20" y="80" width="26" height="90" fill="#fff0fb"/><rect x="154" y="70" width="26" height="100" fill="#fff0fb"/><path d="M16 82 L33 50 L50 82 Z M150 72 L167 38 L184 72 Z" fill="#b48ef0"/><ellipse cx="40" cy="176" rx="60" ry="22" fill="#fff"/><ellipse cx="160" cy="180" rx="64" ry="24" fill="#fff"/><ellipse cx="100" cy="190" rx="70" ry="18" fill="#fff"/><ellipse cx="60" cy="30" rx="24" ry="9" fill="#fff" opacity=".8"/>`),
+    fbg_sea: id => bgClip(id, `<defs><linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3f4"/><stop offset="1" stop-color="#3d8fd6"/></linearGradient></defs><rect width="200" height="200" fill="url(#${id}g)"/><path d="M20 184 Q10 160 22 140 Q32 120 20 100 M34 184 Q42 160 32 140" stroke="#3aa66b" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M176 184 Q186 156 172 132 Q162 114 176 96" stroke="#3aa66b" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="196" rx="120" ry="20" fill="#f3e3b5"/>` + [[150, 40, 5], [160, 60, 3], [40, 50, 4], [50, 70, 2.5]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#fff" stroke-width="1.5" opacity=".8"/>`).join('') + '<path d="M140 110 q10 -8 20 0 q-10 8 -20 0 z M160 110 l7 -5 v10 z" fill="#ff9f43"/>'),
+  },
+  pet: {
+    fp_bunny: () => '<g transform="translate(6 132)"><ellipse cx="20" cy="8" rx="4.5" ry="12" fill="#fff" stroke="#e0d8e8" stroke-width="1.5"/><ellipse cx="32" cy="8" rx="4.5" ry="12" fill="#fff" stroke="#e0d8e8" stroke-width="1.5"/><ellipse cx="20" cy="9" rx="2" ry="8" fill="#ffd6ea"/><ellipse cx="32" cy="9" rx="2" ry="8" fill="#ffd6ea"/><circle cx="42" cy="48" r="5" fill="#fff" stroke="#e0d8e8" stroke-width="1.5"/><ellipse cx="26" cy="44" rx="16" ry="14" fill="#fff" stroke="#e0d8e8" stroke-width="1.5"/><circle cx="26" cy="26" r="11" fill="#fff" stroke="#e0d8e8" stroke-width="1.5"/><circle cx="22" cy="25" r="1.8" fill="#1d2433"/><circle cx="30" cy="25" r="1.8" fill="#1d2433"/><path d="M24 30 h4 l-2 2 Z" fill="#ff8fc4"/><ellipse cx="18" cy="30" rx="2.5" ry="1.5" fill="#ffc2d8"/><ellipse cx="34" cy="30" rx="2.5" ry="1.5" fill="#ffc2d8"/></g>',
+    fp_hedge: () => '<g transform="translate(2 150)"><path d="M6 36 L4 26 L10 28 L8 16 L16 22 L18 10 L24 18 L30 8 L34 18 L40 12 L42 24 L48 22 L46 36 Z" fill="#8a5530"/><path d="M40 36 Q42 22 52 24 Q62 28 62 34 Q56 38 40 36 Z" fill="#f3d6b0"/><circle cx="62" cy="33" r="2.4" fill="#1d2433"/><circle cx="52" cy="29" r="1.6" fill="#1d2433"/><ellipse cx="16" cy="38" rx="4" ry="2.5" fill="#6b4226"/><ellipse cx="38" cy="38" rx="4" ry="2.5" fill="#6b4226"/></g>',
+    fp_kitten: () => '<g transform="translate(4 136)"><path d="M38 48 Q56 40 48 24" stroke="#9aa6b5" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="24" cy="40" rx="16" ry="16" fill="#b8c2cc"/><ellipse cx="24" cy="44" rx="9" ry="10" fill="#fff"/><path d="M12 12 L13 -1 L22 9 Z M36 12 L35 -1 L26 9 Z" fill="#b8c2cc"/><path d="M14 9 L15 3 L19 8 Z M34 9 L33 3 L29 8 Z" fill="#ff8fc4"/><circle cx="24" cy="20" r="13" fill="#b8c2cc"/><circle cx="19" cy="19" r="3" fill="#6fd6a8"/><circle cx="29" cy="19" r="3" fill="#6fd6a8"/><circle cx="19" cy="19" r="1.4" fill="#1d2433"/><circle cx="29" cy="19" r="1.4" fill="#1d2433"/><path d="M22 24 h4 l-2 2 Z" fill="#ff6f91"/><path d="M8 22 h8 M8 26 l8 -1 M40 22 h-8 M40 26 l-8 -1" stroke="#7d8a96" stroke-width="1"/></g>',
+    fp_unicorn: () => '<g transform="translate(2 132)"><path d="M14 36 L16 58 M22 38 L22 58 M40 38 L40 58 M46 36 L46 58" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M14 36 L16 58 M22 38 L22 58 M40 38 L40 58 M46 36 L46 58" stroke="#e0d8e8" stroke-width="1" fill="none"/><path d="M50 32 Q62 34 58 50" stroke="#b48ef0" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="34" rx="20" ry="11" fill="#fff" stroke="#e0d8e8" stroke-width="1.5"/><path d="M14 30 Q8 14 14 8 Q22 4 24 12 L22 30 Z" fill="#fff" stroke="#e0d8e8" stroke-width="1.5"/><path d="M14 8 L12 -6 L18 6 Z" fill="#ffd23f" stroke="#e6b422" stroke-width="1"/><path d="M20 8 Q30 10 26 26" stroke="#ff8fc4" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M23 10 Q32 14 28 28" stroke="#7cc0ef" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="14" cy="14" r="1.8" fill="#1d2433"/><ellipse cx="9" cy="22" rx="2" ry="1.5" fill="#ffc2d8"/></g>',
+  },
+};
+const FWING = {
+  f_rainbow: { fill: 'url(#frbw)' }, f_starw: { fill: '#ece6ff', stroke: '#b48ef0' }, f_goldw: { fill: '#ffe48a', stroke: '#e6b422' },
+  f_bfly: { fill: '#ffb04a', stroke: '#7a4a1f', dots: '#7a4a1f' }, f_drag: { fill: 'rgba(215,240,255,.8)', stroke: '#7cc0ef', veins: true },
+};
+
+// фон и питомец поверх готовой картинки героя: фон — первым слоем, питомец — последним
+function decorate(svg, eq, o) {
+  const X = o.hero === 'fairy' ? FX : DX, sz = o.size || 200;
+  let bg = '', pet = '';
+  if (sz >= 120 && X.bg[eq.bg]) bg = X.bg[eq.bg]('bg' + (++SVGID));
+  if (sz >= 80 && X.pet[eq.pet]) pet = X.pet[eq.pet]();
+  if (!bg && !pet) return svg;
+  const i = svg.indexOf('>') + 1, j = svg.lastIndexOf('</svg>');
+  return svg.slice(0, i) + bg + svg.slice(i, j) + pet + svg.slice(j);
+}
+
+const GRADS = '<linearGradient id="rbw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5e5e"/><stop offset=".35" stop-color="#ffd23f"/><stop offset=".65" stop-color="#4fd18b"/><stop offset="1" stop-color="#5a8dff"/></linearGradient>'
+  + '<linearGradient id="dfire" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff5e3a"/><stop offset="1" stop-color="#ffd23f"/></linearGradient>'
+  + '<linearGradient id="dgold" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e6b422"/><stop offset="1" stop-color="#fff3b0"/></linearGradient>'
+  + '<linearGradient id="frbw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9a9a"/><stop offset=".35" stop-color="#ffe17a"/><stop offset=".65" stop-color="#8fe6b4"/><stop offset="1" stop-color="#9ab8ff"/></linearGradient>'
+  + '<linearGradient id="fdrb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff9a9a"/><stop offset=".33" stop-color="#ffe17a"/><stop offset=".66" stop-color="#8fe6b4"/><stop offset="1" stop-color="#9ab8ff"/></linearGradient>';
+function dWing(id, c) {
+  const W = DWING[id] || {};
+  return `<path d="M64 128 Q22 112 16 66 Q40 82 50 76 Q52 96 72 104 Z" fill="${W.fill || c.dark}" opacity=".95"${W.stroke ? ` stroke="${W.stroke}" stroke-width="2"` : ''}/>${W.line || ''}`;
+}
+function fWing(id, stage) {
+  const W = FWING[id] || {}, wf = W.fill || 'rgba(200,232,252,.9)', ws = W.stroke || (stage === 4 ? '#e6b422' : '#8fcaf0'), big = stage >= 3 ? 1.12 : 1;
+  const stars = id === 'f_starw' ? `<polygon points="${starPts(52, 98, 6)}" fill="#ffd23f"/><polygon points="${starPts(68, 116, 4)}" fill="#ffd23f"/><polygon points="${starPts(62, 142, 4)}" fill="#ffd23f"/>` : '';
+  const dots = W.dots ? `<circle cx="50" cy="96" r="6" fill="${W.dots}"/><circle cx="68" cy="110" r="3.5" fill="${W.dots}"/><circle cx="64" cy="142" r="4" fill="${W.dots}"/><circle cx="50" cy="96" r="2.5" fill="#fff"/>` : '';
+  const veins = (stage >= 3 || W.veins) && id !== 'f_rainbow' ? `<path d="M96 120 Q70 104 44 94 M96 124 Q76 132 58 146" stroke="${ws}" stroke-width="1.5" fill="none" opacity=".7"/>` : '';
+  return `<g transform="translate(96 122) scale(${big}) translate(-96 -122)"><ellipse cx="60" cy="102" rx="38" ry="22" fill="${wf}" stroke="${ws}" stroke-width="2" transform="rotate(-28 60 102)"/>
+    <ellipse cx="70" cy="140" rx="24" ry="14" fill="${wf}" stroke="${ws}" stroke-width="2" transform="rotate(24 70 140)"/>${veins}${stars}${dots}</g>`;
+}
+const accOf = (m, id, c) => (id && m[id] ? m[id](c) : '');
+const backOf = (X, eq, c) => Object.values(eq).map(id => accOf(X.back, id, c)).join('');
+const FDRESS = 'M86 106 Q100 100 114 106 L117 126 L138 172 Q100 186 62 172 L83 126 Z';
+const STARRY = [[94, 112], [106, 120], [88, 140], [112, 138], [78, 162], [98, 158], [120, 166], [90, 176], [110, 178]].map(([x, y]) => `<polygon points="${starPts(x, y, 3.5)}" fill="#ffd23f"/>`).join('');
+
 // ---------- герои: всё, чем дракон отличается от феи ----------
 const HEROES = {
-  dragon: { svg: dragonSVG, colors: COLORS, shop: SHOP, slots: SLOTS, base: 'c_green', isl: ISL, blocks: BLOCKS, rnd: [8, 10], names: STAGES.map(x => x.name), he: 'он',
+  dragon: { svg: (st, eq, mood, o = {}) => decorate(dragonSVG(st, eq, mood, o), eq || {}, o), colors: COLORS, shop: SHOP, slots: SLOTS, base: 'c_green', isl: ISL, blocks: BLOCKS, rnd: [8, 10], names: STAGES.map(x => x.name), he: 'он',
     t: { my: 'Мой дракон', Who: 'Дракон', who: 'дракон', hello0: 'Я — твой дракон, пока ещё в яйце. Решай задачи — и я вылуплюсь!', missed: 'Я соскучился 🐉',
       born: 'Яйцо треснуло… Дракон вылупился!', grew: 'Твой дракон вырос!', rest: 'Драконы тоже отдыхают',
       shop0: 'Шапки и очки появятся, когда дракон вылупится. А цвет видно уже на яйце!',
       hit: '🔥 Удар по троллю!', bossWin: '👹 Тролль побеждён! Сокровища спасены!', bossLose: 'Тролль убежал… но мы его догоним!' } },
-  fairy: { svg: fairySVG, colors: FCOLORS, shop: FSHOP, slots: FSLOTS, base: 'f_pink', isl: FISL, blocks: FBLOCKS, rnd: [6, 8], names: ['Бутон', 'Маленькая фея', 'Фея с крыльями', 'Лесная фея', 'Королева фей'], he: 'она',
+  fairy: { svg: (st, eq, mood, o = {}) => decorate(fairySVG(st, eq, mood, o), eq || {}, Object.assign({ hero: 'fairy' }, o)), colors: FCOLORS, shop: FSHOP, slots: FSLOTS, base: 'f_pink', isl: FISL, blocks: FBLOCKS, rnd: [6, 8], names: ['Бутон', 'Маленькая фея', 'Фея с крыльями', 'Лесная фея', 'Королева фей'], he: 'она',
     t: { my: 'Моя фея', Who: 'Фея', who: 'фея', hello0: 'Я — твоя фея, пока ещё сплю в бутоне. Решай задачи — и я проснусь!', missed: 'Я соскучилась ✨',
       born: 'Бутон раскрылся… Фея проснулась!', grew: 'Твоя фея выросла!', rest: 'Феи тоже отдыхают',
       shop0: 'Украшения появятся, когда фея проснётся. А цвет платья видно уже на бутоне!',
@@ -1560,6 +1784,7 @@ function showMap() {
     openIsland(i);
   });
   renderHeader();
+  showAwards(grantAwards());
 }
 function openIsland(i) { const isl = H().isl[i]; if (!S.introSeen[isl.id]) showIntro(isl); else startRound(isl); }
 
@@ -1916,6 +2141,7 @@ function endRound() {
   S.islands[isl.id] = st;
   const bonus = stars * 3; S.crystals += bonus;
   save(); renderHeader();
+  const awards = grantAwards(); if (awards.length) setTimeout(() => showAwards(awards), 1500);
   const newUnlock = idx + 1 < H().isl.length && !wasUnlocked && unlocked(idx + 1);
   SFX.win(); if (stars >= 2) confetti(200);
   const title = isl.boss ? emo(esc(stars >= 2 ? H().t.bossWin : H().t.bossLose)) : stars === 3 ? 'Блестяще!' : stars === 2 ? 'Отличный раунд!' : 'Раунд пройден!';
@@ -1967,22 +2193,66 @@ setInterval(() => {
 }, 1000);
 
 // ================= ДРАКОН / МАГАЗИН =================
+const shopClosed = new Set();  // какие разделы магазина свернул ребёнок (до перезагрузки)
+// картинка вещи без своей иконки: сама вещь, вырезанная из рисунка героя
+const PICBOX = {
+  dragon: { hat: '52 -6 96 76', eyes: '44 54 100 46', neck: '56 98 88 70', wings: '10 60 66 74', extra: '14 14 172 120', pat: '56 44 88 74', pet: '0 126 66 74', bg: '0 0 200 200',
+    n_cape: '44 104 112 88', x_ice: '30 84 56 40', x_rainbow: '30 84 56 40', pet_firefly: '12 26 52 52' },
+  fairy: { hat: '56 -10 88 80', eyes: '66 62 72 34', neck: '80 98 40 38', wings: '14 74 86 90', extra: '24 10 156 140', pat: '58 100 84 86', pet: '0 124 70 76', bg: '0 0 200 200', f_rbarc: '30 18 140 70' },
+};
+function itemPic(it, size = 64) {
+  const fairy = P.hero === 'fairy', X = fairy ? FX : DX, c = H().colors[S.equipped.color] || H().colors[H().base];
+  const box = PICBOX[P.hero][it.id] || PICBOX[P.hero][it.slot], id = 'ip' + (++SVGID);
+  let inner;
+  if (it.slot === 'wings') inner = fairy ? fWing(it.id, 3) : dWing(it.id, c);
+  else if (it.slot === 'pat') inner = fairy
+    ? `<path d="${FDRESS}" fill="${c.main}"/><clipPath id="${id}"><path d="${FDRESS}"/></clipPath><g clip-path="url(#${id})">${X.pat[it.id](c)}</g><rect x="82" y="122" width="36" height="6" rx="3" fill="${c.dark}"/>`
+    : `<ellipse cx="100" cy="82" rx="40" ry="35" fill="${c.main}"/><clipPath id="${id}"><ellipse cx="100" cy="82" rx="40" ry="35"/></clipPath><g clip-path="url(#${id})">${X.pat[it.id](c)}</g><ellipse cx="100" cy="99" rx="21" ry="13" fill="${c.belly}"/>`;
+  else if (it.slot === 'bg') inner = X.bg[it.id](id);
+  else if (it.slot === 'pet') inner = X.pet[it.id]();
+  else inner = accOf(X.back, it.id, c) + accOf(X[it.slot], it.id, c);
+  return `<svg class="itempic" viewBox="${box}" width="${size}" height="${size}"><defs>${GRADS}</defs>${inner}</svg>`;
+}
+// вещи-награды: выдаются сами, когда выполнено условие
+function awardMet(a) {
+  const isl = H().isl.filter(x => !x.boss);
+  if (a.type === 'boss') return islState(H().isl.find(x => x.boss).id).stars >= 2;
+  if (a.type === 'block') return isl.filter(x => x.block === a.block).every(x => islState(x.id).stars >= 3);
+  return isl.filter(x => islState(x.id).stars >= 3).length >= a.n;
+}
+function grantAwards() {
+  const got = H().shop.filter(it => it.award && !S.owned.includes(it.id) && awardMet(it.award));
+  got.forEach(it => S.owned.push(it.id));
+  if (got.length) save();
+  return got;
+}
+function showAwards(list) {
+  if (!list.length) return;
+  const it = list[0];
+  SFX.win(); confetti(150);
+  modal(`<h2>${ic('party')} Награда!</h2><div class="award-pic">${it.ic ? ic(it.ic) : itemPic(it, 120)}</div><p>Ты ${gg('заслужил', 'заслужила')}: <b>${it.name}</b>!</p>
+    <p style="font-size:17px;color:var(--muted)">Надеть можно в разделе «${H().t.my}».</p>`, [{ text: 'Ура!', fn: () => showAwards(list.slice(1)) }]);
+}
 function showShop() {
   renderHeader();
   const st = stageOf(S.xp), next = STAGES[st + 1];
   const item = it => {
     const own = S.owned.includes(it.id), on = S.equipped[it.slot] === it.id;
-    const btn = !own ? `<button class="btn ${S.crystals >= it.price ? 'acc' : 'ghost'}" data-buy="${it.id}" ${S.crystals >= it.price ? '' : 'disabled'}>${ic('crystal')} ${it.price}</button>`
+    const btn = !own && it.award ? `<div class="cond">${ic('lock')} Награда: ${it.cond}</div>`
+      : !own ? `<button class="btn ${S.crystals >= it.price ? 'acc' : 'ghost'}" data-buy="${it.id}" ${S.crystals >= it.price ? '' : 'disabled'}>${ic('crystal')} ${it.price}</button>`
       : on ? (it.slot === 'color' ? '<button class="btn ghost" disabled>Надето</button>' : `<button class="btn ghost" data-off="${it.id}">Снять</button>`)
       : `<button class="btn pri" data-on="${it.id}">Надеть</button>`;
-    return `<div class="item ${on ? 'on' : ''}"><div class="ic">${ic(it.ic, H().colors[it.id] && H().colors[it.id].main)}</div><div class="nm">${it.name}</div>${btn}</div>`;
+    return `<div class="item ${on ? 'on' : ''}"><div class="ic">${it.ic ? ic(it.ic, H().colors[it.id] && H().colors[it.id].main) : itemPic(it)}</div><div class="nm">${it.name}</div>${btn}</div>`;
   };
   setScreen('shop', `<div class="shop">
     <div class="preview card">${myDragon('happy', 260)}<h2 style="margin:8px 0">${H().names[st]}</h2>
       <div style="color:var(--muted)">${next ? `До стадии «${H().names[st + 1]}»: ещё ${next.xp - S.xp} ${plur(next.xp - S.xp, 'верный ответ', 'верных ответа', 'верных ответов')}` : 'Максимальная стадия! ' + ic('sparkle')}</div>
       ${st === 0 ? `<p class="bubble">${H().t.shop0}</p>` : ''}
       ${st < 2 ? `<p style="font-size:16px;color:var(--muted)">Крылья вырастут на стадии «${H().names[2]}».</p>` : ''}</div>
-    <div>${Object.keys(H().slots).map(sl => `<h3>${H().slots[sl]}</h3><div class="items">${H().shop.filter(x => x.slot === sl).map(item).join('')}</div>`).join('')}</div></div>`);
+    <div>${Object.keys(H().slots).map(sl => { const list = H().shop.filter(x => x.slot === sl);
+      return `<details class="sl" data-sl="${sl}" ${shopClosed.has(sl) ? '' : 'open'}><summary>${H().slots[sl]} <span>${list.filter(x => S.owned.includes(x.id)).length} из ${list.length}</span></summary>
+        <div class="items">${list.map(item).join('')}</div></details>`; }).join('')}</div></div>`);
+  $$('details.sl').forEach(d => d.ontoggle = () => { d.open ? shopClosed.delete(d.dataset.sl) : shopClosed.add(d.dataset.sl); });
   $$('[data-buy]').forEach(b => b.onclick = () => {
     const it = H().shop.find(x => x.id === b.dataset.buy); if (S.crystals < it.price) return;
     S.crystals -= it.price; S.owned.push(it.id); S.equipped[it.slot] = it.id; SFX.buy(); confetti(60); save(); renderHeader(); showShop();
