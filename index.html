@@ -29,7 +29,9 @@ header{display:flex;align-items:center;gap:16px;padding:10px 20px;background:#ff
 .spacer{flex:1}
 .crystals{font-weight:bold;font-size:22px;background:#eef4ff;padding:6px 14px;border-radius:20px}
 .crystals.bump{animation:bump .5s}
-.hbtn{background:#f1f4f6;padding:8px 14px;font-size:17px}
+.hbtn{background:#f1f4f6;padding:8px 14px;font-size:17px;white-space:nowrap}
+.logo,.crystals,.hdr-dragon .st{white-space:nowrap}
+@media (max-width:1350px){.logo-t{display:none}}
 .hbtn:hover{background:#e4e9ee}
 
 /* ---------- общие ---------- */
@@ -140,6 +142,25 @@ main{max-width:1280px;margin:0 auto;padding:20px}
 .keypad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d5dde3}
 .keypad .kok{background:var(--pri);color:#fff;box-shadow:0 3px 0 var(--pri-d)}
 .keypad .kok:hover{background:#43b876}
+/* ---------- выбор игрока и PIN ---------- */
+body.no-profile #hdrDragon,body.no-profile #crystals,body.no-profile #navMap,body.no-profile #navShop,body.no-profile #navSound,body.no-profile #navSwitch{display:none}
+.who{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.who-card{background:#fff;border-radius:26px;padding:22px 30px;width:280px;box-shadow:0 4px 18px rgba(30,50,70,.08);border:3px solid transparent;position:relative;transition:transform .12s}
+.who-card:hover{transform:translateY(-4px);border-color:var(--pri)}
+.who-card .nm{font-size:30px;font-weight:bold;margin-top:6px}
+.who-card .sub{font-size:16px;color:var(--muted)}
+.who-card .ico.big{width:150px;height:150px}
+.who-card .lk{position:absolute;top:14px;right:16px;font-size:26px}
+.pin-dots{display:flex;gap:14px;justify-content:center;margin:6px 0 14px}
+.pin-dots i{width:22px;height:22px;border-radius:50%;border:3px solid #c8d3dc}
+.pin-dots i.on{background:var(--pri);border-color:var(--pri)}
+.pin-dots.shake i{border-color:var(--bad)}
+.pinpad{display:grid;grid-template-columns:repeat(3,80px);gap:10px;justify-content:center}
+.pinpad button{font-size:30px;font-weight:bold;padding:12px 0;background:#f1f5f8;border-radius:14px;box-shadow:0 3px 0 #d5dde3}
+.pinpad button:hover{background:#e5edf3}
+.pin-inp{position:absolute;opacity:0;width:1px;height:1px}
+.ptabs{display:flex;gap:10px;margin:0 0 6px}
+.ptabs .btn.on{background:var(--pri);color:#fff}
 .keypad .hint{grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center}
 .pie.clickable .sector,.bar.clickable .sector{cursor:pointer;transition:fill .15s}
 .pie.clickable .sector:hover,.bar.clickable .sector:hover{opacity:.85}
@@ -227,10 +248,11 @@ th{background:#f4f7f9;font-size:15px;color:var(--muted)}
 }
 </style>
 </head>
-<body>
+<body class="no-profile">
 <!-- иконки: рисуем сами, потому что в Windows 7 нет цветного шрифта эмодзи -->
 <svg id="icons" width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="i-dragon" viewBox="0 0 24 24"><path d="M6.5 8L5 1.5l4.5 4.5zM17.5 8L19 1.5l-4.5 4.5z" fill="#f6e7b8"/><circle cx="12" cy="13" r="8.5" fill="#5cc27a"/><ellipse cx="12" cy="17" rx="5" ry="3.3" fill="#bff0c9"/><circle cx="8.7" cy="11" r="2.4" fill="#fff"/><circle cx="15.3" cy="11" r="2.4" fill="#fff"/><circle cx="9.1" cy="11.4" r="1.3" fill="#1d2433"/><circle cx="15.7" cy="11.4" r="1.3" fill="#1d2433"/><circle cx="10.6" cy="16.3" r=".7" fill="#3a8f55"/><circle cx="13.4" cy="16.3" r=".7" fill="#3a8f55"/></symbol>
+<symbol id="i-fairy" viewBox="0 0 24 24"><ellipse cx="6.5" cy="12.5" rx="5" ry="3.2" fill="#bfe3fb" transform="rotate(-30 6.5 12.5)"/><ellipse cx="17.5" cy="12.5" rx="5" ry="3.2" fill="#bfe3fb" transform="rotate(30 17.5 12.5)"/><path d="M12 10.5l-5.5 11.5h11z" fill="#ff6fae"/><circle cx="12" cy="7.3" r="4" fill="#f6c9a8"/><path d="M7.8 8a4.2 4.2 0 0 1 8.4 0q-1.2-2.4-4.2-2.4T7.8 8z" fill="#f5c242"/><circle cx="12" cy="2.8" r="1.6" fill="#f5c242"/><circle cx="10.5" cy="8" r=".6" fill="#1d2433"/><circle cx="13.5" cy="8" r=".6" fill="#1d2433"/><path d="M17.5 15l3.5-5" stroke="#a0663a" stroke-width="1.2" stroke-linecap="round"/><path d="M21.3 6.8l.6 1.3 1.4.1-1.1.9.4 1.4-1.3-.8-1.2.8.4-1.4-1.1-.9 1.4-.1z" fill="#ffd23f"/></symbol>
 <symbol id="i-crystal" viewBox="0 0 24 24"><path d="M7 4h10l4.5 5L12 21.5 2.5 9z" fill="#5aa9e6"/><path d="M7 4l2 5h6l2-5z" fill="#a8d8ff"/><path d="M9 9l3 12.5L15 9z" fill="#3d8fd6"/><path d="M2.5 9h19" stroke="#2f6fae" stroke-width=".8"/></symbol>
 <symbol id="i-map" viewBox="0 0 24 24"><path d="M2 5l7-2.5 6 2.5 7-2.5v16.5l-7 2.5-6-2.5-7 2.5z" fill="#f3e3b5"/><path d="M9 2.5v16.5M15 5v16.5" stroke="#d6c08a" stroke-width="1.2"/><path d="M3.5 8.5q2.5-2 4 0t-1.5 4z" fill="#8fd18f"/><path d="M5.5 17q4-7 7.5-3.5t5-6" stroke="#e2604f" stroke-width="1.6" fill="none" stroke-dasharray="2 1.6" stroke-linecap="round"/><path d="M17 5.5l2.5 2.5M19.5 5.5L17 8" stroke="#e2604f" stroke-width="1.6" stroke-linecap="round"/></symbol>
 <symbol id="i-sound" viewBox="0 0 24 24"><path d="M2.5 9h4l5.5-4.5v15L6.5 15h-4z" fill="#5b6b7f"/><path d="M15 9q2 3 0 6M18 6q4.5 6 0 12" stroke="#5aa9e6" stroke-width="2.2" fill="none" stroke-linecap="round"/></symbol>
@@ -292,13 +314,14 @@ th{background:#f4f7f9;font-size:15px;color:var(--muted)}
 <symbol id="i-cup" viewBox="0 0 24 24"><path d="M13 7.5l2.2-5.5h3.3" stroke="#3aa66b" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M5.5 8.5h13l-1.6 13a1 1 0 0 1-1 .9H8.1a1 1 0 0 1-1-.9z" fill="#ff6fae"/><rect x="4.5" y="6.5" width="15" height="3" rx="1.2" fill="#fff" stroke="#e0c4d2"/><path d="M7.5 14h9" stroke="#fff" stroke-width="1.4" opacity=".6"/></symbol>
 </svg>
 <header>
-  <div class="logo" id="logo"><svg class="ico"><use href="#i-dragon"/></svg> Драконья математика</div>
+  <div class="logo" id="logo"><svg class="ico"><use href="#i-dragon"/></svg> <span class="logo-t">Драконья математика</span></div>
   <div class="hdr-dragon" id="hdrDragon"></div>
   <div class="spacer"></div>
   <div class="crystals" id="crystals"><svg class="ico"><use href="#i-crystal"/></svg> 0</div>
   <button class="hbtn" id="navMap"><svg class="ico"><use href="#i-map"/></svg> Карта</button>
   <button class="hbtn" id="navShop"><svg class="ico"><use href="#i-dragon"/></svg> Мой дракон</button>
   <button class="hbtn" id="navSound" title="Звук"><svg class="ico"><use href="#i-sound"/></svg></button>
+  <button class="hbtn" id="navSwitch" title="Сменить игрока"></button>
   <button class="hbtn" id="navParent"><svg class="ico"><use href="#i-family"/></svg> Родителям</button>
 </header>
 <main id="app"></main>
@@ -863,22 +886,34 @@ const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const app = $('#app');
 
+// ---------- профили ----------
+// у каждого ребёнка своё хранилище; у Тихона старый ключ, чтобы прогресс остался на месте
+const PROFILES = [
+  { id: 'tikhon', name: 'Тихон', hero: 'dragon', key: 'dragonMath_v1' },
+  { id: 'anisia', name: 'Анисия', hero: 'fairy', key: 'dragonMath_v1_anisia', settings: { sessionMin: 7, autoSpeak: true } },
+];
+const PKEY = 'dragonMath_profiles';  // { pins: {id: хэш}, last: id }
+function loadProf() { try { const o = JSON.parse(localStorage.getItem(PKEY)); if (o && typeof o === 'object') return Object.assign({ pins: {}, last: null }, o); } catch (e) { /* пусто */ } return { pins: {}, last: null }; }
+function saveProf() { try { localStorage.setItem(PKEY, JSON.stringify(PR)); } catch (e) { /* хранилище недоступно */ } }
+let PR = loadProf();
+// PIN защищает только от чужого профиля, не от взрослого: всё хранится в браузере
+function pinHash(pid, pin) { let h = 2166136261; for (const ch of pid + ':' + pin) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
+
 // ---------- состояние ----------
-const KEY = 'dragonMath_v1';
 const DEF_SETTINGS = { sessionMin: 10, breakSec: 60, sound: true, confetti: true, tts: true, autoSpeak: false, unlockAll: false };
-function defState() {
-  return { name: 'Тихон', xp: 0, crystals: 0, stage: 0, islands: {}, stats: {}, mistakes: [], factErrors: {}, days: {},
-    owned: ['c_green'], equipped: { color: 'c_green' }, introSeen: {}, settings: Object.assign({}, DEF_SETTINGS) };
+let P = null, S = null;
+function defState(p = P) {
+  return { name: p.name, xp: 0, crystals: 0, stage: 0, islands: {}, stats: {}, mistakes: [], factErrors: {}, days: {},
+    owned: ['c_green'], equipped: { color: 'c_green' }, introSeen: {}, settings: Object.assign({}, DEF_SETTINGS, p.settings) };
 }
-function load() {
+function load(p = P) {
   try {
-    const s = JSON.parse(localStorage.getItem(KEY));
-    if (s && typeof s === 'object') { const d = defState(); Object.assign(d, s); d.settings = Object.assign({}, DEF_SETTINGS, s.settings || {}); return d; }
+    const s = JSON.parse(localStorage.getItem(p.key));
+    if (s && typeof s === 'object') { const d = defState(p); Object.assign(d, s); d.settings = Object.assign({}, DEF_SETTINGS, p.settings, s.settings || {}); return d; }
   } catch (e) { /* пусто */ }
-  return defState();
+  return defState(p);
 }
-let S = load();
-function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* хранилище недоступно */ } }
+function save() { try { localStorage.setItem(P.key, JSON.stringify(S)); } catch (e) { /* хранилище недоступно */ } }
 const today = () => new Date().toLocaleDateString('sv');
 function day() { const k = today(); return S.days[k] || (S.days[k] = { sec: 0, tasks: 0, ok: 0 }); }
 function stat(id) { return S.stats[id] || (S.stats[id] = { ok: 0, meh: 0, bad: 0 }); }
@@ -1048,6 +1083,7 @@ function renderHeader() {
   $('#hdrDragon').innerHTML = `${dragonSVG(st, S.equipped, 'happy', { size: 46 })}<div><div class="st">${STAGES[st].name}${next ? ` → ${STAGES[st + 1].name}` : ' ' + ic('sparkle')}</div><div class="xpbar"><i style="width:${pct}%"></i></div></div>`;
   $('#crystals').innerHTML = ic('crystal') + ' ' + S.crystals;
   $('#navSound').innerHTML = ic(S.settings.sound ? 'sound' : 'mute');
+  $('#navSwitch').innerHTML = `${ic(P.hero)} ${esc(S.name)} ⇄`;
 }
 function bumpCrystals() { const el = $('#crystals'); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
 
@@ -1058,7 +1094,9 @@ function leaveGuard(fn) {
   if (screen === 'play' && G && G.n > 0) modal('<h2>Выйти из раунда?</h2><p>Звёзды за этот раунд не сохранятся.</p>', [{ text: 'Остаться', cls: 'ghost' }, { text: 'Выйти', cls: 'acc', fn }]);
   else fn();
 }
-$('#logo').onclick = $('#navMap').onclick = () => leaveGuard(showMap);
+$('#logo').onclick = () => leaveGuard(S ? showMap : showProfiles);
+$('#navMap').onclick = () => leaveGuard(showMap);
+$('#navSwitch').onclick = () => leaveGuard(showProfiles);
 $('#navShop').onclick = () => leaveGuard(showShop);
 $('#navParent').onclick = () => leaveGuard(askParent);
 $('#navSound').onclick = () => { S.settings.sound = !S.settings.sound; save(); renderHeader(); };
@@ -1501,7 +1539,7 @@ function askParent() {
   const a = R(6, 9), b = R(6, 9), c = R(11, 39);
   modal(`<h2>Для взрослых</h2><p>Сколько будет ${a} × ${b} + ${c}?</p><input class="inp" id="pin" style="width:160px">`, [
     { text: 'Отмена', cls: 'ghost' },
-    { text: 'Войти', keep: true, fn: (bg, close) => { if (+bg.querySelector('#pin').value === a * b + c) { close(); showParent(); } else bg.querySelector('#pin').classList.add('wrong', 'shake'); } },
+    { text: 'Войти', keep: true, fn: (bg, close) => { if (+bg.querySelector('#pin').value === a * b + c) { close(); if (!S) openProfile(PROFILES.find(x => x.id === PR.last) || PROFILES[0]); showParent(); } else bg.querySelector('#pin').classList.add('wrong', 'shake'); } },
   ]);
 }
 function fmtMin(sec) { const m = Math.round(sec / 60); return m < 60 ? m + ' мин' : Math.floor(m / 60) + ' ч ' + (m % 60) + ' мин'; }
@@ -1523,6 +1561,7 @@ function showParent() {
   const set = S.settings;
   setScreen('parent', `<div class="parent">
     <h1>${ic('family')} Панель родителя</h1>
+    <div class="ptabs">${PROFILES.map(x => `<button class="btn ghost ${x === P ? 'on' : ''}" data-prof="${x.id}">${ic(x.hero)} ${esc(x === P ? S.name : load(x).name)}</button>`).join('')}</div>
     <div class="kpis">
       <div class="kpi"><b>${all}</b><span>задач решено всего</span></div>
       <div class="kpi"><b class="${all ? accCls(Math.round(tot.ok / all * 100)) : ''}">${all ? Math.round(tot.ok / all * 100) + '%' : '—'}</b><span>с первой попытки</span></div>
@@ -1542,8 +1581,9 @@ function showParent() {
     <h2>Настройки</h2>
     <div class="settings">
       <label>Имя ребёнка: <input type="text" id="sName" value="${esc(S.name)}"></label>
+      <div>PIN для входа: <b>${PR.pins[P.id] ? 'задан' : 'не задан'}</b> <button class="btn ghost" id="sPin">${PR.pins[P.id] ? 'Сменить PIN' : 'Задать PIN'}</button>${PR.pins[P.id] ? ' <button class="btn ghost" id="sPinOff">Убрать PIN</button>' : ''}</div>
       <label>Обязательный перерыв каждые
-        <select id="sSess">${[[5, '5 минут'], [10, '10 минут'], [15, '15 минут'], [20, '20 минут'], [0, 'не нужен']].map(([v, l]) => `<option value="${v}" ${set.sessionMin === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+        <select id="sSess">${[[5, '5 минут'], [7, '7 минут'], [10, '10 минут'], [15, '15 минут'], [20, '20 минут'], [0, 'не нужен']].map(([v, l]) => `<option value="${v}" ${set.sessionMin === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
       <label>Длительность перерыва
         <select id="sBreak">${[[30, '30 секунд'], [60, '1 минута'], [120, '2 минуты']].map(([v, l]) => `<option value="${v}" ${set.breakSec === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
       <label><input type="checkbox" id="sSound" ${set.sound ? 'checked' : ''}> Звуки</label>
@@ -1559,6 +1599,9 @@ function showParent() {
     <p style="font-size:16px;color:var(--muted)">Прогресс хранится в этом браузере на этом компьютере. Чтобы перенести на другой компьютер, сохраните его в файл и загрузите там.</p>
   </div>`);
   const upd = fn => e => { fn(e.target); save(); renderHeader(); };
+  $$('[data-prof]').forEach(b => b.onclick = () => { openProfile(PROFILES.find(x => x.id === b.dataset.prof)); showParent(); });
+  $('#sPin').onclick = () => setPin();
+  if ($('#sPinOff')) $('#sPinOff').onclick = () => { delete PR.pins[P.id]; saveProf(); showParent(); };
   $('#sName').onchange = upd(el => { S.name = el.value.trim() || 'друг'; });
   $('#sSess').onchange = upd(el => { set.sessionMin = +el.value; });
   $('#sBreak').onchange = upd(el => { set.breakSec = +el.value; });
@@ -1571,22 +1614,78 @@ function showParent() {
   $('#pExp').onclick = () => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' }));
-    a.download = `drakon-matematika-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    a.download = `drakon-matematika-${P.id}-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
   $('#pImp').onclick = () => $('#pFile').click();
   $('#pFile').onchange = e => {
     const f = e.target.files[0]; if (!f) return;
     const rd = new FileReader();
     rd.onload = () => {
-      try { const s = JSON.parse(rd.result); if (typeof s.xp !== 'number') throw 0; localStorage.setItem(KEY, JSON.stringify(s)); S = load(); renderHeader(); showParent(); modal('<h2>Готово</h2><p>Прогресс загружен.</p>', [{ text: 'OK' }]); }
+      try { const s = JSON.parse(rd.result); if (typeof s.xp !== 'number') throw 0; localStorage.setItem(P.key, JSON.stringify(s)); S = load(); renderHeader(); showParent(); modal('<h2>Готово</h2><p>Прогресс загружен.</p>', [{ text: 'OK' }]); }
       catch (err) { modal('<h2>Не получилось</h2><p>Этот файл не похож на сохранение прогресса.</p>', [{ text: 'OK' }]); }
     };
     rd.readAsText(f);
   };
-  $('#pReset').onclick = () => modal(`<h2>Сбросить весь прогресс?</h2><p>Звёзды, кристаллы, дракон и статистика будут удалены. Отменить это нельзя.</p>`, [
+  $('#pReset').onclick = () => modal(`<h2>Сбросить весь прогресс?</h2><p>Звёзды, кристаллы, ${P.hero === 'fairy' ? 'фея' : 'дракон'} и статистика ${esc(S.name)} будут удалены. Отменить это нельзя.</p>`, [
     { text: 'Отмена', cls: 'ghost' },
     { text: 'Да, сбросить', cls: 'acc', fn: () => { const name = S.name, settings = S.settings; S = defState(); S.name = name; S.settings = settings; save(); renderHeader(); showMap(); } },
   ]);
+}
+
+// ================= КТО ИГРАЕТ =================
+function openProfile(p) {
+  P = p; S = load(p); G = null; sinceBreak = 0;
+  PR.last = p.id; saveProf();
+  document.body.classList.remove('no-profile');
+  renderHeader();
+}
+function heroPic(p, st) { return p.hero === 'dragon' ? dragonSVG(stageOf(st.xp), st.equipped, 'happy', { size: 150 }) : ic('fairy') .replace('class="ico"', 'class="ico big"'); }
+function showProfiles() {
+  P = null; S = null; G = null;
+  document.body.classList.add('no-profile');
+  setScreen('profiles', `<div class="center-wrap"><h1 style="margin:10px 0 0">Кто играет?</h1>
+    <div class="who">${PROFILES.map(p => { const st = load(p); return `<button class="who-card" data-who="${p.id}">
+      ${PR.pins[p.id] ? `<span class="lk">${ic('lock')}</span>` : ''}${heroPic(p, st)}
+      <div class="nm">${esc(st.name)}</div><div class="sub">${STAGES[stageOf(st.xp)].name} · ${ic('crystal')} ${st.crystals}</div></button>`; }).join('')}</div></div>`);
+  $$('[data-who]').forEach(b => b.onclick = () => {
+    const p = PROFILES.find(x => x.id === b.dataset.who);
+    if (!PR.pins[p.id]) { openProfile(p); showMap(); return; }
+    askPin(`${ic(p.hero)} ${esc(load(p).name)}, введи PIN`, pin => {
+      if (pinHash(p.id, pin) !== PR.pins[p.id]) return false;
+      openProfile(p); showMap(); return true;
+    });
+  });
+}
+// окно ввода 4 цифр: экранные кнопки или клавиатура; check(pin) -> true, если подошёл
+function askPin(title, check) {
+  const m = modal(`<h2>${title}</h2><div class="pin-dots">${'<i></i>'.repeat(4)}</div>
+    <input class="pin-inp" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+    <div class="pinpad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<button data-pk="${n}">${n}</button>`).join('')}<span></span><button data-pk="0">0</button><button data-pk="del">⌫</button></div>`,
+    [{ text: 'Отмена', cls: 'ghost' }]);
+  const inp = m.bg.querySelector('.pin-inp'), dots = m.bg.querySelector('.pin-dots');
+  const draw = () => dots.querySelectorAll('i').forEach((d, i) => d.classList.toggle('on', i < inp.value.length));
+  const changed = () => {
+    inp.value = inp.value.replace(/\D/g, '').slice(0, 4); draw();
+    if (inp.value.length < 4) return;
+    if (check(inp.value)) { m.close(); return; }
+    if (S) SFX.bad(); dots.classList.remove('shake'); void dots.offsetWidth; dots.classList.add('shake');
+    setTimeout(() => { inp.value = ''; draw(); inp.focus(); }, 450);
+  };
+  inp.addEventListener('input', changed);
+  m.bg.querySelectorAll('[data-pk]').forEach(b => b.onclick = () => {
+    inp.value = b.dataset.pk === 'del' ? inp.value.slice(0, -1) : inp.value + b.dataset.pk; changed(); inp.focus();
+  });
+}
+function setPin() {
+  askPin(`Новый PIN для ${esc(S.name)}`, pin1 => {
+    setTimeout(() => askPin('Повтори PIN ещё раз', pin2 => {
+      if (pin2 !== pin1) { modal('<h2>PIN не совпал</h2><p>Попробуйте задать его ещё раз.</p>', [{ text: 'OK' }]); return true; }
+      PR.pins[P.id] = pinHash(P.id, pin1); saveProf(); showParent();
+      modal(`<h2>PIN задан</h2><p>Теперь ${esc(S.name)} входит в свой профиль по PIN. Если его забудут, PIN можно убрать здесь, в панели родителя.</p>`, [{ text: 'OK' }]);
+      return true;
+    }), 0);
+    return true;
+  });
 }
 
 // ================= КЛАВИАТУРА =================
@@ -1609,8 +1708,7 @@ document.addEventListener('keydown', e => {
   }
 });
 
-renderHeader();
-showMap();
+showProfiles();
 </script>
 </body>
 </html>
